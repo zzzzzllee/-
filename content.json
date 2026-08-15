@@ -166,11 +166,17 @@
     "rolesGallery3": "assets/gear_04.jpg",
     "rolesGallery4": "assets/work_01.jpg",
     "rolesGallery5": "assets/casual_01.jpg",
-    "rolesGallery6": "assets/gear_06.jpg"
+    "rolesGallery6": "assets/gear_06.jpg",
+    "introPhotoWall1": "assets/group_04.jpg",
+    "introPhotoWall2": "assets/gear_02.jpg",
+    "introPhotoWall3": "assets/work_02.jpg",
+    "introPhotoWall4": "assets/gear_04.jpg",
+    "introPhotoWall5": "assets/work_01.jpg",
+    "introPhotoWall6": "assets/gear_06.jpg"
   },
   "photoWall": {
     "title": "下一张团队合照，也许就有你",
-    "hint": "手指左右滑动，翻看下一张合照",
+    "hint": "手指左右滑动，翻看属于我们的共同瞬间",
     "imageKeys": [
       "photoWall1",
       "photoWall2",
@@ -189,11 +195,31 @@
     ],
     "captions": [
       "下一张团队合照，也许就有你",
-      "从一次活动开始认识彼此",
-      "灯光亮起之前，我们都在现场",
-      "排练、协作和忙碌的日常",
-      "把想法变成真正发生的舞台",
-      "等你加入下一次合照"
+      "从一次活动开始，认识并肩做事的伙伴",
+      "忙碌过后，镜头留下我们的笑脸",
+      "每一场活动，都是新的共同记忆",
+      "一起把想法变成真正发生的舞台",
+      "等你加入，也等你出现在下一张合照里"
+    ]
+  },
+  "introPhotoWall": {
+    "title": "幕后的一切，也值得被看见",
+    "hint": "手指左右滑动，看看舞台亮起之前",
+    "imageKeys": [
+      "introPhotoWall1",
+      "introPhotoWall2",
+      "introPhotoWall3",
+      "introPhotoWall4",
+      "introPhotoWall5",
+      "introPhotoWall6"
+    ],
+    "captions": [
+      "灯光亮起以前，准备已经开始",
+      "每一次设备确认，都是现场稳定的底气",
+      "一遍遍核对，只为台前的从容",
+      "有人守着流程，也有人奔走在幕后",
+      "演出的完整，来自每个位置的配合",
+      "掌声响起之前，我们一直都在"
     ]
   }
 }

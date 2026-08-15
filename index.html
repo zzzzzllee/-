@@ -164,9 +164,9 @@ button{font:inherit}
       <span class="doodle-arrow" contenteditable="false">↘</span>
     </div>
     <div class="photo-wall intro-photo-wall reveal" data-photo-wall="intro">
-      <div class="photo-wall-head"><div class="photo-wall-label">BACKSTAGE ALBUM</div><h3 class="photo-wall-title" data-photo-wall-title>每一次亮相，都有一群人在幕后认真准备</h3></div>
+      <div class="photo-wall-head"><div class="photo-wall-label">BACKSTAGE ALBUM</div><h3 class="photo-wall-title" data-photo-wall-title>幕后的一切，也值得被看见</h3></div>
       <div class="photo-wall-stage" data-photo-wall-stage tabindex="0" aria-label="幕后图片翻页册"></div>
-      <p class="photo-wall-hint" data-photo-wall-hint>手指左右滑动，翻看演出发生前的准备</p>
+      <p class="photo-wall-hint" data-photo-wall-hint>手指左右滑动，看看舞台亮起之前</p>
     </div>
   </section>
 
@@ -268,7 +268,7 @@ button{font:inherit}
       <div class="photo-wall-stage" data-photo-wall-stage>
         <article class="photo-card is-active replaceable" data-photo-card><img src="assets/group_03.jpg" alt="下一张团队合照，也许就有你"><span>下一张团队合照，也许就有你</span></article>
       </div>
-      <p class="photo-wall-hint" data-photo-wall-hint>手指左右滑动，翻看下一张合照</p>
+      <p class="photo-wall-hint" data-photo-wall-hint>手指左右滑动，翻看属于我们的共同瞬间</p>
     </div>
     <div class="closing-copy reveal"><p>如果你愿意让大学生活多一段并肩忙碌的经历，如果你想把兴趣变成真正发生的现场，如果你也期待认识一群认真、热情、愿意一起做事的人——那就来艺教中心，和我们<strong>一起开演</strong>。</p></div>
     <h2 class="closing-title">新生入场，请就位！</h2>
@@ -348,14 +348,31 @@ button{font:inherit}
     return state;
   };
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  const photoWallItems = c => {
-    const wall = c.photoWall || {};
-    const images = c.images || {};
-    const keys = Array.isArray(wall.imageKeys) && wall.imageKeys.length ? wall.imageKeys : ['photoWall1','photoWall2','photoWall3','photoWall4','photoWall5','photoWall6'];
+  const mergeContent = (base, override) => {
+    if (override === undefined || override === null) return base;
+    if (Array.isArray(override) || typeof override !== 'object') return override;
+    const result = {...(base && typeof base === 'object' && !Array.isArray(base) ? base : {})};
+    Object.keys(override).forEach(key => { result[key] = mergeContent(result[key], override[key]); });
+    return result;
+  };
+  const mergePublishedContent = (base, override) => {
+    const result = mergeContent(base, override || {});
+    if (override && !override.introPhotoWall && base?.photoWall && result.photoWall) {
+      result.photoWall.title = base.photoWall.title;
+      result.photoWall.hint = base.photoWall.hint;
+      result.photoWall.captions = [...(base.photoWall.captions || [])];
+    }
+    return result;
+  };
+  const photoWallItems = (c, wallKey) => {
+    const wall = c[wallKey] || {}; const images = c.images || {}; const isIntro = wallKey === 'introPhotoWall';
+    const fallbackKeys = (isIntro ? 'introPhotoWall' : 'photoWall');
+    const keys = Array.isArray(wall.imageKeys) && wall.imageKeys.length ? wall.imageKeys : Array.from({length:6},(_,i)=>fallbackKeys+(i+1));
     const keyed = keys.map(key => images[key]).filter(Boolean);
     const sources = keyed.length ? keyed : (Array.isArray(wall.images) ? wall.images : []);
     const captions = Array.isArray(wall.captions) ? wall.captions : [];
-    return sources.map((src, index) => ({ src, caption: captions[index] || wall.title || c.closing?.photoCaption || '下一张团队合照，也许就有你' }));
+    const fallbackTitle = isIntro ? '幕后的一切，也值得被看见' : (c.closing?.photoCaption || '下一张团队合照，也许就有你');
+    return sources.map((src, index) => ({ src, caption: captions[index] || wall.title || fallbackTitle }));
   };
   const updatePhotoWall = root => {
     const state = getPhotoWallState(root);
@@ -381,14 +398,15 @@ button{font:inherit}
     grid?.querySelectorAll('.replaceable').forEach(box => box.setAttribute('title','点击替换图片'));
   };
   const renderPhotoWall = c => {
-    const wall = c.photoWall || {}; const items = photoWallItems(c);
     document.querySelectorAll('[data-photo-wall]').forEach(root => {
+      const isIntro = root.dataset.photoWall === 'intro'; const wallKey = isIntro ? 'introPhotoWall' : 'photoWall'; const wall = c[wallKey] || {}; const items = photoWallItems(c, wallKey);
       const state = getPhotoWallState(root); state.items = items; state.index = 0;
-      const isIntro = root.dataset.photoWall === 'intro';
-      const title = root.querySelector('[data-photo-wall-title]'); if (title) title.textContent = isIntro ? (c.intro?.caption || '每一次亮相，都有一群人在幕后认真准备') : (wall.title || c.closing?.photoCaption || '下一张团队合照，也许就有你');
-      const hintText = root.querySelector('[data-photo-wall-hint]'); if (hintText) hintText.textContent = isIntro ? '手指左右滑动，翻看演出发生前的准备' : (wall.hint || '手指左右滑动，翻看下一张合照');
-      const stage = root.querySelector('[data-photo-wall-stage]');
-      if (stage) stage.innerHTML = items.length ? items.map(item => '<article class="photo-card replaceable" data-photo-card><img src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></article>').join('') : '<article class="photo-card is-active replaceable" data-photo-card><img src="assets/group_03.jpg" alt="下一张团队合照，也许就有你"><span>下一张团队合照，也许就有你</span></article>';
+      const fallbackTitle = isIntro ? '幕后的一切，也值得被看见' : (c.closing?.photoCaption || '下一张团队合照，也许就有你');
+      const fallbackHint = isIntro ? '手指左右滑动，看看舞台亮起之前' : '手指左右滑动，翻看属于我们的共同瞬间';
+      const title = root.querySelector('[data-photo-wall-title]'); if (title) title.textContent = wall.title || fallbackTitle;
+      const hintText = root.querySelector('[data-photo-wall-hint]'); if (hintText) hintText.textContent = wall.hint || fallbackHint;
+      const stage = root.querySelector('[data-photo-wall-stage]'); const fallbackSrc = isIntro ? 'assets/group_04.jpg' : 'assets/group_03.jpg';
+      if (stage) stage.innerHTML = items.length ? items.map(item => '<article class="photo-card replaceable" data-photo-card><img src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></article>').join('') : '<article class="photo-card is-active replaceable" data-photo-card><img src="'+fallbackSrc+'" alt="'+escapeHtml(fallbackTitle)+'"><span>'+escapeHtml(fallbackTitle)+'</span></article>';
       stage?.querySelectorAll('.replaceable').forEach(box => box.setAttribute('title','点击替换图片')); updatePhotoWall(root);
     });
   };
@@ -422,7 +440,7 @@ button{font:inherit}
     const qq=c.decorations?.qq||[];
     document.querySelectorAll('.campus-decor img').forEach((img,index)=>{ if(qq[index]) img.src=qq[index]; }); [['.p1 img',imgs.hero1],['.p2 img',imgs.hero2],['.p3 img',imgs.hero3],['.intro-photo img',imgs.intro],['.detail-photo .frame:nth-child(1) img',imgs.detail1],['.detail-photo .frame:nth-child(2) img',imgs.detail2],['.m1 img',imgs.moment1],['.m2 img',imgs.moment2],['.m3 img',imgs.moment3],['.m4 img',imgs.moment4],['.qrcard:nth-child(1) img',imgs.qrWestGroup],['.qrcard:nth-child(2) img',imgs.qrWestSignup],['.qrcard:nth-child(3) img',imgs.qrNorthGroup],['.qrcard:nth-child(4) img',imgs.qrNorthSignup]].forEach(([s,v])=>setImg(s,v));
   };
-  const loadPublishedContent = async () => { let cloudContent = null; try { cloudContent = await window.WechatCloudSync?.loadContent?.(); } catch (error) { console.warn('云端内容读取失败，回退静态内容', error); } if (cloudContent) { applyContent(cloudContent); return; } try { const response = await fetch('content.json?ts=' + Date.now(), { cache: 'no-store' }); const remote = await response.json(); applyContent(readDraft() || remote); } catch { applyContent(readDraft()); } }; loadPublishedContent();
+  const loadPublishedContent = async () => { let fallback = {}; let cloudContent = null; try { const response = await fetch('content.json?ts=' + Date.now(), { cache: 'no-store' }); fallback = await response.json(); } catch {} try { cloudContent = await window.WechatCloudSync?.loadContent?.(); } catch (error) { console.warn('云端内容读取失败，回退静态内容', error); } const selected = cloudContent || readDraft() || {}; applyContent(mergePublishedContent(fallback, selected)); }; loadPublishedContent();
   window.addEventListener('storage', e => { if(e.key===draftKey) { try { applyContent(JSON.parse(e.newValue)); } catch {} } });
   window.addEventListener('message', event => { if (event.data?.type === 'wechat-recruitment-preview' && event.data.content) applyContent(event.data.content); });
 })();
