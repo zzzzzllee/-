@@ -6,6 +6,34 @@
 <meta name="theme-color" content="#ffd86b">
 <link rel="preconnect" href="https://lbaoqsxmpvqxpbogvpyj.supabase.co" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<script src="cloud-config.js"></script>
+<script>
+(() => {
+  const cfg = window.WECHAT_CLOUD_CONFIG || {};
+  const key = 'wechatRecruitmentCloudSnapshot2026';
+  const readCached = () => { try { return JSON.parse(sessionStorage.getItem(key) || 'null'); } catch { return null; } };
+  const saveCached = value => { try { sessionStorage.setItem(key, JSON.stringify(value)); } catch {} };
+  const preload = content => {
+    const urls = [content?.images?.hero1, content?.images?.hero2, content?.images?.hero3].filter(src => /^https?:/i.test(String(src || '')));
+    urls.forEach(src => { const image = new Image(); image.decoding = 'async'; image.fetchPriority = 'high'; image.src = src; });
+  };
+  window.__wechatCloudBootstrap = (async () => {
+    if (!cfg.url || !cfg.anonKey || !cfg.contentId) return null;
+    try {
+      const endpoint = cfg.url.replace(/\/$/, '') + '/rest/v1/wechat_contents?content_id=eq.' + encodeURIComponent(cfg.contentId) + '&select=content_json,updated_at';
+      const response = await fetch(endpoint, { cache: 'no-store', headers: { apikey: cfg.anonKey, Authorization: 'Bearer ' + cfg.anonKey } });
+      if (!response.ok) throw new Error('cloud bootstrap ' + response.status);
+      const rows = await response.json();
+      const snapshot = rows?.[0] || null;
+      if (snapshot?.content_json) { saveCached(snapshot); preload(snapshot.content_json); }
+      return snapshot;
+    } catch (error) {
+      console.warn('云端首屏内容读取失败，稍后使用安全回退', error);
+      return readCached();
+    }
+  })();
+})();
+</script>
 <title>2026级新生招新｜校团委艺术教育中心</title>
 <style>
 :root{--cream:#fffefb;--yellow:#fbf8bc;--yellow-soft:#fffbdc;--blue:#b2d6f8;--blue-soft:#e7f2ff;--coral:#f39b8e;--coral-soft:#ffe6e2;--ink:#1b1b1b;--white:#ffffff;--line:#1b1b1b;--sky-texture:url("assets/style-sky.jpg");--paper-texture:url("assets/style-paper.jpg");--shadow:8px 8px 0 var(--ink);--small-shadow:4px 4px 0 var(--ink)}
@@ -132,35 +160,6 @@ button{font:inherit}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-spark,.tape,.hero-note,.wall-sticker,.closing-title,.floaty,.campus-decor{animation:none!important}.reveal{opacity:1;transform:none;transition:none}.polaroid,.role-card,.qrcard,.photo-card,.photo-wall-controls button{transition:none}}
 .cloud-pending .replaceable img,.cloud-pending .campus-decor img{visibility:hidden}.cloud-pending .photo-wall-stage img,.cloud-pending .roles-gallery-card img{visibility:hidden}.cloud-loading{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:rgba(255,254,251,.9);backdrop-filter:blur(7px);font:700 14px/1.6 "Microsoft YaHei",sans-serif;color:var(--ink);transition:opacity .25s ease}.cloud-loading.is-hidden{opacity:0;pointer-events:none}.cloud-loading-card{padding:16px 20px;background:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);text-align:center}.cloud-loading-dot{display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:var(--coral);animation:cloudPulse 1s ease-in-out infinite alternate}@keyframes cloudPulse{to{transform:scale(1.45);background:var(--blue)}}@media print{body{background:#fff}.toolbar,.replace-hint{display:none!important}.page{width:100%;margin:0;border:0;box-shadow:none}.reveal{opacity:1;transform:none}.section{break-inside:avoid}.hero{min-height:640px}}
 </style>
-<script src="cloud-config.js"></script>
-<script>
-(() => {
-  const cfg = window.WECHAT_CLOUD_CONFIG || {};
-  const key = 'wechatRecruitmentCloudSnapshot2026';
-  const readCached = () => { try { return JSON.parse(sessionStorage.getItem(key) || 'null'); } catch { return null; } };
-  const saveCached = value => { try { sessionStorage.setItem(key, JSON.stringify(value)); } catch {} };
-  const preload = content => {
-    const urls = [content?.images?.hero1, content?.images?.hero2, content?.images?.hero3].filter(src => /^https?:/i.test(String(src || '')));
-    urls.forEach(src => { const image = new Image(); image.decoding = 'async'; image.fetchPriority = 'high'; image.src = src; });
-  };
-  window.__wechatCloudBootstrap = (async () => {
-    if (!cfg.url || !cfg.anonKey || !cfg.contentId) return null;
-    try {
-      const endpoint = cfg.url.replace(/\/$/, '') + '/rest/v1/wechat_contents?content_id=eq.' + encodeURIComponent(cfg.contentId) + '&select=content_json,updated_at';
-      const response = await fetch(endpoint, { cache: 'no-store', headers: { apikey: cfg.anonKey, Authorization: 'Bearer ' + cfg.anonKey } });
-      if (!response.ok) throw new Error('cloud bootstrap ' + response.status);
-      const rows = await response.json();
-      const snapshot = rows?.[0] || null;
-      if (snapshot?.content_json) { saveCached(snapshot); preload(snapshot.content_json); }
-      return snapshot;
-    } catch (error) {
-      console.warn('云端首屏内容读取失败，稍后使用安全回退', error);
-      return readCached();
-    }
-  })();
-})();
-</script>
-
 </head>
 <body>
 
