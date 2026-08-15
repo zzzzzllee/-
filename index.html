@@ -107,7 +107,7 @@ button{font:inherit}
 .closing-copy{position:relative;z-index:4;margin:40px auto 0;max-width:610px;padding:26px 25px;background:var(--cream);border:3px solid var(--ink);box-shadow:8px 8px 0 var(--blue);transform:rotate(1deg)}
 .closing-copy p{margin:0;font-size:16px;line-height:2}.closing-copy strong{color:var(--coral);font-weight:1000}
 .closing-title{position:relative;z-index:4;margin:40px 0 5px;font:1000 clamp(36px,8vw,62px)/1.05 "Microsoft YaHei",sans-serif;color:#fff;text-shadow:4px 4px 0 var(--ink);animation:pulse 3.2s ease-in-out infinite}.closing-sub{position:relative;z-index:4;margin:10px 0 0;font:900 15px/1.7 "Microsoft YaHei",sans-serif;color:var(--ink)}
-.footer{padding:23px 18px;background:var(--ink);color:#fff;text-align:center;font:700 12px/1.8 "Microsoft YaHei",sans-serif;letter-spacing:.08em}.footer-editor-link{display:inline-block;margin-top:8px;color:rgba(255,255,255,.48);font:600 11px/1.5 "Microsoft YaHei",sans-serif;letter-spacing:.04em;text-decoration:none;transition:color .2s ease,opacity .2s ease}.footer-editor-link:hover,.footer-editor-link:focus-visible{color:var(--yellow);opacity:1;text-decoration:underline}
+.footer{padding:23px 18px;background:var(--ink);color:#fff;text-align:center;font:700 12px/1.8 "Microsoft YaHei",sans-serif;letter-spacing:.08em}.toolbar a{display:inline-block;border:1.5px solid #fff;border-radius:999px;background:transparent;color:#fff;padding:5px 12px;text-decoration:none;cursor:pointer;transition:.2s ease}.toolbar a:hover,.toolbar a:focus-visible{background:var(--yellow);border-color:var(--yellow);color:var(--ink);transform:translateY(-1px)}
 .replace-hint{position:fixed;right:14px;bottom:14px;z-index:90;max-width:235px;padding:8px 11px;background:rgba(38,53,74,.92);color:#fff;border-radius:8px;font:12px/1.55 "Microsoft YaHei",sans-serif;opacity:0;pointer-events:none;transition:opacity .25s}.replace-hint.show{opacity:1}
 .reveal{opacity:0;transform:translateY(28px) rotate(.35deg);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.8,.2,1)}.reveal.is-visible{opacity:1;transform:none}
 .floaty{animation:floaty 4s ease-in-out infinite}
@@ -262,13 +262,13 @@ button{font:inherit}
     <h2 class="closing-title">新生入场，请就位！</h2>
     <p class="closing-sub">校团委艺术教育中心<br>等你加入 · 等你发光</p>
   </section>
-  <footer class="footer">ART EDUCATION CENTER · 2026 RECRUITMENT<br><span>奶油手账版可编辑预览</span><br><a class="footer-editor-link" href="editor.html" aria-label="进入在线编辑器">编辑入口 · 在线编辑</a></footer>
+  <footer class="footer">ART EDUCATION CENTER · 2026 RECRUITMENT<br><span>奶油手账版可编辑预览</span></footer>
   <div class="toolbar" contenteditable="false">
-  <span class="toolbar-note">2026级招新推文 · 内容由 content.json 管理</span>
-  <button type="button" onclick="restartAnimations()">重新播放动效</button>
-  <button type="button" onclick="downloadEditedHtml()">保存修改版</button>
-  <button type="button" onclick="window.print()">打印 / 导出 PDF</button>
-</div>
+    <span class="toolbar-note">2026级招新推文 · 内容由 content.json 管理</span>
+    <a class="toolbar-editor-link" href="editor.html" aria-label="进入在线编辑器">编辑入口 · 在线编辑</a>
+    <button type="button" onclick="restartAnimations()">重新播放动效</button>
+    <button type="button" onclick="downloadEditedHtml()">保存修改版</button>
+  </div>
 </main>
 <script>
 (() => {
