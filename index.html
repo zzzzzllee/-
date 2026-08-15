@@ -270,7 +270,7 @@ button{font:inherit}
     <button type="button" onclick="downloadEditedHtml()">保存修改版</button>
   </div>
 </main>
-<script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="cloud-config.js"></script><script src="cloud-sync.js"></script><script>
 (() => {
   const main = document.querySelector('.page');
   const picker = document.getElementById('imagePicker');
@@ -402,7 +402,7 @@ button{font:inherit}
     const qq=c.decorations?.qq||[];
     document.querySelectorAll('.campus-decor img').forEach((img,index)=>{ if(qq[index]) img.src=qq[index]; }); [['.p1 img',imgs.hero1],['.p2 img',imgs.hero2],['.p3 img',imgs.hero3],['.intro-photo img',imgs.intro],['.detail-photo .frame:nth-child(1) img',imgs.detail1],['.detail-photo .frame:nth-child(2) img',imgs.detail2],['.m1 img',imgs.moment1],['.m2 img',imgs.moment2],['.m3 img',imgs.moment3],['.m4 img',imgs.moment4],['.qrcard:nth-child(1) img',imgs.qrWestGroup],['.qrcard:nth-child(2) img',imgs.qrWestSignup],['.qrcard:nth-child(3) img',imgs.qrNorthGroup],['.qrcard:nth-child(4) img',imgs.qrNorthSignup]].forEach(([s,v])=>setImg(s,v));
   };
-  fetch('content.json?ts='+Date.now()).then(r=>r.json()).then(remote=>applyContent(readDraft() || remote)).catch(()=>applyContent(readDraft()));
+  const loadPublishedContent = async () => { let cloudContent = null; try { cloudContent = await window.WechatCloudSync?.loadContent?.(); } catch (error) { console.warn('云端内容读取失败，回退静态内容', error); } if (cloudContent) { applyContent(cloudContent); return; } try { const response = await fetch('content.json?ts=' + Date.now(), { cache: 'no-store' }); const remote = await response.json(); applyContent(readDraft() || remote); } catch { applyContent(readDraft()); } }; loadPublishedContent();
   window.addEventListener('storage', e => { if(e.key===draftKey) { try { applyContent(JSON.parse(e.newValue)); } catch {} } });
   window.addEventListener('message', event => { if (event.data?.type === 'wechat-recruitment-preview' && event.data.content) applyContent(event.data.content); });
 })();
