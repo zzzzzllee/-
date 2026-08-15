@@ -13,7 +13,7 @@ body{margin:0;color:var(--ink);font-family:"LXGW WenKai","霞鹜文楷","STKaiti
  radial-gradient(circle at 18px 18px,rgba(38,53,74,.1) 2px,transparent 2.5px) 0 0/36px 36px,
  linear-gradient(150deg,#ffe987 0%,#fff5c6 34%,#dff6fb 72%,#bdeaf4 100%);}
 button{font:inherit}
-.toolbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;padding:9px 12px;background:rgba(38,53,74,.94);color:#fff;font-family:"Microsoft YaHei",sans-serif;font-size:12px;letter-spacing:.02em;backdrop-filter:blur(12px);box-shadow:0 2px 12px rgba(38,53,74,.22)}
+.toolbar{position:relative;z-index:10;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;padding:13px 14px;background:rgba(38,53,74,.96);color:#fff;font-family:"Microsoft YaHei",sans-serif;font-size:12px;letter-spacing:.02em;border-top:3px solid var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.16)}
 .toolbar .toolbar-note{opacity:.86}
 .toolbar button{border:1.5px solid #fff;border-radius:999px;background:transparent;color:#fff;padding:5px 12px;cursor:pointer;transition:.2s ease}
 .toolbar button:hover{background:var(--yellow);border-color:var(--yellow);color:var(--ink);transform:translateY(-1px)}
@@ -129,12 +129,7 @@ button{font:inherit}
 
 </head>
 <body>
-<div class="toolbar" contenteditable="false">
-  <span class="toolbar-note">2026级招新推文 · 内容由 content.json 管理</span>
-  <button type="button" onclick="restartAnimations()">重新播放动效</button>
-  <button type="button" onclick="downloadEditedHtml()">保存修改版</button>
-  <button type="button" onclick="window.print()">打印 / 导出 PDF</button>
-</div>
+
 <input id="imagePicker" type="file" accept="image/*" hidden contenteditable="false">
 <div id="replaceHint" class="replace-hint" contenteditable="false">点击任意照片或二维码即可选择本机图片替换</div>
 <main class="page editable" contenteditable="true" spellcheck="false">
@@ -268,6 +263,12 @@ button{font:inherit}
     <p class="closing-sub">校团委艺术教育中心<br>等你加入 · 等你发光</p>
   </section>
   <footer class="footer">ART EDUCATION CENTER · 2026 RECRUITMENT<br><span>奶油手账版可编辑预览</span><br><a class="footer-editor-link" href="editor.html" aria-label="进入在线编辑器">编辑入口 · 在线编辑</a></footer>
+  <div class="toolbar" contenteditable="false">
+  <span class="toolbar-note">2026级招新推文 · 内容由 content.json 管理</span>
+  <button type="button" onclick="restartAnimations()">重新播放动效</button>
+  <button type="button" onclick="downloadEditedHtml()">保存修改版</button>
+  <button type="button" onclick="window.print()">打印 / 导出 PDF</button>
+</div>
 </main>
 <script>
 (() => {
