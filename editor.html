@@ -1,13 +1,18 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>在线编辑｜2026级招新推文</title><style>
 :root{--ink:#1b1b1b;--yellow:#fbf8bc;--blue:#b2d6f8;--cream:#fffefb;--coral:#f39b8e}*{box-sizing:border-box}body{margin:0;background:#e7f2ff;color:var(--ink);font-family:"Microsoft YaHei",sans-serif}.top{padding:18px 24px;background:var(--ink);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.top h1{margin:0;font-size:22px}.top p{margin:4px 0 0;opacity:.75;font-size:13px}.top a{color:var(--yellow);text-decoration:none}.layout{max-width:1480px;margin:0 auto;padding:22px;display:grid;grid-template-columns:minmax(420px,620px) minmax(420px,1fr);gap:22px}.panel,.preview{background:#fff;border:2px solid var(--ink);box-shadow:7px 7px 0 var(--ink);border-radius:16px}.panel{padding:20px}.preview{overflow:hidden;min-height:760px;position:sticky;top:18px;height:calc(100vh - 36px)}.preview iframe{width:100%;height:100%;min-height:760px;border:0;background:#b2d6f8}.section{border-top:1px dashed #9db8bf;padding:17px 0}.section:first-child{border-top:0;padding-top:0}.section h2{font-size:16px;margin:0 0 11px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:flex;flex-direction:column;gap:5px;margin:9px 0}.field.full{grid-column:1/-1}.field label{font-weight:700;font-size:12px}.field small{color:#6c8290;font-size:11px}.field input,.field textarea{width:100%;border:1px solid #bfd2d8;border-radius:9px;padding:9px 10px;font:inherit;font-size:13px;color:var(--ink);background:#fbfefe}.field textarea{min-height:74px;resize:vertical}.card{padding:12px;margin:10px 0;background:var(--cream);border:1px solid #e3c76a;border-radius:12px}.card-title{font-weight:800;color:#b45247;margin-bottom:4px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;position:sticky;bottom:0;background:rgba(255,255,255,.96);padding-top:12px}.btn{border:2px solid var(--ink);border-radius:999px;padding:10px 15px;background:#fff;cursor:pointer;font-weight:700}.btn.primary{background:var(--yellow)}.btn.blue{background:var(--blue);color:#fff}.btn:hover{transform:translateY(-1px)}.status{margin-top:12px;padding:11px;border-radius:10px;background:#eef8fa;font-size:13px;line-height:1.6;white-space:pre-wrap}.status.error{background:#ffe7e2;color:#9d3328}.image-row{display:grid;grid-template-columns:78px 1fr;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #e5eef0}.image-row img{width:78px;height:62px;object-fit:cover;border:1px solid #b9cfd5;border-radius:8px;background:#fff}.image-row label{font-size:12px;font-weight:700}.image-row input{font-size:11px;margin-top:5px;max-width:100%}.hint{font-size:12px;color:#627987;line-height:1.7;background:#fff8d8;padding:10px;border-radius:10px}.token-note{font-size:11px;color:#627987;line-height:1.6}@media(max-width:960px){.layout{grid-template-columns:1fr}.preview{position:relative;top:auto;height:720px}.grid{grid-template-columns:1fr}}
-</style></head><body>
+<style>.connection-note{margin:8px 0 0;color:#627987;font-size:11px;line-height:1.6}.actions .btn:disabled{opacity:.55;cursor:wait;transform:none}.status strong{font-weight:800}</style></head><body>
 <header class="top"><div><h1>2026级招新推文 · 在线编辑器</h1><p>发布到 GitHub 后无需保持电脑开机，手机也可以打开这个编辑器继续修改。</p></div><a href="index.html" target="_blank">打开公开页面 ↗</a></header>
-<main class="layout"><section class="panel"><div class="hint">第一次使用：先把项目上传到 GitHub Pages。发布完成后，这个网页就是独立的在线编辑器，电脑关机也不影响手机访问。填写仓库信息和 Fine-grained Token 后即可修改文字、图片和二维码；Token 只保存在本次浏览器会话中，不会写入网页或仓库。</div><div id="form"></div><div class="section"><h2>GitHub 发布设置</h2><div class="grid"><div class="field"><label>默认 GitHub 用户名 / 组织</label><input id="owner" value="zzzzzllee" readonly></div><div class="field"><label>默认仓库名</label><input id="repo" value="-" readonly></div><div class="field"><label>默认分支</label><input id="branch" value="main" readonly></div><div class="field"><label>Fine-grained Token</label><input id="token" type="password" placeholder="只在本次会话使用"></div></div><div class="token-note">Token 建议只授权这个仓库，并开启 Contents: Read and write。发布完成后可在浏览器退出或手动清除会话。</div></div><div class="actions"><button class="btn primary" id="previewBtn">保存本机草稿并预览</button><button class="btn blue" id="publishBtn">发布到 GitHub</button><button class="btn" id="resetBtn">恢复线上内容</button></div><div class="status" id="status">正在读取 content.json…</div></section><section class="preview"><iframe id="preview" title="推文预览"></iframe></section></main>
+<main class="layout"><section class="panel"><div class="hint">第一次使用：先把项目上传到 GitHub Pages。发布完成后，这个网页就是独立的在线编辑器，电脑关机也不影响手机访问。填写仓库信息和 Fine-grained Token 后即可修改文字、图片和二维码；Token 只保存在本次浏览器会话中，不会写入网页或仓库。</div><div id="form"></div><div class="section"><h2>GitHub 发布设置</h2><div class="grid"><div class="field"><label>默认 GitHub 用户名 / 组织</label><input id="owner" value="zzzzzllee" readonly></div><div class="field"><label>默认仓库名</label><input id="repo" value="-" readonly></div><div class="field"><label>默认分支</label><input id="branch" value="main" readonly></div><div class="field"><label>Fine-grained Token</label><input id="token" type="password" placeholder="只在本次会话使用"></div></div><div class="token-note">Token 建议只授权这个仓库，并开启 Contents: Read and write。发布完成后可在浏览器退出或手动清除会话。</div><p class="connection-note">如果之前保存失败，先点击“测试 GitHub 连接”；成功后再点击“保存并同步到 GitHub”。修改失败时本机草稿不会丢失。</p></div><div class="actions"><button class="btn primary" id="previewBtn">保存本机草稿并预览</button><button class="btn" id="testBtn">测试 GitHub 连接</button><button class="btn blue" id="publishBtn">保存并同步到 GitHub</button><button class="btn" id="resetBtn">恢复线上内容</button></div><div class="status" id="status">正在读取 content.json…</div></section><section class="preview"><iframe id="preview" title="推文预览"></iframe></section></main>
 <script>
-const KEY='wechatRecruitmentDraft2026'; let content=null; const pending={}; const $=s=>document.querySelector(s); const esc=s=>String(s??'');
-const field=(label,path,value,full=false,area=false)=>`<div class="field ${full?'full':''}"><label>${label}</label>${area?`<textarea data-path="${path}">${esc(value)}</textarea>`:`<input data-path="${path}" value="${esc(value).replaceAll('"','&quot;')}">`}</div>`;
-const renderForm=()=>{ const c=content; let h=''; h+=`<div class="section"><h2>基础与首屏</h2><div class="grid">${field('网页标题','siteTitle',c.siteTitle,true)}${field('顶部单位名称','hero.kicker',c.hero.kicker)}${field('主标题','hero.titleMain',c.hero.titleMain)}${field('强调标题','hero.titleAccent',c.hero.titleAccent)}${field('副标题','hero.sub',c.hero.sub)}</div></div>`;
+const KEY='wechatRecruitmentDraft2026';
+let content=null;
+const pending={};
+let autosaveTimer=null;
+let publishing=false;
+const $=s=>document.querySelector(s);
+const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const field=(label,path,value,full=false,area=false)=>`<div class="field ${full?'full':''}"><label>${label}</label>${area?`<textarea data-path="${path}">${esc(value)}</textarea>`:`<input data-path="${path}" value="${esc(value)}">`}</div>`;const renderForm=()=>{ const c=content; let h=''; h+=`<div class="section"><h2>基础与首屏</h2><div class="grid">${field('网页标题','siteTitle',c.siteTitle,true)}${field('顶部单位名称','hero.kicker',c.hero.kicker)}${field('主标题','hero.titleMain',c.hero.titleMain)}${field('强调标题','hero.titleAccent',c.hero.titleAccent)}${field('副标题','hero.sub',c.hero.sub)}</div></div>`;
  h+=`<div class="section"><h2>开场</h2><div class="grid">${field('标题前半句','intro.titleBefore',c.intro.titleBefore)}${field('标题高亮句','intro.titleMark',c.intro.titleMark)}${field('开场引导文字','intro.lead',c.intro.lead,true,true)}${field('开场图片说明','intro.caption',c.intro.caption,true)}</div></div>`;
  h+=`<div class="section"><h2>我们做什么</h2><div class="grid">${field('板块标题前半句','roles.titleBefore',c.roles.titleBefore,true)}${field('板块高亮句','roles.titleMark',c.roles.titleMark,true)}`; c.roles.cards.forEach((x,i)=>{h+=`</div><div class="card"><div class="card-title">岗位内容 ${i+1}</div><div class="grid">${field('小标题',`roles.cards.${i}.title`,x.title)}${field('标签',`roles.cards.${i}.tag`,x.tag)}${field('正文',`roles.cards.${i}.body`,x.body,true,true)}</div>`}); h+='</div></div>';
  h+=`<div class="section"><h2>你会收获</h2><div class="grid">${field('板块标题前半句','gains.titleBefore',c.gains.titleBefore)}${field('板块高亮句','gains.titleMark',c.gains.titleMark)}`; c.gains.cards.forEach((x,i)=>{h+=`</div><div class="card"><div class="card-title">收获 ${i+1}</div><div class="grid">${field('名称',`gains.cards.${i}.title`,x.title)}${field('说明',`gains.cards.${i}.body`,x.body,true,true)}</div>`}); h+='</div></div>';
@@ -17,17 +22,72 @@ h+=`<div class="section"><h2>宣传片视频</h2><div class="grid">${field('视�
  h+=`<div class="section"><h2>结尾</h2><div class="grid">${field('合照说明','closing.photoCaption',c.closing.photoCaption,true)}${field('结尾正文','closing.body',c.closing.body,true,true)}${field('强调短句','closing.emphasis',c.closing.emphasis)}${field('结尾标题','closing.title',c.closing.title)}${field('落款第一行','closing.subLine1',c.closing.subLine1)}${field('落款第二行','closing.subLine2',c.closing.subLine2)}</div></div>`;
  h+=`<div class="section"><h2>结尾照片墙</h2><div class="grid">${field('照片墙标题','photoWall.title',c.photoWall?.title||'下一张团队合照，也许就有你',true)}${field('翻页提示','photoWall.hint',c.photoWall?.hint||'左右翻页，看看舞台之外的我们',true)}`; (c.photoWall?.captions||[]).forEach((x,i)=>h+=field('照片说明 '+(i+1),`photoWall.captions.${i}`,x,true)); h+='</div></div>';
  h+=`<div class="section"><h2>图片与二维码</h2><p class="token-note">选择新图片后先点“保存本机草稿并预览”，发布时会自动上传到仓库的 assets/uploads 文件夹。</p>`; const names={hero1:'首屏照片 1',hero2:'首屏照片 2',hero3:'首屏照片 3',intro:'开场照片',detail1:'设备照片 1',detail2:'设备照片 2',moment1:'活动照片 1',moment2:'活动照片 2',moment3:'活动照片 3',moment4:'活动照片 4',closing:'结尾合照',photoWall1:'照片墙 1',photoWall2:'照片墙 2',photoWall3:'照片墙 3',photoWall4:'照片墙 4',photoWall5:'照片墙 5',photoWall6:'照片墙 6',qrWestGroup:'西校区咨询群二维码',qrWestSignup:'西校区报名表二维码',qrNorthGroup:'北校区咨询群二维码',qrNorthSignup:'北校区报名表二维码'}; Object.entries(c.images).forEach(([key,src])=>{h+=`<div class="image-row"><img id="img-${key}" src="${src}"><div><label>${names[key]||key}</label><br><input type="file" accept="image/*" data-image="${key}"><div class="token-note">当前：${src}</div></div></div>`}); h+='</div>'; $('#form').innerHTML=h; bindFields(); bindImages(); };
-const getPath=(obj,path)=>path.split('.').reduce((a,k)=>a?.[k],obj); const setPath=(obj,path,value)=>{const parts=path.split('.');let cur=obj;parts.slice(0,-1).forEach(k=>cur=cur[k]);cur[parts.at(-1)]=value;};
-const bindFields=()=>document.querySelectorAll('[data-path]').forEach(el=>el.addEventListener('input',e=>setPath(content,e.target.dataset.path,e.target.value)));
-const bindImages=()=>document.querySelectorAll('[data-image]').forEach(el=>el.addEventListener('change',e=>{const file=e.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{pending[e.target.dataset.image]={file,dataUrl:reader.result};content.images[e.target.dataset.image]=reader.result;$('#img-'+e.target.dataset.image).src=reader.result;};reader.readAsDataURL(file);}));
-const status=(msg,error=false)=>{const el=$('#status');el.textContent=msg;el.className='status'+(error?' error':'');};
-const syncPhotoWall=()=>{if(content.photoWall?.imageKeys)content.photoWall.images=content.photoWall.imageKeys.map(k=>content.images[k]).filter(Boolean);};
-const draft=()=>{syncPhotoWall();localStorage.setItem(KEY,JSON.stringify(content));$('#preview').contentWindow?.location.reload();status('本机草稿已保存，右侧预览已刷新。');};
-const b64Text=s=>btoa(unescape(encodeURIComponent(s))); const getCfg=()=>({owner:$('#owner').value.trim(),repo:$('#repo').value.trim(),branch:$('#branch').value.trim()||'main',token:$('#token').value.trim()});
-async function api(path,options={}){const cfg=getCfg(); const r=await fetch('https://api.github.com/repos/'+cfg.owner+'/'+cfg.repo+'/contents/'+path,{...options,headers:{Accept:'application/vnd.github+json',Authorization:'Bearer '+cfg.token,'X-GitHub-Api-Version':'2022-11-28',...(options.headers||{})}}); const text=await r.text(); let data;try{data=JSON.parse(text)}catch{data={message:text}} if(!r.ok)throw new Error(data.message||('GitHub API '+r.status));return data;}
-async function putFile(path,base64,message){const cfg=getCfg();let sha;try{const old=await api(path,{method:'GET'});sha=old.sha}catch(e){if(!/Not Found/i.test(e.message))throw e}const body={message,content:base64,branch:cfg.branch};if(sha)body.sha=sha;return api(path,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});}
-async function publish(){const cfg=getCfg();if(!cfg.owner||!cfg.repo||!cfg.token){status('请填写 GitHub 用户名、仓库名和 Token。',true);return}try{status('正在上传图片并提交内容，请稍候…');for(const [key,item] of Object.entries(pending)){const ext=(item.file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';const path='assets/uploads/'+key+'-'+Date.now()+'.'+ext;await putFile(path,String(item.dataUrl).split(',')[1],'更新招新推文图片');content.images[key]=path;}syncPhotoWall();await putFile('content.json',b64Text(JSON.stringify(content,null,2)),'更新2026级招新推文内容');pendingClear();localStorage.removeItem(KEY);const url='https://'+cfg.owner+'.github.io/'+cfg.repo+'/';status('发布成功！GitHub Pages 正在更新。\n公开页面：'+url+'\n如果第一次开启 Pages，可能需要等待几分钟。');$('#preview').src='index.html?ts='+Date.now();}catch(e){status('发布失败：'+e.message+'\n请检查仓库、分支和 Token 权限。',true);}}
-function pendingClear(){Object.keys(pending).forEach(k=>delete pending[k]);}
-async function load(){try{const r=await fetch('content.json?ts='+Date.now());content=await r.json();const saved=sessionStorage.getItem('githubRecruitmentConfig');if(saved){const x=JSON.parse(saved);for(const k of ['owner','repo','branch'])if(x[k])$('#'+k).value=x[k];}renderForm();$('#preview').src='index.html?ts='+Date.now();status('已读取当前线上内容。');}catch(e){status('读取 content.json 失败：'+e.message,true);}}
-$('#previewBtn').onclick=draft;$('#publishBtn').onclick=publish;$('#resetBtn').onclick=()=>{localStorage.removeItem(KEY);location.reload()};['owner','repo','branch','token'].forEach(id=>$('#'+id).addEventListener('input',()=>{const c=getCfg();sessionStorage.setItem('githubRecruitmentConfig',JSON.stringify({owner:c.owner,repo:c.repo,branch:c.branch}));}));load();
+const getPath=(obj,path)=>path.split('.').reduce((a,k)=>a?.[k],obj);
+const setPath=(obj,path,value)=>{const parts=path.split('.');let cur=obj;parts.slice(0,-1).forEach(k=>{if(cur[k]===undefined||cur[k]===null)cur[k]={};cur=cur[k];});cur[parts.at(-1)]=value;};
+const status=(msg,error=false)=>{const el=$('#status');if(!el)return;el.textContent=msg;el.className='status'+(error?' error':'');};
+const readDraft=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch{return null}};
+const syncPhotoWall=()=>{if(!content)return;if(content.photoWall?.imageKeys)content.photoWall.images=content.photoWall.imageKeys.map(k=>content.images?.[k]).filter(Boolean);};
+const persistDraft=()=>{syncPhotoWall();try{localStorage.setItem(KEY,JSON.stringify(content));return true}catch(error){status('文字修改已保留在当前页面，但本机草稿保存失败：'+error.message,true);return false;}};
+const pushPreview=()=>{const frame=$('#preview');if(frame?.contentWindow)frame.contentWindow.postMessage({type:'wechat-recruitment-preview',content},'*');};
+const refreshPreview=()=>{const frame=$('#preview');if(!frame)return;frame.onload=pushPreview;frame.src='index.html?draft='+Date.now();};
+const scheduleDraft=()=>{clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>{if(persistDraft())status('修改已自动保存为本机草稿。点击“保存本机草稿并预览”可立即刷新右侧预览。');},450);};
+const bindFields=()=>document.querySelectorAll('[data-path]').forEach(el=>el.addEventListener('input',e=>{setPath(content,e.target.dataset.path,e.target.value);scheduleDraft();}));
+const bindImages=()=>document.querySelectorAll('[data-image]').forEach(el=>el.addEventListener('change',e=>{const file=e.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{pending[e.target.dataset.image]={file,dataUrl:reader.result};content.images[e.target.dataset.image]=reader.result;$('#img-'+e.target.dataset.image).src=reader.result;status('图片已载入本次编辑，点击“发布到 GitHub”后才会正式同步。');pushPreview();};reader.readAsDataURL(file);}));
+const draft=()=>{if(!persistDraft())return;refreshPreview();status('本机草稿已保存，右侧预览正在刷新。');};
+const b64Text=text=>btoa(unescape(encodeURIComponent(String(text))));
+const getCfg=()=>({owner:$('#owner').value.trim(),repo:$('#repo').value.trim(),branch:$('#branch').value.trim()||'main',token:$('#token').value.trim()});
+const pathForApi=path=>path.split('/').map(encodeURIComponent).join('/');
+async function api(path,options={}){
+  const cfg=getCfg();
+  const url='https://api.github.com/repos/'+encodeURIComponent(cfg.owner)+'/'+encodeURIComponent(cfg.repo)+'/contents/'+pathForApi(path);
+  const headers={Accept:'application/vnd.github+json','Authorization':'Bearer '+cfg.token,'X-GitHub-Api-Version':'2022-11-28','Cache-Control':'no-cache',...(options.headers||{})};
+  const response=await fetch(url,{...options,headers,cache:'no-store'});
+  const text=await response.text();
+  let data;try{data=text?JSON.parse(text):{};}catch{data={message:text};}
+  if(!response.ok){const error=new Error(data.message||('GitHub API 请求失败（'+response.status+'）'));error.status=response.status;error.payload=data;throw error;}
+  return data;
+}
+async function putFile(path,base64,message){
+  const cfg=getCfg();
+  for(let attempt=0;attempt<2;attempt++){
+    let sha;
+    try{const old=await api(path,{method:'GET'});sha=old.sha;}catch(error){if(error.status!==404)throw error;}
+    const body={message,content:base64,branch:cfg.branch};if(sha)body.sha=sha;
+    try{return await api(path,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});}catch(error){if(error.status===409&&attempt===0)continue;throw error;}
+  }
+  throw new Error('GitHub 文件更新冲突，请稍后重试。');
+}
+const friendlyError=error=>{const statusCode=error?.status;const message=error?.message||String(error);if(statusCode===401)return 'Token 无效或已过期，请重新生成 Fine-grained Token。';if(statusCode===403)return 'GitHub 拒绝了请求：请确认 Token 已授权此仓库，并开启 Contents: Read and write。';if(statusCode===404)return '找不到仓库、分支或文件：请确认仓库名为 -、分支为 main，并确认 Token 已授权该仓库。';if(statusCode===409)return 'GitHub 文件刚刚被其他修改覆盖，请重新点击发布。';if(statusCode===422)return 'GitHub 无法处理提交：请检查分支名称、文件内容或 Token 权限。';return message;};
+async function testConnection(){const cfg=getCfg();if(!cfg.token){status('请先填写 Fine-grained Token，再测试连接。',true);return;}const button=$('#testBtn');if(button)button.disabled=true;try{status('正在测试 GitHub 仓库连接…');const branch=await api('branches/'+cfg.branch,{method:'GET'});status('连接成功：已找到仓库 '+cfg.owner+'/'+cfg.repo+' 的 '+branch.name+' 分支。');}catch(error){status('连接失败：'+friendlyError(error),true);}finally{if(button)button.disabled=false;}}
+async function publish(){
+  if(publishing)return;
+  const cfg=getCfg();
+  if(!cfg.owner||!cfg.repo||!cfg.token){status('请填写 Fine-grained Token。用户名、仓库名和分支已默认填写。',true);return;}
+  publishing=true;document.querySelectorAll('#testBtn,#publishBtn,#previewBtn,#resetBtn').forEach(button=>button.disabled=true);
+  try{
+    syncPhotoWall();
+    status('正在连接 GitHub…');
+    await api('branches/'+cfg.branch,{method:'GET'});
+    const imageEntries=Object.entries(pending);
+    for(let index=0;index<imageEntries.length;index++){
+      const [key,item]=imageEntries[index];
+      const ext=(item.file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+      const path='assets/uploads/'+key+'-'+Date.now()+'-'+Math.random().toString(36).slice(2,7)+'.'+ext;
+      status('正在上传图片（'+(index+1)+'/'+imageEntries.length+'）…');
+      await putFile(path,String(item.dataUrl).split(',')[1],'更新招新推文图片');
+      content.images[key]=path;
+    }
+    syncPhotoWall();
+    status('图片已上传，正在保存文字和页面配置…');
+    await putFile('content.json',b64Text(JSON.stringify(content,null,2)),'更新2026级招新推文内容');
+    pendingClear();localStorage.removeItem(KEY);refreshPreview();
+    const url='https://'+cfg.owner+'.github.io/'+cfg.repo+'/';
+    status('发布成功！GitHub Pages 正在更新。\n公开页面：'+url+'\n如刚启用 Pages，请等待几分钟后再打开。');
+  }catch(error){status('发布失败：'+friendlyError(error)+'\n本机草稿仍保留，修复权限后可继续发布。',true);}finally{publishing=false;document.querySelectorAll('#testBtn,#publishBtn,#previewBtn,#resetBtn').forEach(button=>button.disabled=false);}
+}
+function pendingClear(){Object.keys(pending).forEach(key=>delete pending[key]);}
+async function load(){try{const remoteResponse=await fetch('content.json?ts='+Date.now(),{cache:'no-store'});if(!remoteResponse.ok)throw new Error('HTTP '+remoteResponse.status);const remote=await remoteResponse.json();const saved=readDraft();content=saved||remote;const savedConfig=sessionStorage.getItem('githubRecruitmentConfig');if(savedConfig){const cfg=JSON.parse(savedConfig);for(const key of ['owner','repo','branch'])if(cfg[key])$('#'+key).value=cfg[key];}renderForm();refreshPreview();status(saved?'已恢复本机未发布草稿，点击“发布到 GitHub”同步线上。':'已读取当前线上内容。');}catch(error){status('读取 content.json 失败：'+error.message,true);}}
+$('#previewBtn').onclick=draft;$('#testBtn').onclick=testConnection;$('#publishBtn').onclick=publish;$('#resetBtn').onclick=()=>{localStorage.removeItem(KEY);location.reload()};
+['owner','repo','branch'].forEach(id=>$('#'+id).addEventListener('input',()=>{const cfg=getCfg();sessionStorage.setItem('githubRecruitmentConfig',JSON.stringify({owner:cfg.owner,repo:cfg.repo,branch:cfg.branch}));}));
+load();
 </script></body></html>
