@@ -114,7 +114,10 @@
       "assets/qq-west.png",
       "assets/qq-north.png"
     ],
-    "campusLabels": ["西区", "北区"]
+    "campusLabels": [
+      "西区",
+      "北区"
+    ]
   },
   "images": {
     "hero1": "assets/group_01.jpg",
@@ -131,6 +134,40 @@
     "qrWestGroup": "assets/qr-west-group-placeholder.png",
     "qrWestSignup": "assets/qr-west-signup-placeholder.png",
     "qrNorthGroup": "assets/qr-north-group-placeholder.png",
-    "qrNorthSignup": "assets/qr-north-signup-placeholder.png"
+    "qrNorthSignup": "assets/qr-north-signup-placeholder.png",
+    "photoWall1": "assets/group_03.jpg",
+    "photoWall2": "assets/group_05.jpg",
+    "photoWall3": "assets/group_07.jpg",
+    "photoWall4": "assets/casual_02.jpg",
+    "photoWall5": "assets/work_03.jpg",
+    "photoWall6": "assets/group_09.jpg"
+  },
+  "photoWall": {
+    "title": "下一张团队合照，也许就有你",
+    "hint": "左右翻页，看看舞台之外的我们",
+    "imageKeys": [
+      "photoWall1",
+      "photoWall2",
+      "photoWall3",
+      "photoWall4",
+      "photoWall5",
+      "photoWall6"
+    ],
+    "images": [
+      "assets/group_03.jpg",
+      "assets/group_05.jpg",
+      "assets/group_07.jpg",
+      "assets/casual_02.jpg",
+      "assets/work_03.jpg",
+      "assets/group_09.jpg"
+    ],
+    "captions": [
+      "下一张团队合照，也许就有你",
+      "从一次活动开始认识彼此",
+      "灯光亮起之前，我们都在现场",
+      "排练、协作和忙碌的日常",
+      "把想法变成真正发生的舞台",
+      "等你加入下一次合照"
+    ]
   }
 }
