@@ -1,4 +1,4 @@
-﻿-- Supabase SQL：在 Supabase Dashboard -> SQL Editor 中一次性执行。
+-- Supabase SQL：在 Supabase Dashboard -> SQL Editor 中一次性执行。
 -- 前端只使用 anon public key；不要把 service_role key 放进 GitHub Pages。
 
 create extension if not exists pgcrypto;
@@ -44,7 +44,7 @@ insert into storage.buckets (id, name, public)
 values ('wechat-recruitment-assets', 'wechat-recruitment-assets', true)
 on conflict (id) do update set public = excluded.public;
 
-alter table storage.objects enable row level security;
+-- storage.objects 由 Supabase Storage 自动启用 RLS；普通项目成员不能再次 ALTER 该系统表。
 
 drop policy if exists "wechat assets public read" on storage.objects;
 create policy "wechat assets public read"
