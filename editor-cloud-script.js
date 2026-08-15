@@ -33,7 +33,7 @@
     hero1: '首页主图 1', hero2: '首页主图 2', hero3: '首页主图 3', intro: '开场图片', detail1: '细节图片 1', detail2: '细节图片 2',
     moment1: '活动照片 1', moment2: '活动照片 2', moment3: '活动照片 3', moment4: '活动照片 4', closing: '结尾合照',
     qrWestGroup: '西区咨询群二维码', qrWestSignup: '西区报名二维码', qrNorthGroup: '北区咨询群二维码', qrNorthSignup: '北区报名二维码',
-    photoWall1: '照片墙 1', photoWall2: '照片墙 2', photoWall3: '照片墙 3', photoWall4: '照片墙 4', photoWall5: '照片墙 5', photoWall6: '照片墙 6'
+    photoWall1: '照片墙 1', photoWall2: '照片墙 2', photoWall3: '照片墙 3', photoWall4: '照片墙 4', photoWall5: '照片墙 5', photoWall6: '照片墙 6', rolesGallery1: '演出展览图 1', rolesGallery2: '演出展览图 2', rolesGallery3: '演出展览图 3', rolesGallery4: '演出展览图 4', rolesGallery5: '演出展览图 5', rolesGallery6: '演出展览图 6'
   };
   const status = (message, error = false) => { const el = $('#status'); if (el) { el.textContent = message; el.className = 'status' + (error ? ' error' : ''); } };
   const cloud = () => window.WechatCloudSync || null;
@@ -55,6 +55,10 @@
     html += `<div class="section"><h2>我们做什么</h2><div class="grid">${field('板块标题前半句', 'roles.titleBefore', text('roles.titleBefore'), true)}${field('板块高亮句', 'roles.titleMark', text('roles.titleMark'), true)}</div>`;
     roles.forEach((item, index) => { html += `<div class="card"><div class="card-title">岗位内容 ${index + 1}</div><div class="grid">${field('小标题', `roles.cards.${index}.title`, item.title)}${field('标签', `roles.cards.${index}.tag`, item.tag)}${field('正文', `roles.cards.${index}.body`, item.body, true, true)}</div></div>`; });
     html += '</div>';
+    const galleryCaptions = arr('roles.gallery.captions');
+    html += `<div class="card"><div class="card-title">幕后图片展</div><div class="grid">${field('图片展标题', 'roles.gallery.title', text('roles.gallery.title'), true)}${field('图片展提示', 'roles.gallery.hint', text('roles.gallery.hint'), true)}`;
+    galleryCaptions.forEach((item, index) => { html += field(`展览图片说明 ${index + 1}`, `roles.gallery.captions.${index}`, item, true); });
+    html += '</div></div></div>';
     html += `<div class="section"><h2>你会收获</h2><div class="grid">${field('板块标题前半句', 'gains.titleBefore', text('gains.titleBefore'))}${field('板块高亮句', 'gains.titleMark', text('gains.titleMark'))}</div>`;
     gains.forEach((item, index) => { html += `<div class="card"><div class="card-title">收获 ${index + 1}</div><div class="grid">${field('名称', `gains.cards.${index}.title`, item.title)}${field('说明', `gains.cards.${index}.body`, item.body, true, true)}</div></div>`; });
     html += '</div>';
@@ -71,10 +75,10 @@
     arr('photoWall.captions').forEach((item, index) => { html += field(`照片说明 ${index + 1}`, `photoWall.captions.${index}`, item, true); });
     html += '</div></div>';
     html += '<div class="section"><h2>图片与二维码</h2><p class="token-note">选择新图片后会自动保存到本机；配置云端后会自动上传并同步给其他编辑者。</p>';
-    Object.entries(content.images || {}).forEach(([key, src]) => { html += `<div class="image-row"><img id="img-${esc(key)}" src="${esc(src)}" alt="${esc(imageNames[key] || key)}"><div><label>${esc(imageNames[key] || key)}</label><br><input type="file" accept="image/*" data-image="${esc(key)}"><div class="token-note">当前地址：${esc(src)}</div></div></div>`; });
+    Object.entries(content.images || {}).forEach(([key, src]) => { html += `<div class="image-row"><img id="img-${esc(key)}" src="${esc(src)}" alt="${esc(imageNames[key] || key)}"><div><label>${esc(imageNames[key] || key)}</label><br><input type="url" class="image-url-input" data-image-url="${esc(key)}" value="${esc(src)}" placeholder="图片地址（可填写在线图片 URL）"><small>可直接修改图片地址，也可以选择本机图片上传。</small><input type="file" accept="image/*" data-image="${esc(key)}"><div class="token-note">当前地址：${esc(src)}</div></div></div>`; });
     html += '</div>';
     $('#form').innerHTML = html;
-    bindFields(); bindImages(); ensureVideoUpload();
+    bindFields(); bindImages(); bindImageUrls(); ensureVideoUpload();
   };
   const openDraftDb = () => new Promise((resolve, reject) => {
     if (!window.indexedDB) { reject(new Error('IndexedDB 不可用')); return; }
@@ -126,7 +130,8 @@
   };
   const scheduleDraft = () => { dirty = true; clearTimeout(autosaveTimer); autosaveTimer = setTimeout(async () => { if (!await persistDraft()) return; if (cloudReady()) await saveCloud(); else status('修改已自动保存到本机；配置云端后即可多人同步。'); }, 600); };
   const bindFields = () => document.querySelectorAll('[data-path]').forEach(element => element.addEventListener('input', event => { setPath(content, event.target.dataset.path, event.target.value); scheduleDraft(); }));
-  const bindImages = () => document.querySelectorAll('[data-image]').forEach(element => element.addEventListener('change', event => { const file = event.target.files?.[0]; if (!file) return; const reader = new FileReader(); reader.onload = () => { pending[event.target.dataset.image] = { file, dataUrl: reader.result }; content.images[event.target.dataset.image] = reader.result; $('#img-' + event.target.dataset.image).src = reader.result; pushPreview(); scheduleDraft(); }; reader.readAsDataURL(file); }));
+  const bindImages = () => document.querySelectorAll('[data-image]').forEach(element => element.addEventListener('change', event => { const file = event.target.files?.[0]; if (!file) return; const reader = new FileReader(); reader.onload = () => { pending[event.target.dataset.image] = { file, dataUrl: reader.result }; content.images[event.target.dataset.image] = reader.result; const image = $('#img-' + event.target.dataset.image); if (image) image.src = reader.result; const urlInput = document.querySelector(`[data-image-url="${event.target.dataset.image}"]`); if (urlInput) urlInput.value = reader.result; pushPreview(); scheduleDraft(); }; reader.readAsDataURL(file); }));
+  const bindImageUrls = () => document.querySelectorAll('[data-image-url]').forEach(element => element.addEventListener('input', event => { const key = event.target.dataset.imageUrl; content.images[key] = event.target.value.trim(); delete pending[key]; const image = $('#img-' + key); if (image) image.src = content.images[key]; pushPreview(); scheduleDraft(); }));
   const ensureVideoUpload = () => { if (document.querySelector('[data-video-upload]')) return; const urlField = document.querySelector('[data-path="video.url"]')?.closest('.field'); if (!urlField) return; const wrapper = document.createElement('div'); wrapper.className = 'field full'; wrapper.innerHTML = '<label>上传宣传片文件</label><input type="file" accept="video/mp4,video/webm,video/ogg" data-video-upload><small>选择视频后会自动上传到云端；未配置云端时请填写可访问的视频地址。</small>'; urlField.parentElement?.appendChild(wrapper); wrapper.querySelector('[data-video-upload]').addEventListener('change', event => { const file = event.target.files?.[0]; if (!file) return; pendingVideo = { file }; scheduleDraft(); }); };
   const draft = async () => { if (!await persistDraft()) return; pushPreview(); status('本机草稿已保存，右侧预览已刷新。' + (cloudReady() ? '云端也会继续自动同步。' : '')); };
   const copyShareLink = async () => { const value = cloud()?.getShareUrl?.() || window.location.href; try { await navigator.clipboard.writeText(value); status('共享编辑链接已复制：\n' + value); } catch { window.prompt('请复制这个共享编辑链接', value); } };

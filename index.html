@@ -73,6 +73,7 @@ button{font:inherit}
 .detail-photo{display:grid;grid-template-columns:1.4fr .8fr;gap:12px;margin-top:34px}
 .detail-photo .frame{position:relative;border:2px solid var(--ink);background:#fff;padding:7px;box-shadow:var(--small-shadow);overflow:hidden}.detail-photo .frame:first-child{transform:rotate(-1deg)}.detail-photo .frame:last-child{transform:rotate(2deg)}
 .detail-photo img{display:block;width:100%;height:300px;object-fit:cover;cursor:pointer;transition:transform .5s ease}.detail-photo .frame:hover img{transform:scale(1.035)}
+.roles-gallery{margin-top:36px;padding:18px 16px 16px;background:var(--yellow-soft);border:2px solid var(--ink);box-shadow:var(--small-shadow);transform:rotate(.7deg)}.roles-gallery-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px}.roles-gallery-label{display:inline-block;padding:4px 8px;background:var(--coral);color:#fff;border:2px solid var(--ink);font:900 10px/1.2 Georgia,serif;letter-spacing:.12em;transform:rotate(-2deg)}.roles-gallery-title{margin:0;max-width:360px;font:1000 20px/1.35 "Microsoft YaHei",sans-serif;text-align:right}.roles-gallery-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px}.roles-gallery-card{position:relative;min-height:154px;padding:6px;background:#fff;border:2px solid var(--ink);box-shadow:4px 4px 0 rgba(38,53,74,.2);overflow:hidden}.roles-gallery-card:nth-child(1){grid-column:span 7;transform:rotate(-1.2deg)}.roles-gallery-card:nth-child(2){grid-column:span 5;transform:rotate(1.5deg)}.roles-gallery-card:nth-child(3){grid-column:span 4;transform:rotate(1deg)}.roles-gallery-card:nth-child(4){grid-column:span 8;transform:rotate(-.8deg)}.roles-gallery-card:nth-child(5),.roles-gallery-card:nth-child(6){grid-column:span 6;transform:rotate(-1.4deg)}.roles-gallery-card:nth-child(6){transform:rotate(1.3deg)}.roles-gallery-card img{display:block;width:100%;height:100%;min-height:142px;object-fit:cover;cursor:pointer;transition:transform .45s ease}.roles-gallery-card:hover img{transform:scale(1.05)}.roles-gallery-card figcaption{position:absolute;left:10px;right:10px;bottom:10px;padding:5px 7px;background:rgba(255,250,237,.9);border:1px solid var(--ink);font:800 11px/1.35 "Microsoft YaHei",sans-serif}.roles-gallery-hint{margin:15px 0 0;color:#53606a;font-size:12px;line-height:1.7}.roles-gallery-card.replaceable{cursor:pointer}
 .ticket-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:6px}
 .ticket{position:relative;padding:20px 22px 20px 70px;border:2px solid var(--ink);background:#fff;box-shadow:var(--small-shadow);min-height:145px;overflow:hidden}
 .ticket:nth-child(2n){background:var(--blue-soft)}.ticket:nth-child(3n){background:var(--coral-soft)}.ticket:nth-child(4n){background:var(--yellow-soft)}
@@ -102,7 +103,7 @@ button{font:inherit}
 .closing:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent 0 18px,rgba(255,255,255,.11) 18px 20px)}
 .photo-wall{position:relative;z-index:2;width:min(100%,640px);margin:0 auto;padding:20px 18px 17px;background:var(--cream);border:3px solid var(--ink);box-shadow:10px 10px 0 var(--yellow);transform:rotate(-1.2deg)}
 .photo-wall-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px;text-align:left}.photo-wall-label{display:inline-block;padding:4px 8px;background:var(--blue);border:2px solid var(--ink);font:900 10px/1.2 Georgia,serif;letter-spacing:.14em;transform:rotate(-2deg)}.photo-wall-title{margin:0;font:1000 18px/1.3 "Microsoft YaHei",sans-serif;text-align:right}
-.photo-wall-stage{position:relative;height:380px;min-height:250px}.photo-card{position:absolute;inset:0;padding:10px 10px 35px;background:#fff;border:2px solid var(--ink);box-shadow:6px 6px 0 rgba(38,53,74,.25);opacity:0;pointer-events:none;transform:translateX(20px) rotate(2deg) scale(.98);transition:opacity .35s ease,transform .45s cubic-bezier(.2,.8,.2,1),filter .35s ease}.photo-card.is-active{z-index:3;opacity:1;pointer-events:auto;transform:none}.photo-card.is-prev,.photo-card.is-next{z-index:1;opacity:.18;filter:saturate(.55)}.photo-card.is-prev{transform:translateX(-12px) rotate(-4deg) scale(.96)}.photo-card.is-next{transform:translateX(12px) rotate(4deg) scale(.96)}.photo-card img{display:block;width:100%;height:100%;object-fit:cover;background:#eef7fb}.photo-card>span:last-child{position:absolute;left:12px;right:12px;bottom:7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 12px/1.4 "Microsoft YaHei",sans-serif}.photo-card-index{position:absolute;right:10px;top:10px;z-index:2;padding:4px 7px;background:var(--coral);border:2px solid var(--ink);font:900 11px/1 Georgia,serif}.photo-wall-controls{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:20px}.photo-wall-controls button{width:42px;height:36px;border:2px solid var(--ink);background:var(--yellow);box-shadow:3px 3px 0 var(--ink);font:900 20px/1 "Microsoft YaHei",sans-serif;cursor:pointer;transition:transform .2s ease,background .2s ease}.photo-wall-controls button:hover:not(:disabled){background:var(--blue);transform:translateY(-2px)}.photo-wall-controls button:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}.photo-wall-count{min-width:62px;font:900 13px/1 Georgia,serif;letter-spacing:.1em}.photo-wall-hint{margin:13px 0 0;color:#53606a;font-size:12px}
+.photo-wall-stage{position:relative;height:392px;min-height:250px;touch-action:pan-y;user-select:none;-webkit-user-select:none;perspective:1100px}.photo-card{position:absolute;inset:0;padding:10px 10px 35px;background:#fff;border:2px solid var(--ink);box-shadow:6px 6px 0 rgba(38,53,74,.25);opacity:0;pointer-events:none;transform:translate3d(34px,30px,0) rotate(7deg) scale(.9);transition:opacity .35s ease,transform .48s cubic-bezier(.2,.8,.2,1),filter .35s ease;will-change:transform,opacity}.photo-card.is-active{z-index:5;opacity:1;pointer-events:auto;transform:translate3d(0,0,20px) rotate(-1deg) scale(1)}.photo-card.is-prev{z-index:3;opacity:.68;filter:saturate(.72);transform:translate3d(-18px,15px,0) rotate(-5deg) scale(.95)}.photo-card.is-next{z-index:4;opacity:.78;filter:saturate(.82);transform:translate3d(19px,17px,0) rotate(4deg) scale(.96)}.photo-card.is-prev-2{z-index:2;opacity:.34;filter:saturate(.6);transform:translate3d(-31px,29px,0) rotate(-8deg) scale(.9)}.photo-card.is-next-2{z-index:2;opacity:.42;filter:saturate(.64);transform:translate3d(35px,30px,0) rotate(8deg) scale(.9)}.photo-card.is-prev-3{z-index:1;opacity:.16;filter:saturate(.48);transform:translate3d(-43px,43px,0) rotate(-11deg) scale(.85)}.photo-card.is-next-3{z-index:1;opacity:.2;filter:saturate(.5);transform:translate3d(48px,44px,0) rotate(11deg) scale(.85)}.photo-card img{display:block;width:100%;height:100%;object-fit:cover;background:#eef7fb;cursor:pointer}.photo-card>span:last-child{position:absolute;left:12px;right:12px;bottom:7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 12px/1.4 "Microsoft YaHei",sans-serif}.photo-wall-hint{margin:13px 0 0;color:#53606a;font-size:12px}.photo-wall-controls,.photo-wall-count,.photo-card-index{display:none!important}
 .closing-copy{position:relative;z-index:4;margin:40px auto 0;max-width:610px;padding:26px 25px;background:var(--cream);border:3px solid var(--ink);box-shadow:8px 8px 0 var(--blue);transform:rotate(1deg)}
 .closing-copy{position:relative;z-index:4;margin:40px auto 0;max-width:610px;padding:26px 25px;background:var(--cream);border:3px solid var(--ink);box-shadow:8px 8px 0 var(--blue);transform:rotate(1deg)}
 .closing-copy p{margin:0;font-size:16px;line-height:2}.closing-copy strong{color:var(--coral);font-weight:1000}
@@ -119,7 +120,7 @@ button{font:inherit}
  body{line-height:1.78}.toolbar{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap}.toolbar-note{display:none}.toolbar button{white-space:nowrap;flex:0 0 auto}
  .page{width:100%;margin:0;border-width:0;box-shadow:none}.hero{min-height:650px;padding:45px 17px 24px}.hero-ribbon{top:18px}.hero-year{right:13px;top:20px}.hero-copy{width:92%;margin-top:66px}.hero h1{font-size:50px}.collage{height:266px}.polaroid.p1{left:1%;width:48%;height:205px}.polaroid.p2{right:1%;width:47%;height:192px}.polaroid.p3{left:31%;width:39%;height:145px}.hero-note{right:12px;bottom:17px}
  .section{padding:62px 20px}.section-no{left:8px;font-size:55px}.section-title{font-size:30px}.lead-card{padding:26px 20px 20px;font-size:16px}.intro-photo{margin-left:0;margin-right:0}.intro-photo img{height:235px}
- .role-grid,.ticket-grid{grid-template-columns:1fr}.role-card:nth-child(3){grid-column:auto}.detail-photo{grid-template-columns:1fr 1fr}.detail-photo img{height:220px}.memory-wall{height:500px}.memory.m1{width:62%;height:268px}.memory.m2{width:44%;height:212px}.memory.m3{width:56%;height:270px}.memory.m4{width:40%;height:195px}.wall-sticker{width:96px;height:96px;font-size:13px}
+ .role-grid,.ticket-grid{grid-template-columns:1fr}.role-card:nth-child(3){grid-column:auto}.detail-photo{grid-template-columns:1fr 1fr}.detail-photo img{height:220px}.roles-gallery{padding:15px 11px 14px}.roles-gallery-head{display:block}.roles-gallery-title{max-width:none;margin-top:10px;text-align:left;font-size:18px}.roles-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.roles-gallery-card,.roles-gallery-card:nth-child(n){grid-column:span 1;min-height:130px;transform:none}.roles-gallery-card:nth-child(3n){transform:rotate(1deg)}.roles-gallery-card:nth-child(4n){transform:rotate(-1deg)}.roles-gallery-card img{min-height:118px}.roles-gallery-card figcaption{left:7px;right:7px;bottom:7px;padding:4px 5px;font-size:10px}.photo-wall-stage{height:258px}.photo-card{padding:7px 7px 30px}.photo-card>span:last-child{left:9px;right:9px;bottom:5px;font-size:11px}.photo-wall{overflow:hidden}
  .check-paper{padding:27px 17px}.checklist li{padding-left:45px;font-size:15px}.admission{padding:25px 16px 28px}.admission:before{margin:-25px -16px 22px}.qrgrid{gap:10px}.qrcard{padding:8px}.qrcard span{font-size:11px}.closing{padding:58px 18px 45px}.photo-wall{width:100%;padding:16px 12px 14px}.photo-wall-head{display:block;margin-bottom:11px}.photo-wall-title{margin-top:10px;text-align:left;font-size:17px}.photo-wall-stage{height:245px}.photo-card{padding:7px 7px 30px}.photo-card>span:last-child{left:9px;right:9px;bottom:5px;font-size:11px}.photo-wall-controls{margin-top:16px;gap:14px}.photo-wall-controls button{width:46px;height:40px}.closing-copy{padding:22px 17px}.closing-copy p{font-size:15px}
 }
 @media(max-width:520px){.campus-decor img{width:78px}.campus-west{left:-6px;bottom:14px}.campus-north{right:-6px;top:46px}.campus-decor span{font-size:9px;padding:2px 6px}}@media(max-width:390px){.hero{min-height:625px}.hero h1{font-size:45px}.hero-sub{font-size:13px}.section{padding-left:16px;padding-right:16px}.section-title{font-size:28px}.memory-wall{height:470px}.qrgrid{gap:8px}.qrcard span{font-size:10px}.ticket{padding-left:62px}}
@@ -173,7 +174,12 @@ button{font:inherit}
     </div>
     <div class="detail-photo reveal">
       <div class="frame replaceable"><img src="assets/gear_02.jpg" alt="舞台设备工作细节"></div>
-      <div class="frame replaceable"><img src="assets/work_02.jpg" alt="活动工作人员现场"></div>
+      <div class="frame replaceable"><img src="assets/work_02.jpg" alt="舞台设备工作细节"></div>
+    </div>
+    <div class="roles-gallery reveal" data-roles-gallery>
+      <div class="roles-gallery-head"><span class="roles-gallery-label">FROM THE BACKSTAGE</span><h3 class="roles-gallery-title" data-roles-gallery-title>一场演出，正在许多细节里发生</h3></div>
+      <div class="roles-gallery-grid" data-roles-gallery-grid></div>
+      <p class="roles-gallery-hint" data-roles-gallery-hint>从设备、排练到现场协作，每一张都是真实发生的准备</p>
     </div>
   </section>
 
@@ -253,10 +259,9 @@ button{font:inherit}
     <div class="photo-wall reveal" data-photo-wall>
       <div class="photo-wall-head"><div class="photo-wall-label">TEAM PHOTO WALL</div><h3 class="photo-wall-title" data-photo-wall-title>下一张团队合照，也许就有你</h3></div>
       <div class="photo-wall-stage" data-photo-wall-stage>
-        <article class="photo-card is-active" data-photo-card><span class="photo-card-index">01</span><img src="assets/group_03.jpg" alt="下一张团队合照，也许就有你"><span>下一张团队合照，也许就有你</span></article>
+        <article class="photo-card is-active replaceable" data-photo-card><img src="assets/group_03.jpg" alt="下一张团队合照，也许就有你"><span>下一张团队合照，也许就有你</span></article>
       </div>
-      <div class="photo-wall-controls" contenteditable="false"><button type="button" data-photo-prev aria-label="上一张照片">←</button><span class="photo-wall-count" data-photo-count>01 / 01</span><button type="button" data-photo-next aria-label="下一张照片">→</button></div>
-      <p class="photo-wall-hint" data-photo-wall-hint>左右翻页，看看舞台之外的我们</p>
+      <p class="photo-wall-hint" data-photo-wall-hint>手指左右滑动，翻看下一张合照</p>
     </div>
     <div class="closing-copy reveal"><p>如果你愿意让大学生活多一段并肩忙碌的经历，如果你想把兴趣变成真正发生的现场，如果你也期待认识一群认真、热情、愿意一起做事的人——那就来艺教中心，和我们<strong>一起开演</strong>。</p></div>
     <h2 class="closing-title">新生入场，请就位！</h2>
@@ -285,15 +290,14 @@ button{font:inherit}
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   } else showAll();
 
-  document.querySelectorAll('.replaceable').forEach(box => {
-    box.setAttribute('title','点击替换图片');
-    box.addEventListener('click', event => {
-      if (event.detail === 0) return;
-      event.preventDefault(); event.stopPropagation();
-      targetImage = box.matches('img') ? box : box.querySelector('img');
-      picker.value = ''; picker.click();
-    });
+  main.addEventListener('click', event => {
+    const box = event.target.closest('.replaceable');
+    if (!box || !main.contains(box) || event.detail === 0) return;
+    event.preventDefault(); event.stopPropagation();
+    targetImage = box.matches('img') ? box : box.querySelector('img');
+    picker.value = ''; picker.click();
   });
+  document.querySelectorAll('.replaceable').forEach(box => box.setAttribute('title','点击替换图片'));
   picker.addEventListener('change', () => {
     const file = picker.files && picker.files[0];
     if (!file || !targetImage) return;
@@ -342,43 +346,43 @@ button{font:inherit}
     return sources.map((src, index) => ({ src, caption: captions[index] || wall.title || c.closing?.photoCaption || '下一张团队合照，也许就有你' }));
   };
   const updatePhotoWall = () => {
-    const root = document.querySelector('[data-photo-wall]');
-    if (!root) return;
-    const cards = [...root.querySelectorAll('[data-photo-card]')];
-    const total = cards.length;
-    if (!total) return;
+    const root = document.querySelector('[data-photo-wall]'); if (!root) return;
+    const cards = [...root.querySelectorAll('[data-photo-card]')]; const total = cards.length; if (!total) return;
     photoWallState.index = (photoWallState.index + total) % total;
     cards.forEach((card, index) => {
-      const isActive = index === photoWallState.index;
-      const isPrev = index === (photoWallState.index - 1 + total) % total;
-      const isNext = index === (photoWallState.index + 1) % total;
-      card.classList.toggle('is-active', isActive); card.classList.toggle('is-prev', isPrev); card.classList.toggle('is-next', isNext);
-      card.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+      const offset = (index - photoWallState.index + total) % total;
+      const previous = (photoWallState.index - index + total) % total;
+      card.classList.remove('is-active','is-prev','is-next','is-prev-2','is-next-2','is-prev-3','is-next-3');
+      const state = offset === 0 ? 'is-active' : previous === 1 ? 'is-prev' : offset === 1 ? 'is-next' : previous === 2 ? 'is-prev-2' : offset === 2 ? 'is-next-2' : previous === 3 ? 'is-prev-3' : offset === 3 ? 'is-next-3' : '';
+      if (state) card.classList.add(state);
+      card.setAttribute('aria-hidden', offset === 0 ? 'false' : 'true'); card.setAttribute('tabindex', offset === 0 ? '0' : '-1');
     });
-    const count = root.querySelector('[data-photo-count]');
-    if (count) count.textContent = String(photoWallState.index + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
-    root.querySelectorAll('[data-photo-prev],[data-photo-next]').forEach(button => { button.disabled = total < 2; });
   };
   const stepPhotoWall = direction => { if (photoWallState.items.length < 2) return; photoWallState.index = (photoWallState.index + direction + photoWallState.items.length) % photoWallState.items.length; updatePhotoWall(); };
+  const rolesGalleryItems = c => { const gallery = c.roles?.gallery || {}; const images = c.images || {}; const keys = Array.isArray(gallery.imageKeys) ? gallery.imageKeys : []; const captions = Array.isArray(gallery.captions) ? gallery.captions : []; return keys.map((key,index) => ({src:images[key],caption:captions[index] || ''})).filter(item => item.src); };
+  const renderRolesGallery = c => {
+    const root = document.querySelector('[data-roles-gallery]'); if (!root) return; const gallery = c.roles?.gallery || {};
+    const title = root.querySelector('[data-roles-gallery-title]'); if (title) title.textContent = gallery.title || '一场演出，正在许多细节里发生';
+    const hintText = root.querySelector('[data-roles-gallery-hint]'); if (hintText) hintText.textContent = gallery.hint || '从设备、排练到现场协作，每一张都是真实发生的准备';
+    const grid = root.querySelector('[data-roles-gallery-grid]'); const items = rolesGalleryItems(c);
+    if (grid) grid.innerHTML = items.map(item => '<figure class="roles-gallery-card replaceable"><img src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><figcaption>'+escapeHtml(item.caption)+'</figcaption></figure>').join('');
+    grid?.querySelectorAll('.replaceable').forEach(box => box.setAttribute('title','点击替换图片'));
+  };
   const renderPhotoWall = c => {
-    const root = document.querySelector('[data-photo-wall]');
-    if (!root) return;
-    const wall = c.photoWall || {};
-    const items = photoWallItems(c);
-    photoWallState.items = items; photoWallState.index = 0;
+    const root = document.querySelector('[data-photo-wall]'); if (!root) return; const wall = c.photoWall || {}; const items = photoWallItems(c); photoWallState.items = items; photoWallState.index = 0;
     const title = root.querySelector('[data-photo-wall-title]'); if (title) title.textContent = wall.title || c.closing?.photoCaption || '下一张团队合照，也许就有你';
-    const hintText = root.querySelector('[data-photo-wall-hint]'); if (hintText) hintText.textContent = wall.hint || '左右翻页，看看舞台之外的我们';
+    const hintText = root.querySelector('[data-photo-wall-hint]'); if (hintText) hintText.textContent = wall.hint || '手指左右滑动，翻看下一张合照';
     const stage = root.querySelector('[data-photo-wall-stage]');
-    if (stage && items.length) stage.innerHTML = items.map((item,index) => '<article class="photo-card'+(index===0?' is-active':'')+'" data-photo-card><span class="photo-card-index">'+String(index+1).padStart(2,'0')+'</span><img src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></article>').join('');
-    updatePhotoWall();
+    if (stage) stage.innerHTML = items.length ? items.map(item => '<article class="photo-card replaceable" data-photo-card><img src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></article>').join('') : '<article class="photo-card is-active replaceable" data-photo-card><img src="assets/group_03.jpg" alt="下一张团队合照，也许就有你"><span>下一张团队合照，也许就有你</span></article>';
+    stage?.querySelectorAll('.replaceable').forEach(box => box.setAttribute('title','点击替换图片')); updatePhotoWall();
   };
   const photoWallRoot = document.querySelector('[data-photo-wall]');
   if (photoWallRoot) {
-    photoWallRoot.querySelector('[data-photo-prev]')?.addEventListener('click', () => stepPhotoWall(-1));
-    photoWallRoot.querySelector('[data-photo-next]')?.addEventListener('click', () => stepPhotoWall(1));
-    let touchStartX = 0;
-    photoWallRoot.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0]?.clientX || 0; }, { passive: true });
-    photoWallRoot.addEventListener('touchend', event => { const endX = event.changedTouches[0]?.clientX || 0; const delta = endX - touchStartX; if (Math.abs(delta) > 42) stepPhotoWall(delta < 0 ? 1 : -1); }, { passive: true });
+    let touchStartX = 0; let touchStartY = 0; let touchMoved = false; const stage = photoWallRoot.querySelector('[data-photo-wall-stage]');
+    stage?.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0]?.clientX || 0; touchStartY = event.changedTouches[0]?.clientY || 0; touchMoved = false; }, {passive:true});
+    stage?.addEventListener('touchmove', event => { const touch = event.changedTouches[0]; if (touch) touchMoved = Math.abs(touch.clientX-touchStartX) > Math.abs(touch.clientY-touchStartY); }, {passive:true});
+    stage?.addEventListener('touchend', event => { const touch = event.changedTouches[0]; if (!touch || !touchMoved) return; const delta = touch.clientX-touchStartX; if (Math.abs(delta)>34) stepPhotoWall(delta<0?1:-1); }, {passive:true});
+    stage?.addEventListener('keydown', event => { if (event.key==='ArrowLeft') stepPhotoWall(-1); if (event.key==='ArrowRight') stepPhotoWall(1); });
   }
   const applyContent = (c) => {
     if (!c) return;
@@ -399,6 +403,7 @@ button{font:inherit}
     const pv=document.querySelector('#promoVideo'), pvs=document.querySelector('#promoVideoShell'); if(pv&&pvs){if(v.url){pv.src=v.url;if(v.poster)pv.poster=v.poster;pvs.classList.add('has-video');pv.load()}else{pv.removeAttribute('src');pvs.classList.remove('has-video')}}
     const imgs=c.images||{};
     renderPhotoWall(c);
+    renderRolesGallery(c);
     const qq=c.decorations?.qq||[];
     document.querySelectorAll('.campus-decor img').forEach((img,index)=>{ if(qq[index]) img.src=qq[index]; }); [['.p1 img',imgs.hero1],['.p2 img',imgs.hero2],['.p3 img',imgs.hero3],['.intro-photo img',imgs.intro],['.detail-photo .frame:nth-child(1) img',imgs.detail1],['.detail-photo .frame:nth-child(2) img',imgs.detail2],['.m1 img',imgs.moment1],['.m2 img',imgs.moment2],['.m3 img',imgs.moment3],['.m4 img',imgs.moment4],['.qrcard:nth-child(1) img',imgs.qrWestGroup],['.qrcard:nth-child(2) img',imgs.qrWestSignup],['.qrcard:nth-child(3) img',imgs.qrNorthGroup],['.qrcard:nth-child(4) img',imgs.qrNorthSignup]].forEach(([s,v])=>setImg(s,v));
   };

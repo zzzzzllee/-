@@ -31,7 +31,27 @@
         "body": "老师、演员、社团、工作人员，每个人都有自己的任务。你需要沟通信息、确认流程、回应变化，也需要和伙伴一起把分散的工作拼成一场完整的活动。从主题构思、流程梳理，到现场执行、复盘总结，这里会给你一个把想法变成现场的机会。",
         "tag": "沟通协作 / 活动策划"
       }
-    ]
+    ],
+    "gallery": {
+      "title": "一场演出，正在许多细节里发生",
+      "hint": "从设备、排练到现场协作，每一张都是真实发生的准备",
+      "imageKeys": [
+        "rolesGallery1",
+        "rolesGallery2",
+        "rolesGallery3",
+        "rolesGallery4",
+        "rolesGallery5",
+        "rolesGallery6"
+      ],
+      "captions": [
+        "设备就位，舞台才有准确亮起的可能",
+        "流程确认，让每一次衔接更加顺畅",
+        "排练中的反复，是现场稳定的底气",
+        "后台协作，把不同任务拼成一个整体",
+        "忙碌现场里，每个人都在自己的位置上",
+        "演出开始前，还有许多细节等待完成"
+      ]
+    }
   },
   "gains": {
     "titleBefore": "你会收获的，",
@@ -140,11 +160,17 @@
     "photoWall3": "assets/group_07.jpg",
     "photoWall4": "assets/casual_02.jpg",
     "photoWall5": "assets/work_03.jpg",
-    "photoWall6": "assets/group_09.jpg"
+    "photoWall6": "assets/group_09.jpg",
+    "rolesGallery1": "assets/gear_02.jpg",
+    "rolesGallery2": "assets/work_02.jpg",
+    "rolesGallery3": "assets/gear_04.jpg",
+    "rolesGallery4": "assets/work_01.jpg",
+    "rolesGallery5": "assets/casual_01.jpg",
+    "rolesGallery6": "assets/gear_06.jpg"
   },
   "photoWall": {
     "title": "下一张团队合照，也许就有你",
-    "hint": "左右翻页，看看舞台之外的我们",
+    "hint": "手指左右滑动，翻看下一张合照",
     "imageKeys": [
       "photoWall1",
       "photoWall2",
