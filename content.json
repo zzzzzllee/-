@@ -101,6 +101,21 @@
     "subLine1": "校团委艺术教育中心",
     "subLine2": "等你加入 · 等你发光"
   },
+  "video": {
+    "titleBefore": "宣传片，",
+    "titleMark": "先看见我们",
+    "intro": "一支宣传片，记录舞台亮起之前的准备、协作与期待。把视频放在这里，让新生先用几分钟认识艺术教育中心。",
+    "url": "",
+    "poster": "assets/style-sky.jpg",
+    "note": "视频地址可填写 GitHub Pages 可访问的 MP4、WebM 或其他浏览器支持的视频链接。"
+  },
+  "decorations": {
+    "qq": [
+      "assets/qq-west.png",
+      "assets/qq-north.png"
+    ],
+    "campusLabels": ["西区", "北区"]
+  },
   "images": {
     "hero1": "assets/group_01.jpg",
     "hero2": "assets/casual_03.jpg",

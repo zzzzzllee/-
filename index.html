@@ -6,13 +6,9 @@
 <meta name="theme-color" content="#ffd86b">
 <title>2026级新生招新｜校团委艺术教育中心</title>
 <style>
-:root{
-  --cream:#fff9e9;--yellow:#ffd86b;--yellow-soft:#fff0ad;--blue:#49b8d6;--blue-soft:#dff6fb;
-  --coral:#ff6f61;--coral-soft:#ffe1dc;--ink:#26354a;--white:#fffef9;--line:#26354a;
-  --shadow:8px 8px 0 var(--ink);--small-shadow:4px 4px 0 var(--ink);
-}
+:root{--cream:#fffefb;--yellow:#fbf8bc;--yellow-soft:#fffbdc;--blue:#b2d6f8;--blue-soft:#e7f2ff;--coral:#f39b8e;--coral-soft:#ffe6e2;--ink:#1b1b1b;--white:#ffffff;--line:#1b1b1b;--sky-texture:url("assets/style-sky.jpg");--paper-texture:url("assets/style-paper.jpg");--shadow:8px 8px 0 var(--ink);--small-shadow:4px 4px 0 var(--ink)}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;background:#f6d966}
+html{scroll-behavior:smooth;background:#b2d6f8}
 body{margin:0;color:var(--ink);font-family:"LXGW WenKai","霞鹜文楷","STKaiti","KaiTi","Microsoft YaHei",sans-serif;line-height:1.85;background:
  radial-gradient(circle at 18px 18px,rgba(38,53,74,.1) 2px,transparent 2.5px) 0 0/36px 36px,
  linear-gradient(150deg,#ffe987 0%,#fff5c6 34%,#dff6fb 72%,#bdeaf4 100%);}
@@ -22,7 +18,7 @@ button{font:inherit}
 .toolbar button{border:1.5px solid #fff;border-radius:999px;background:transparent;color:#fff;padding:5px 12px;cursor:pointer;transition:.2s ease}
 .toolbar button:hover{background:var(--yellow);border-color:var(--yellow);color:var(--ink);transform:translateY(-1px)}
 .page{position:relative;width:min(780px,calc(100% - 28px));margin:24px auto 48px;background:var(--cream);border:3px solid var(--ink);box-shadow:14px 14px 0 rgba(38,53,74,.92);overflow:hidden;isolation:isolate}
-.page:before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(90deg,rgba(73,184,214,.06) 1px,transparent 1px),linear-gradient(rgba(73,184,214,.06) 1px,transparent 1px);background-size:28px 28px}
+.page:before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(90deg,rgba(178,214,248,.18) 1px,transparent 1px),linear-gradient(rgba(178,214,248,.18) 1px,transparent 1px);background-size:28px 28px}.page:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:url("assets/style-paper.jpg") center top/620px auto repeat;opacity:.10;mix-blend-mode:multiply}
 .editable{outline:none}.editable:focus{box-shadow:inset 0 0 0 3px rgba(73,184,214,.28)}
 .hero{position:relative;min-height:690px;padding:52px 34px 34px;overflow:hidden;background:var(--yellow)}
 .hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 25%,rgba(255,255,255,.6) 0 3px,transparent 4px) 0 0/28px 28px;opacity:.62}
@@ -42,10 +38,18 @@ button{font:inherit}
 .polaroid.p1{left:5%;top:18px;width:44%;height:220px;transform:rotate(-5deg);z-index:2}.polaroid.p2{right:4%;top:0;width:42%;height:205px;transform:rotate(6deg);z-index:3}.polaroid.p3{left:34%;bottom:0;width:34%;height:160px;transform:rotate(1.5deg);z-index:4}
 .tape{position:absolute;z-index:9;width:72px;height:22px;background:rgba(73,184,214,.76);border:1px solid rgba(38,53,74,.28);transform:rotate(-9deg);animation:wiggle 4.8s ease-in-out infinite;pointer-events:none}.tape.t1{left:20%;top:4px}.tape.t2{right:16%;top:-5px;background:rgba(255,111,97,.7);transform:rotate(12deg);animation-delay:-1.7s}.tape.t3{left:46%;bottom:145px;background:rgba(255,255,255,.72);transform:rotate(-2deg);animation-delay:-3.2s}
 .hero-note{position:absolute;right:22px;bottom:24px;z-index:7;padding:6px 12px;border:2px solid var(--ink);border-radius:50%;background:#fff;font:800 12px/1.5 "Microsoft YaHei",sans-serif;transform:rotate(-8deg);animation:floaty 3.8s ease-in-out infinite}
-.section{position:relative;padding:70px 52px}
-.section:nth-of-type(odd){background:rgba(255,254,249,.76)}
-.section:nth-of-type(even){background:rgba(223,246,251,.62)}
-.section + .section{border-top:2px dashed rgba(38,53,74,.38)}
+.campus-decor{position:absolute;z-index:6;pointer-events:none;text-align:center;animation:campusFloat 5.5s ease-in-out infinite}.campus-decor img{display:block;width:126px;max-width:18vw;object-fit:contain;filter:drop-shadow(3px 4px 0 rgba(27,27,27,.18));opacity:.96}.campus-decor span{display:inline-block;margin-top:4px;padding:2px 9px;background:#fff;border:1.5px solid var(--ink);font:900 11px/1.3 "Microsoft YaHei",sans-serif;transform:rotate(-3deg)}.campus-west{left:6px;bottom:20px;transform:rotate(-8deg)}.campus-north{right:6px;top:58px;transform:rotate(8deg);animation-delay:-2.2s}@keyframes campusFloat{0%,100%{translate:0 0}50%{translate:0 -7px}}.video-section{background:linear-gradient(145deg,rgba(255,251,220,.92),rgba(231,242,255,.94))!important}
+.video-card{position:relative;padding:20px;background:rgba(255,255,255,.86);border:3px solid var(--ink);box-shadow:var(--shadow);transform:rotate(-.6deg)}
+.video-intro{margin:0 0 18px;font-size:16px;line-height:1.9}
+.video-shell{position:relative;overflow:hidden;background:#1b1b1b;border:2px solid var(--ink);aspect-ratio:16/9;display:grid;place-items:center}
+.video-shell video{display:none;width:100%;height:100%;object-fit:contain;background:#111}
+.video-shell.has-video video{display:block}.video-shell.has-video .video-empty{display:none}
+.video-empty{padding:28px 20px;text-align:center;color:#fff;background:linear-gradient(135deg,rgba(27,27,27,.92),rgba(79,117,145,.9)),url("assets/style-sky.jpg") center/cover;font:900 20px/1.6 "Microsoft YaHei",sans-serif}
+.video-empty span{display:block;margin-top:6px;font:500 12px/1.7 "Microsoft YaHei",sans-serif;opacity:.82}
+.video-note{margin:14px 0 0;color:rgba(27,27,27,.72);font-size:12px;line-height:1.7}.section{position:relative;padding:70px 52px}
+.section:nth-of-type(odd){background:rgba(255,255,255,.82)}
+.section:nth-of-type(even){background:rgba(231,242,255,.78)}
+.section + .section{border-top:2px dashed rgba(27,27,27,.28)}
 .section-no{position:absolute;left:22px;top:18px;font:900 64px/.9 Georgia,serif;color:transparent;-webkit-text-stroke:2px var(--ink);opacity:.2;letter-spacing:-.06em}
 .section-label{display:inline-block;margin:0 0 8px;padding:4px 11px;background:var(--coral);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);font:900 11px/1.4 "Microsoft YaHei",sans-serif;color:#fff;letter-spacing:.12em;transform:rotate(-2deg)}
 .section-title{position:relative;margin:6px 0 28px;font-family:"Microsoft YaHei",sans-serif;font-size:clamp(29px,6vw,42px);font-weight:1000;line-height:1.17;letter-spacing:-.045em}
@@ -84,7 +88,7 @@ button{font:inherit}
 .check-paper:before{content:"CHECK LIST";position:absolute;right:18px;top:-17px;padding:5px 12px;background:var(--yellow);border:2px solid var(--ink);font:900 12px/1 Georgia,serif;letter-spacing:.08em;transform:rotate(3deg)}
 .checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;margin:14px 0;padding:11px 12px 11px 52px;border-bottom:2px dashed rgba(38,53,74,.25);font-size:16px}.checklist li:last-child{border-bottom:0}.checklist li:before{content:"✓";position:absolute;left:7px;top:8px;width:30px;height:30px;display:grid;place-items:center;border:2px solid var(--ink);background:var(--blue);color:#fff;font:900 18px/1 Arial;transform:rotate(-4deg)}
 .encourage{margin:26px 0 0;padding:18px 21px;background:var(--coral-soft);border-left:7px solid var(--coral);font-weight:700}
-.apply-section{background:var(--blue)!important;color:var(--ink)}
+.apply-section{background:linear-gradient(145deg,rgba(178,214,248,.94) 0%,rgba(223,240,255,.92) 72%,rgba(255,251,220,.94) 100%),url("assets/style-sky.jpg") center/cover!important;color:var(--ink)}
 .apply-section .section-label{background:var(--yellow);color:var(--ink)}
 .apply-section .section-title:after{background:var(--coral)}
 .admission{position:relative;padding:29px 26px 32px;background:var(--cream);border:3px solid var(--ink);box-shadow:10px 10px 0 var(--coral);overflow:hidden}
@@ -116,8 +120,8 @@ button{font:inherit}
  .role-grid,.ticket-grid{grid-template-columns:1fr}.role-card:nth-child(3){grid-column:auto}.detail-photo{grid-template-columns:1fr 1fr}.detail-photo img{height:220px}.memory-wall{height:500px}.memory.m1{width:62%;height:268px}.memory.m2{width:44%;height:212px}.memory.m3{width:56%;height:270px}.memory.m4{width:40%;height:195px}.wall-sticker{width:96px;height:96px;font-size:13px}
  .check-paper{padding:27px 17px}.checklist li{padding-left:45px;font-size:15px}.admission{padding:25px 16px 28px}.admission:before{margin:-25px -16px 22px}.qrgrid{gap:10px}.qrcard{padding:8px}.qrcard span{font-size:11px}.closing{padding:58px 18px 45px}.closing-photo{width:96%}.closing-photo img{height:245px}.closing-copy{padding:22px 17px}.closing-copy p{font-size:15px}
 }
-@media(max-width:390px){.hero{min-height:625px}.hero h1{font-size:45px}.hero-sub{font-size:13px}.section{padding-left:16px;padding-right:16px}.section-title{font-size:28px}.memory-wall{height:470px}.qrgrid{gap:8px}.qrcard span{font-size:10px}.ticket{padding-left:62px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-spark,.tape,.hero-note,.wall-sticker,.closing-title,.floaty{animation:none!important}.reveal{opacity:1;transform:none;transition:none}.polaroid,.role-card,.qrcard{transition:none}}
+@media(max-width:520px){.campus-decor img{width:78px}.campus-west{left:-6px;bottom:14px}.campus-north{right:-6px;top:46px}.campus-decor span{font-size:9px;padding:2px 6px}}@media(max-width:390px){.hero{min-height:625px}.hero h1{font-size:45px}.hero-sub{font-size:13px}.section{padding-left:16px;padding-right:16px}.section-title{font-size:28px}.memory-wall{height:470px}.qrgrid{gap:8px}.qrcard span{font-size:10px}.ticket{padding-left:62px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-spark,.tape,.hero-note,.wall-sticker,.closing-title,.floaty,.campus-decor{animation:none!important}.reveal{opacity:1;transform:none;transition:none}.polaroid,.role-card,.qrcard{transition:none}}
 @media print{body{background:#fff}.toolbar,.replace-hint{display:none!important}.page{width:100%;margin:0;border:0;box-shadow:none}.reveal{opacity:1;transform:none}.section{break-inside:avoid}.hero{min-height:640px}}
 </style>
 <style>.online-editor-link{border:1.5px solid #ffd86b;border-radius:999px;color:#ffd86b;text-decoration:none;padding:5px 12px;transition:.2s ease}.online-editor-link:hover{background:#ffd86b;color:#26354a}</style>
@@ -132,7 +136,7 @@ button{font:inherit}
 <input id="imagePicker" type="file" accept="image/*" hidden contenteditable="false">
 <div id="replaceHint" class="replace-hint" contenteditable="false">点击任意照片或二维码即可选择本机图片替换</div>
 <main class="page editable" contenteditable="true" spellcheck="false">
-  <header class="hero">
+<header class="hero">
     <div class="hero-ribbon" contenteditable="false">WELCOME · JOIN US</div>
     <div class="hero-year">2026</div>
     <span class="hero-spark s1" contenteditable="false">✦</span><span class="hero-spark s2" contenteditable="false">✦</span><span class="hero-spark s3" contenteditable="false">✦</span>
@@ -204,6 +208,16 @@ button{font:inherit}
     </div>
   </section>
 
+  <section class="section video-section">
+    <div class="section-no" contenteditable="false">04</div>
+    <div class="section-label">WATCH THE STORY</div>
+    <h2 class="section-title reveal">宣传片，<span class="mark">先看见我们</span></h2>
+    <div class="video-card reveal">
+      <p class="video-intro">一支宣传片，记录舞台亮起之前的准备、协作与期待。把视频放在这里，让新生先用几分钟认识艺术教育中心。</p>
+      <div class="video-shell" id="promoVideoShell"><video id="promoVideo" controls playsinline preload="metadata" poster="assets/style-sky.jpg"></video><div class="video-empty">宣传片视频位置<span>在在线编辑器中粘贴 MP4 / WebM 视频地址</span></div></div>
+      <p class="video-note">视频地址可填写 GitHub Pages 可访问的 MP4、WebM 或其他浏览器支持的视频链接。</p>
+    </div>
+  </section>
   <section class="section suitable">
     <div class="section-no" contenteditable="false">04</div>
     <div class="section-label">IS THAT YOU?</div>
@@ -225,6 +239,8 @@ button{font:inherit}
     <div class="section-label">YOUR TICKET</div>
     <h2 class="section-title reveal">现在，轮到你<span class="mark">入场了</span></h2>
     <div class="admission reveal">
+      <div class="campus-decor campus-west" contenteditable="false" aria-hidden="true"><img src="assets/qq-west.png" alt="西区 QQ 人装饰"><span>西区</span></div>
+      <div class="campus-decor campus-north" contenteditable="false" aria-hidden="true"><img src="assets/qq-north.png" alt="北区 QQ 人装饰"><span>北区</span></div>
       <h3>招新对象：2026级新生</h3>
       <p class="apply-meta">报名时间：<strong class="pending">【待补充】</strong><br>报名截止：<strong class="pending">【待补充】</strong><br>报名方式：长按识别对应二维码，进入咨询群或填写报名表。</p>
       <div class="qrgrid">
@@ -318,7 +334,12 @@ button{font:inherit}
     setTitle('.apply-section .section-title', c.apply?.titleBefore, c.apply?.titleMark); setText('.admission h3',c.apply?.object); const meta=document.querySelector('.apply-meta'); if(meta)meta.innerHTML='报名时间：<strong class="pending">'+(c.apply?.signupTime||'【待补充】')+'</strong><br>报名截止：<strong class="pending">'+(c.apply?.deadline||'【待补充】')+'</strong><br>报名方式：'+(c.apply?.method||'') ;
     document.querySelectorAll('.qrcard span').forEach((span,i)=>{if(c.apply?.qrLabels?.[i])span.textContent=c.apply.qrLabels[i];});
     setText('.closing-photo span',c.closing?.photoCaption); const cp=document.querySelector('.closing-copy p'); if(cp)cp.innerHTML=(c.closing?.body||'')+'<strong>'+(c.closing?.emphasis||'一起开演')+'</strong>。'; setText('.closing-title',c.closing?.title); const cs=document.querySelector('.closing-sub'); if(cs)cs.innerHTML=(c.closing?.subLine1||'')+'<br>'+(c.closing?.subLine2||'');
-    const imgs=c.images||{}; [['.p1 img',imgs.hero1],['.p2 img',imgs.hero2],['.p3 img',imgs.hero3],['.intro-photo img',imgs.intro],['.detail-photo .frame:nth-child(1) img',imgs.detail1],['.detail-photo .frame:nth-child(2) img',imgs.detail2],['.m1 img',imgs.moment1],['.m2 img',imgs.moment2],['.m3 img',imgs.moment3],['.m4 img',imgs.moment4],['.closing-photo img',imgs.closing],['.qrcard:nth-child(1) img',imgs.qrWestGroup],['.qrcard:nth-child(2) img',imgs.qrWestSignup],['.qrcard:nth-child(3) img',imgs.qrNorthGroup],['.qrcard:nth-child(4) img',imgs.qrNorthSignup]].forEach(([s,v])=>setImg(s,v));
+    const v=c.video||{};
+    setTitle('.video-section .section-title',v.titleBefore||'宣传片，',v.titleMark||'先看见我们'); setText('.video-intro',v.intro); setText('.video-note',v.note);
+    const pv=document.querySelector('#promoVideo'), pvs=document.querySelector('#promoVideoShell'); if(pv&&pvs){if(v.url){pv.src=v.url;if(v.poster)pv.poster=v.poster;pvs.classList.add('has-video');pv.load()}else{pv.removeAttribute('src');pvs.classList.remove('has-video')}}
+    const imgs=c.images||{};
+    const qq=c.decorations?.qq||[];
+    document.querySelectorAll('.campus-decor img').forEach((img,index)=>{ if(qq[index]) img.src=qq[index]; }); [['.p1 img',imgs.hero1],['.p2 img',imgs.hero2],['.p3 img',imgs.hero3],['.intro-photo img',imgs.intro],['.detail-photo .frame:nth-child(1) img',imgs.detail1],['.detail-photo .frame:nth-child(2) img',imgs.detail2],['.m1 img',imgs.moment1],['.m2 img',imgs.moment2],['.m3 img',imgs.moment3],['.m4 img',imgs.moment4],['.closing-photo img',imgs.closing],['.qrcard:nth-child(1) img',imgs.qrWestGroup],['.qrcard:nth-child(2) img',imgs.qrWestSignup],['.qrcard:nth-child(3) img',imgs.qrNorthGroup],['.qrcard:nth-child(4) img',imgs.qrNorthSignup]].forEach(([s,v])=>setImg(s,v));
   };
   fetch('content.json?ts='+Date.now()).then(r=>r.json()).then(remote=>applyContent(readDraft() || remote)).catch(()=>applyContent(readDraft()));
   window.addEventListener('storage', e => { if(e.key===draftKey) { try { applyContent(JSON.parse(e.newValue)); } catch {} } });
