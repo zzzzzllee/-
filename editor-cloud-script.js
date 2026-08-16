@@ -46,6 +46,7 @@
   };
   const field = (label, path, value, full = false, area = false) => `<div class="field ${full ? 'full' : ''}"><label>${esc(label)}</label>${area ? `<textarea data-path="${esc(path)}">${esc(value)}</textarea>` : `<input data-path="${esc(path)}" value="${esc(value)}">`}</div>`;
   const text = (path, fallback = '') => getPath(content, path) ?? fallback;
+  const normalizeRolesGalleryHint = value => { const raw = String(value || '').trim(); const defaultHint = '从调音台、灯光控台到舞台、后台与观众席，熟悉每一件设备、每一处场地，才能让演出稳稳发生。'; return !raw || raw === '从设备、排练到现场协作，每一张都是真实发生的准备' ? defaultHint : raw; };
   const arr = (path, fallback = []) => Array.isArray(getPath(content, path)) ? getPath(content, path) : fallback;
   const imageNames = {
     hero1: '首屏滑动照片 · 第 1 张', hero2: '首屏滑动照片 · 第 2 张', hero3: '首屏滑动照片 · 第 3 张', hero4: '首屏滑动照片 · 第 4 张', hero5: '首屏滑动照片 · 第 5 张', hero6: '首屏滑动照片 · 第 6 张', skillAudio:'技能岗位 · 音控', skillLight:'技能岗位 · 灯控', skillDJ:'技能岗位 · 打碟', skillSpotlight:'技能岗位 · 追光', skillStageControl:'技能岗位 · 场控', detail1: '旧版岗位图 · 备用 1', detail2: '旧版岗位图 · 备用 2',
@@ -53,13 +54,13 @@
     qrWestGroup: '西区 · 咨询群二维码', qrWestSignup: '西区 · 报名表二维码', qrNorthGroup: '北区 · 咨询群二维码', qrNorthSignup: '北区 · 报名表二维码',
     introPhotoWall1: '开场幕后相册 · 第 1 张', introPhotoWall2: '开场幕后相册 · 第 2 张', introPhotoWall3: '开场幕后相册 · 第 3 张', introPhotoWall4: '开场幕后相册 · 第 4 张', introPhotoWall5: '开场幕后相册 · 第 5 张', introPhotoWall6: '开场幕后相册 · 第 6 张',
     photoWall1: '结尾团队相册 · 第 1 张', photoWall2: '结尾团队相册 · 第 2 张', photoWall3: '结尾团队相册 · 第 3 张', photoWall4: '结尾团队相册 · 第 4 张', photoWall5: '结尾团队相册 · 第 5 张', photoWall6: '结尾团队相册 · 第 6 张',
-    rolesGallery1: '幕后图片展 · 第 1 张', rolesGallery2: '幕后图片展 · 第 2 张', rolesGallery3: '幕后图片展 · 第 3 张', rolesGallery4: '幕后图片展 · 第 4 张', rolesGallery5: '幕后图片展 · 第 5 张', rolesGallery6: '幕后图片展 · 第 6 张', intro: '备用旧图 · 原开场单图', closing: '备用旧图 · 原结尾合照'
+    rolesGallery1: '设备与场地展示 · 第 1 张', rolesGallery2: '设备与场地展示 · 第 2 张', rolesGallery3: '设备与场地展示 · 第 3 张', rolesGallery4: '设备与场地展示 · 第 4 张', rolesGallery5: '设备与场地展示 · 第 5 张', rolesGallery6: '设备与场地展示 · 第 6 张', intro: '备用旧图 · 原开场单图', closing: '备用旧图 · 原结尾合照'
   };
   const imageGroups = [
     {title:'01 · 首屏手动横向滑动照片',note:'每张图片都可以填写对应说明。手机左右滑一次切换一张，页面不会自动播放。',items:[{key:'hero1',captionPath:'heroGallery.captions.0'},{key:'hero2',captionPath:'heroGallery.captions.1'},{key:'hero3',captionPath:'heroGallery.captions.2'},{key:'hero4',captionPath:'heroGallery.captions.3'},{key:'hero5',captionPath:'heroGallery.captions.4'},{key:'hero6',captionPath:'heroGallery.captions.5'}]},
     {title:'02 · 开场幕后翻页相册',note:'仅用于开场幕后板块。第 1 张到第 6 张就是手机左右滑动顺序，图片和说明均与结尾相册独立。',items:[{key:'introPhotoWall1',captionPath:'introPhotoWall.captions.0'},{key:'introPhotoWall2',captionPath:'introPhotoWall.captions.1'},{key:'introPhotoWall3',captionPath:'introPhotoWall.captions.2'},{key:'introPhotoWall4',captionPath:'introPhotoWall.captions.3'},{key:'introPhotoWall5',captionPath:'introPhotoWall.captions.4'},{key:'introPhotoWall6',captionPath:'introPhotoWall.captions.5'}]},
     {title:'03 · 五个技能岗位图片',note:'按音控、灯控、打碟、追光、场控排列，每个岗位一张图。',items:[{key:'skillAudio'},{key:'skillLight'},{key:'skillDJ'},{key:'skillSpotlight'},{key:'skillStageControl'}]},
-    {title:'04 · “一场演出，正在许多细节里发生”图片展',note:'第 1 张到第 6 张按手机端从左到右、从上到下排列，说明在对应照片旁修改。',items:[{key:'rolesGallery1',captionPath:'roles.gallery.captions.0'},{key:'rolesGallery2',captionPath:'roles.gallery.captions.1'},{key:'rolesGallery3',captionPath:'roles.gallery.captions.2'},{key:'rolesGallery4',captionPath:'roles.gallery.captions.3'},{key:'rolesGallery5',captionPath:'roles.gallery.captions.4'},{key:'rolesGallery6',captionPath:'roles.gallery.captions.5'}]},
+    {title:'04 · “一场演出，正在许多细节里发生”设备与场地展',note:'建议按设备 1、设备 2、设备 3、场地 1、场地 2、场地 3 排列；图片只展示画面，不添加文字备注。',items:[{key:'rolesGallery1'},{key:'rolesGallery2'},{key:'rolesGallery3'},{key:'rolesGallery4'},{key:'rolesGallery5'},{key:'rolesGallery6'}]},
     {title:'05 · “青春不设限”四张照片',note:'按左上、右上、左下、右下排列，文字贴纸不会遮图。',items:[{key:'moment1'},{key:'moment2'},{key:'moment3'},{key:'moment4'}]},
     {title:'06 · 结尾团队翻页相册',note:'仅用于“下一张团队合照，也许就有你”板块。第 1 张到第 6 张按手机左右滑动顺序排列。',items:[{key:'photoWall1',captionPath:'photoWall.captions.0'},{key:'photoWall2',captionPath:'photoWall.captions.1'},{key:'photoWall3',captionPath:'photoWall.captions.2'},{key:'photoWall4',captionPath:'photoWall.captions.3'},{key:'photoWall5',captionPath:'photoWall.captions.4'},{key:'photoWall6',captionPath:'photoWall.captions.5'}]},
     {title:'07 · 报名二维码',note:'按西区咨询群、西区报名表、北区咨询群、北区报名表排列。',items:[{key:'qrWestGroup'},{key:'qrWestSignup'},{key:'qrNorthGroup'},{key:'qrNorthSignup'}]},
@@ -99,7 +100,7 @@
     html += `<div class="section"><h2>五个技能岗位</h2><div class="grid">${field('板块标题前半句', 'roles.titleBefore', text('roles.titleBefore'), true)}${field('板块高亮句', 'roles.titleMark', text('roles.titleMark'), true)}${field('岗位总说明', 'roles.intro', text('roles.intro'), true, true)}${field('更多岗位提示', 'roles.more', text('roles.more'), true)}</div>`;
     roles.forEach((item, index) => { html += `<div class="card"><div class="card-title">岗位内容 ${index + 1}</div><div class="grid">${field('小标题', `roles.cards.${index}.title`, item.title)}${field('标签', `roles.cards.${index}.tag`, item.tag)}${field('正文', `roles.cards.${index}.body`, item.body, true, true)}</div></div>`; });
     html += '</div>';
-    html += `<div class="card"><div class="card-title">幕后图片展</div><div class="grid">${field('图片展标题', 'roles.gallery.title', text('roles.gallery.title'), true)}${field('图片展提示', 'roles.gallery.hint', text('roles.gallery.hint'), true)}</div><p class="token-note">每张图片的说明已移动到下方对应照片旁，顺序更清楚。</p></div></div>`;
+    html += `<div class="card"><div class="card-title">幕后图片展</div><div class="grid">${field('图片展标题', 'roles.gallery.title', text('roles.gallery.title'), true)}${field('设备与场地展底部备注', 'roles.gallery.hint', normalizeRolesGalleryHint(text('roles.gallery.hint')), true)}</div><p class="token-note">图片只展示设备和场地，不添加图片文字备注；设备与场地的统一说明写在板块最下方。</p></div></div>`;
     html += `<div class="section"><h2>你会收获</h2><div class="grid">${field('板块标题前半句', 'gains.titleBefore', text('gains.titleBefore'))}${field('板块高亮句', 'gains.titleMark', text('gains.titleMark'))}</div>`;
     gains.forEach((item, index) => { html += `<div class="card"><div class="card-title">收获 ${index + 1}</div><div class="grid">${field('名称', `gains.cards.${index}.title`, item.title)}${field('说明', `gains.cards.${index}.body`, item.body, true, true)}</div></div>`; });
     html += '</div>';
