@@ -47,18 +47,18 @@ button{font:inherit}
 .page{position:relative;width:min(780px,calc(100% - 28px));margin:24px auto 48px;background:var(--cream);border:3px solid var(--ink);box-shadow:14px 14px 0 rgba(38,53,74,.92);overflow:hidden;isolation:isolate}
 .page:before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(90deg,rgba(178,214,248,.18) 1px,transparent 1px),linear-gradient(rgba(178,214,248,.18) 1px,transparent 1px);background-size:28px 28px}.page:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:url("assets/style-paper.jpg") center top/620px auto repeat;opacity:.10;mix-blend-mode:multiply}
 
-.hero{position:relative;min-height:690px;padding:52px 34px 34px;overflow:hidden;background:var(--yellow)}
+.hero{position:relative;min-height:650px;padding:44px 34px 26px;overflow:hidden;background:var(--yellow)}
 .hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 25%,rgba(255,255,255,.6) 0 3px,transparent 4px) 0 0/28px 28px;opacity:.62}
 .hero-ribbon{position:absolute;top:23px;left:-36px;z-index:5;padding:7px 54px;background:var(--coral);border:2px solid var(--ink);font:800 12px/1.2 "Microsoft YaHei",sans-serif;letter-spacing:.18em;transform:rotate(-7deg);box-shadow:3px 3px 0 var(--ink)}
 .hero-year{position:absolute;right:25px;top:24px;z-index:5;font:900 clamp(36px,9vw,68px)/.85 Georgia,serif;color:var(--blue);text-shadow:3px 3px 0 #fff,-1px -1px 0 var(--ink),1px 1px 0 var(--ink);transform:rotate(5deg)}
 .hero-spark{position:absolute;z-index:5;font:900 46px/1 Georgia;color:var(--coral);text-shadow:2px 2px 0 var(--ink);animation:spark 5s linear infinite}
 .hero-spark.s1{left:28px;top:128px}.hero-spark.s2{right:28px;top:240px;font-size:30px;animation-delay:-2s}.hero-spark.s3{left:47%;bottom:28px;color:var(--blue);font-size:35px;animation-delay:-3.5s}
-.hero-copy{position:relative;z-index:8;width:84%;margin:68px auto 28px;text-align:center}
+.hero-copy{position:relative;z-index:8;width:84%;margin:54px auto 18px;text-align:center}
 .hero-kicker{display:inline-block;padding:7px 15px;background:var(--coral);color:#fff;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);font:900 13px/1.4 "Microsoft YaHei",sans-serif;letter-spacing:.13em;transform:rotate(-2deg)}
-.hero h1{position:relative;margin:24px 0 10px;font-family:"Microsoft YaHei",sans-serif;font-size:clamp(64px,12vw,100px);font-weight:1000;line-height:.9;letter-spacing:-.06em;color:var(--ink);text-shadow:3px 3px 0 #fff,7px 7px 0 var(--blue)}
-.hero h1:before{content:"WELCOME TO THE BACKSTAGE";display:block;width:max-content;max-width:100%;margin:0 auto 11px;padding:4px 11px;background:var(--ink);color:var(--yellow);box-shadow:3px 3px 0 var(--blue);font:900 10px/1.35 Georgia,serif;letter-spacing:.13em;transform:rotate(-1.5deg)}
-.hero h1 .outline{display:block;width:max-content;margin:.14em auto 0;padding:.05em .23em .11em;background:var(--coral);color:#fff;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);-webkit-text-stroke:0;text-shadow:none;letter-spacing:.04em;transform:rotate(1.5deg)}
-.hero-sub{display:inline-flex;gap:9px;align-items:center;margin:16px 0 0;padding:8px 17px;background:var(--blue);border:2px solid var(--ink);box-shadow:var(--small-shadow);font:900 16px/1.4 "Microsoft YaHei",sans-serif;color:var(--ink);transform:rotate(1deg)}
+.hero h1{position:relative;margin:18px 0 6px;font-family:"Microsoft YaHei",sans-serif;font-size:clamp(64px,12vw,100px);font-weight:1000;line-height:.9;letter-spacing:-.06em;color:var(--ink);text-shadow:3px 3px 0 #fff,7px 7px 0 var(--blue)}
+.hero h1:before{content:"WELCOME TO THE BACKSTAGE";display:block;width:max-content;max-width:100%;margin:0 auto 7px;padding:4px 11px;background:var(--ink);color:var(--yellow);box-shadow:3px 3px 0 var(--blue);font:900 10px/1.35 Georgia,serif;letter-spacing:.13em;transform:rotate(-1.5deg)}
+.hero h1 .outline{display:block;width:max-content;margin:.09em auto 0;padding:.05em .23em .11em;background:var(--coral);color:#fff;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);-webkit-text-stroke:0;text-shadow:none;letter-spacing:.04em;transform:rotate(1.5deg)}
+.hero-sub{display:inline-flex;gap:9px;align-items:center;margin:10px 0 0;padding:8px 17px;background:var(--blue);border:2px solid var(--ink);box-shadow:var(--small-shadow);font:900 16px/1.4 "Microsoft YaHei",sans-serif;color:var(--ink);transform:rotate(1deg)}
 .collage{position:relative;z-index:4;height:282px;margin-top:22px}
 .polaroid{position:absolute;background:#fff;padding:8px 8px 25px;border:2px solid var(--ink);box-shadow:var(--small-shadow);cursor:pointer;transition:transform .25s ease,filter .25s ease}
 .polaroid:hover{z-index:8!important;filter:saturate(1.08);transform:rotate(0deg) translateY(-5px)!important}
@@ -147,7 +147,7 @@ button{font:inherit}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
 @media(max-width:640px){
  body{line-height:1.78}
- .page{width:100%;margin:0;border-width:0;box-shadow:none}.hero{min-height:820px;padding:45px 17px 24px}.hero-ribbon{top:18px}.hero-year{right:13px;top:20px}.hero-copy{width:96%;margin-top:70px}.hero h1{font-size:clamp(58px,16.5vw,68px)}.collage{height:266px}.polaroid.p1{left:1%;width:48%;height:205px}.polaroid.p2{right:1%;width:47%;height:192px}.polaroid.p3{left:31%;width:39%;height:145px}.hero-note{right:12px;bottom:17px}
+ .page{width:100%;margin:0;border-width:0;box-shadow:none}.hero{min-height:760px;padding:38px 17px 20px}.hero-ribbon{top:15px}.hero-year{right:13px;top:17px}.hero-copy{width:96%;margin-top:58px}.hero h1{font-size:clamp(58px,16.5vw,68px)}.collage{height:266px}.polaroid.p1{left:1%;width:48%;height:205px}.polaroid.p2{right:1%;width:47%;height:192px}.polaroid.p3{left:31%;width:39%;height:145px}.hero-note{right:12px;bottom:17px}
  .section{padding:62px 20px}.section-no{left:8px;font-size:55px}.section-title{font-size:30px}.lead-card{padding:26px 20px 20px;font-size:16px}.intro-photo{margin-left:0;margin-right:0}.intro-photo img{height:235px}
  .role-grid,.ticket-grid{grid-template-columns:1fr}.role-card:nth-child(3){grid-column:auto}.detail-photo{grid-template-columns:1fr 1fr}.detail-photo img{height:220px}.roles-gallery{padding:15px 11px 14px}.roles-gallery-head{display:block}.roles-gallery-title{max-width:none;margin-top:10px;text-align:left;font-size:18px}.roles-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.roles-gallery-card,.roles-gallery-card:nth-child(n){grid-column:span 1;min-height:0;transform:none}.roles-gallery-card:nth-child(3n){transform:rotate(1deg)}.roles-gallery-card:nth-child(4n){transform:rotate(-1deg)}.roles-gallery-card img{height:auto;min-height:0;aspect-ratio:4/3}.roles-gallery-card figcaption{margin-top:6px;padding:5px 6px;font-size:10px;line-height:1.4}.memory-wall{grid-template-columns:1fr 1fr;gap:10px;padding:6px 1px 0}.memory-wall .memory{padding:6px 6px 8px}.memory-wall .memory span{margin-top:6px;font-size:10px}.memory-wall .wall-sticker{width:92%;padding:10px 12px;font-size:15px}.photo-wall-stage{height:258px}.photo-card{padding:7px 7px 30px}.photo-card>span:last-child{left:9px;right:9px;bottom:5px;font-size:11px}.photo-wall{overflow:hidden}
  .check-paper{padding:27px 17px}.checklist li{padding-left:45px;font-size:15px}.admission{padding:25px 16px 28px}.admission:before{margin:-25px -16px 22px}.qrgrid{gap:10px}.qrcard{padding:8px}.qrcard span{font-size:11px}.closing{padding:58px 18px 45px}.photo-wall{width:100%;padding:16px 12px 14px}.photo-wall-head{display:block;margin-bottom:11px}.photo-wall-title{margin-top:10px;text-align:left;font-size:17px}.photo-wall-stage{height:245px}.photo-card{padding:7px 7px 30px}.photo-card>span:last-child{left:9px;right:9px;bottom:5px;font-size:11px}.photo-wall-controls{margin-top:16px;gap:14px}.photo-wall-controls button{width:46px;height:40px}.closing-copy{padding:22px 17px}.closing-copy p{font-size:15px}
@@ -165,8 +165,8 @@ button{font:inherit}
 @media(max-width:640px){.hero-mascot img{width:102px}.hero-wolf{left:-16px;bottom:5px}.hero-owl{right:-17px;top:105px}.zero-section{width:calc(100% - 28px);margin:20px auto;padding:23px 16px;box-shadow:7px 7px 0 var(--coral)}.zero-section:after{right:7px;top:-26px;font-size:62px}.zero-main{font-size:20px}.skill-card{grid-template-columns:1fr;gap:0;padding:8px;min-height:0}.skill-card img{height:auto;min-height:0;aspect-ratio:16/10}.skill-copy{padding:14px 10px 13px}.skill-card h3{font-size:24px}.photo-wall-hint{margin-top:34px!important;font-size:13px;padding:9px 13px}.encourage{font-size:18px!important}.ticket-grid{grid-template-columns:1fr}.benefit-hot strong:after{font-size:9px}}
 
 /* Manual hero gallery: centered lead card, lower side previews with corner overlap */
-.hero-gallery{position:relative;z-index:4;margin-top:22px;margin-bottom:122px;overflow:hidden}
-.hero-gallery-track{position:relative;width:100%;height:min(90vw,370px);margin:0 auto;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab;outline:none}
+.hero-gallery{position:relative;z-index:4;margin-top:8px;margin-bottom:96px;overflow:hidden}
+.hero-gallery-track{position:relative;width:100%;height:min(87vw,350px);margin:0 auto;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab;outline:none}
 .hero-gallery-track:active{cursor:grabbing}
 .hero-gallery-card{position:absolute;left:50%;top:18px;width:min(54vw,230px);margin:0;padding:8px 8px 54px;background:#fff;border:2px solid var(--ink);box-shadow:6px 7px 0 rgba(38,53,74,.72);opacity:0;pointer-events:none;transform:translate3d(-50%,2%,0) scale(.86);transition:opacity .28s ease,transform .48s cubic-bezier(.2,.8,.2,1),filter .3s ease;will-change:transform,opacity}
 .hero-gallery-card.is-active{z-index:6;opacity:1;pointer-events:auto;filter:none;transform:translate3d(-50%,0,24px) rotate(-1.2deg) scale(1.06)}
@@ -178,7 +178,7 @@ button{font:inherit}
 .hero-gallery-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#edf8fc;border:1px solid rgba(38,53,74,.22)}
 .hero-gallery-card span{position:absolute;left:8px;right:8px;bottom:7px;min-height:40px;display:grid;place-items:center;padding:4px 7px;overflow:hidden;background:var(--yellow-soft);border-top:2px solid var(--ink);text-align:center;white-space:normal;font:900 12px/1.35 "Microsoft YaHei",sans-serif;color:var(--ink)}
 .hero-gallery-card.is-active span{background:var(--blue-soft)}
-.hero-gallery-hint{position:relative;z-index:10;display:flex;align-items:center;width:max-content;max-width:calc(100% - 36px);margin:30px auto 0;padding:10px 17px;background:var(--blue-soft);color:var(--ink);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--coral);font:900 13px/1.45 "Microsoft YaHei",sans-serif;letter-spacing:.03em;text-align:center;transform:none}
+.hero-gallery-hint{position:relative;z-index:10;display:flex;align-items:center;width:max-content;max-width:calc(100% - 36px);margin:24px auto 0;padding:10px 17px;background:var(--blue-soft);color:var(--ink);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--coral);font:900 13px/1.45 "Microsoft YaHei",sans-serif;letter-spacing:.03em;text-align:center;transform:none}
 .hero-gallery-hint:before{content:"\2194";flex:none;margin-right:8px;color:var(--coral);font-size:19px}
 .skill-grid{grid-template-columns:1fr;gap:24px}
 .skill-card{--skill-accent:var(--yellow);display:grid;grid-template-columns:minmax(210px,.92fr) minmax(0,1.08fr);gap:0;align-items:stretch;min-height:250px;padding:0!important;overflow:hidden;background:#fff!important;border:3px solid var(--ink);box-shadow:8px 9px 0 rgba(38,53,74,.78);transform:none!important}
@@ -193,11 +193,11 @@ button{font:inherit}
 .skill-card h3{margin:0 0 11px!important;font-size:30px!important;letter-spacing:.08em}.skill-card h3:after{content:"";display:block;width:54px;height:5px;margin-top:9px;background:var(--skill-accent);border:1px solid var(--ink)}
 .skill-card p{font-size:15px;line-height:1.85}.skill-card .mini{align-self:flex-start;margin-top:15px;padding:5px 10px;background:var(--ink);color:#fff;border:0;box-shadow:3px 3px 0 var(--skill-accent);font-size:11px;letter-spacing:.04em;transform:none}
 @media(max-width:640px){
- .hero{min-height:820px}.hero-gallery-hint{margin-top:30px;font-size:13px}
+ .hero{min-height:760px}.hero-gallery-hint{margin-top:24px;font-size:13px}
  .skill-grid{gap:22px}.skill-card{grid-template-columns:1fr;min-height:0}.skill-card img{height:auto;min-height:0;aspect-ratio:16/10;border-right:0!important;border-bottom:3px solid var(--ink)!important}.skill-copy{padding:28px 19px 22px!important}.skill-copy:before{right:12px;top:12px}.skill-card h3{font-size:26px!important}.skill-card .role-index{top:18px;left:12px}
 }
-@media(min-width:641px){.hero-gallery-track{height:370px}}
-@media(max-width:390px){.hero-gallery-card span{font-size:11px}.hero-gallery{margin-bottom:126px}.hero-gallery-hint{max-width:calc(100% - 44px)}}
+@media(min-width:641px){.hero-gallery-track{height:350px}}
+@media(max-width:390px){.hero{min-height:790px}.hero-gallery-card span{font-size:11px}.hero-gallery{margin-bottom:100px}.hero-gallery-hint{max-width:calc(100% - 44px)}}
 </style>
 </head>
 <body>
@@ -211,7 +211,7 @@ button{font:inherit}
     <span class="hero-spark s1">✦</span><span class="hero-spark s2">✦</span><span class="hero-spark s3">✦</span>
     <div class="hero-copy reveal">
       <div class="hero-kicker">校团委艺术教育中心</div>
-      <h1>新生入场<span class="outline">请就位</span></h1>
+      <h1>等你加入<span class="outline">等你发光</span></h1>
       <div class="hero-sub"><span>●</span> 2026级新生招新 <span>→</span></div>
     </div>
     <div class="hero-gallery reveal" data-hero-gallery>
@@ -497,9 +497,9 @@ button{font:inherit}
   };
   const applyContent = (c) => {
     if (!c) return;
-    document.title = c.siteTitle || document.title;
+    document.title = c.siteTitle === '新生入场，请就位｜校团委艺术教育中心 2026 招新' ? '等你加入，等你发光｜校团委艺术教育中心 2026 招新' : (c.siteTitle || document.title);
     setText('.hero-kicker', c.hero?.kicker); setText('.hero-sub', '●  ' + (c.hero?.sub || '') + '  →');
-    const h1 = document.querySelector('.hero h1'); if (h1) { h1.firstChild.nodeValue = c.hero?.titleMain || ''; const o=h1.querySelector('.outline'); if(o)o.textContent=c.hero?.titleAccent||''; }
+    const h1 = document.querySelector('.hero h1'); if (h1) { const mainTitle=c.hero?.titleMain === '新生入场' ? '等你加入' : (c.hero?.titleMain || '等你加入'); const accentTitle=c.hero?.titleAccent === '请就位' ? '等你发光' : (c.hero?.titleAccent || '等你发光'); h1.firstChild.nodeValue = mainTitle; const o=h1.querySelector('.outline'); if(o)o.textContent=accentTitle; }
     setTitle('.intro .section-title', c.intro?.titleBefore, c.intro?.titleMark); setText('.intro .lead-card', c.intro?.lead); setText('.intro figcaption', c.intro?.caption);
     setTitle('.roles .section-title', c.roles?.titleBefore, c.roles?.titleMark); setText('.roles-intro',c.roles?.intro);
     document.querySelectorAll('.role-card').forEach((card,i)=>{ const x=c.roles?.cards?.[i]; if(!x)return; setText('h3',x.title,card); setText('p',x.body,card); setText('.mini',x.tag,card); const image=card.querySelector('img'); if(image&&x.imageKey&&c.images?.[x.imageKey]) image.src=c.images[x.imageKey]; });
