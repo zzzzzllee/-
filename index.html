@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="zh-CN" class="cloud-pending">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffd86b">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://lbaoqsxmpvqxpbogvpyj.supabase.co" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<script src="cloud-config.js"></script>
+<script>
+(() => {
+  const cfg = window.WECHAT_CLOUD_CONFIG || {};
+  const key = 'wechatRecruitmentCloudSnapshot2026';
+  const readCached = () => { try { return JSON.parse(sessionStorage.getItem(key) || 'null'); } catch { return null; } };
+  const saveCached = value => { try { sessionStorage.setItem(key, JSON.stringify(value)); } catch {} };
+  const preload = content => {
+    const urls = ['hero1','hero2','hero3','hero4','hero5','hero6'].map(key => content?.images?.[key]).filter(src => /^https?:/i.test(String(src || '')));
+    urls.forEach(src => { const image = new Image(); image.decoding = 'async'; image.fetchPriority = 'high'; image.src = src; });
+  };
+  window.__wechatCloudBootstrap = (async () => {
+    if (!cfg.url || !cfg.anonKey || !cfg.contentId) return null;
+    try {
+      const endpoint = cfg.url.replace(/\/$/, '') + '/rest/v1/wechat_contents?content_id=eq.' + encodeURIComponent(cfg.contentId) + '&select=content_json,updated_at';
+      const response = await fetch(endpoint, { cache: 'no-store', headers: { apikey: cfg.anonKey, Authorization: 'Bearer ' + cfg.anonKey } });
+      if (!response.ok) throw new Error('cloud bootstrap ' + response.status);
+      const rows = await response.json();
+      const snapshot = rows?.[0] || null;
+      if (snapshot?.content_json) { saveCached(snapshot); preload(snapshot.content_json); }
+      return snapshot;
+    } catch (error) {
+      console.warn('云端首屏内容读取失败，稍后使用安全回退', error);
+      return readCached();
+    }
+  })();
+})();
+</script>
+<title>2026级新生招新｜校团委艺术教育中心</title>
+<style>
+:root{--cream:#fffefb;--yellow:#fbf8bc;--yellow-soft:#fffbdc;--blue:#b2d6f8;--blue-soft:#e7f2ff;--coral:#f39b8e;--coral-soft:#ffe6e2;--ink:#1b1b1b;--white:#ffffff;--line:#1b1b1b;--sky-texture:url("assets/style-sky.jpg");--paper-texture:url("assets/style-paper.jpg");--shadow:8px 8px 0 var(--ink);--small-shadow:4px 4px 0 var(--ink)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:#b2d6f8}
+body{margin:0;color:var(--ink);font-family:"LXGW WenKai","霞鹜文楷","STKaiti","KaiTi","Microsoft YaHei",sans-serif;line-height:1.85;background:
+ radial-gradient(circle at 18px 18px,rgba(38,53,74,.1) 2px,transparent 2.5px) 0 0/36px 36px,
+ linear-gradient(150deg,#ffe987 0%,#fff5c6 34%,#dff6fb 72%,#bdeaf4 100%);}
+button{font:inherit}
+.page{position:relative;width:min(780px,calc(100% - 28px));margin:24px auto 48px;background:var(--cream);border:3px solid var(--ink);box-shadow:14px 14px 0 rgba(38,53,74,.92);overflow:hidden;isolation:isolate}
+.page:before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(90deg,rgba(178,214,248,.18) 1px,transparent 1px),linear-gradient(rgba(178,214,248,.18) 1px,transparent 1px);background-size:28px 28px}.page:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:url("assets/style-paper.jpg") center top/620px auto repeat;opacity:.10;mix-blend-mode:multiply}
+
+.hero{position:relative;min-height:650px;padding:44px 34px 26px;overflow:hidden;background:var(--yellow)}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 25%,rgba(255,255,255,.6) 0 3px,transparent 4px) 0 0/28px 28px;opacity:.62}
+.hero-ribbon{position:absolute;top:23px;left:-36px;z-index:5;padding:7px 54px;background:var(--coral);border:2px solid var(--ink);font:800 12px/1.2 "Microsoft YaHei",sans-serif;letter-spacing:.18em;transform:rotate(-7deg);box-shadow:3px 3px 0 var(--ink)}
+.hero-year{position:absolute;right:25px;top:24px;z-index:5;font:900 clamp(36px,9vw,68px)/.85 Georgia,serif;color:var(--blue);text-shadow:3px 3px 0 #fff,-1px -1px 0 var(--ink),1px 1px 0 var(--ink);transform:rotate(5deg)}
+.hero-spark{position:absolute;z-index:5;font:900 46px/1 Georgia;color:var(--coral);text-shadow:2px 2px 0 var(--ink);animation:spark 5s linear infinite}
+.hero-spark.s1{left:28px;top:128px}.hero-spark.s2{right:28px;top:240px;font-size:30px;animation-delay:-2s}.hero-spark.s3{left:47%;bottom:28px;color:var(--blue);font-size:35px;animation-delay:-3.5s}
+.hero-copy{position:relative;z-index:8;width:88%;margin:42px auto 14px;text-align:center}
+.hero-kicker{display:inline-block;padding:7px 15px;background:var(--coral);color:#fff;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);font:900 13px/1.4 "Microsoft YaHei",sans-serif;letter-spacing:.13em;transform:rotate(-2deg)}
+.hero h1{position:relative;margin:10px 0 4px;font-family:"Arial Black","PingFang SC","Microsoft YaHei",sans-serif;font-size:clamp(66px,13vw,104px);font-weight:900;line-height:.88;letter-spacing:.02em;color:var(--yellow-soft);-webkit-text-stroke:1.4px var(--ink);paint-order:stroke fill;text-rendering:optimizeLegibility;text-shadow:3px 3px 0 var(--coral),6px 6px 0 var(--ink);transform:none}
+
+.hero h1 .outline{display:block;width:max-content;margin:.04em auto 0;padding:.04em .25em .1em;font-size:.9em;font-family:"Arial Black","PingFang SC","Microsoft YaHei",sans-serif;font-weight:900;background:linear-gradient(135deg,#ff9489 0%,var(--coral) 52%,#ff554e 100%);color:#fff;border:3px solid var(--ink);border-radius:14px 3px 15px 5px;box-shadow:4px 5px 0 var(--ink),8px 9px 0 var(--blue);-webkit-text-stroke:.8px var(--ink);paint-order:stroke fill;text-shadow:2px 2px 0 var(--ink);letter-spacing:.06em;transform:none}
+.hero-sub{display:inline-flex;gap:9px;align-items:center;margin:8px 0 0;padding:8px 17px;background:var(--blue);border:2px solid var(--ink);box-shadow:var(--small-shadow);font:900 16px/1.4 "Microsoft YaHei",sans-serif;color:var(--ink);transform:rotate(1deg)}
+.collage{position:relative;z-index:4;height:282px;margin-top:22px}
+.polaroid{position:absolute;background:#fff;padding:8px 8px 25px;border:2px solid var(--ink);box-shadow:var(--small-shadow);cursor:pointer;transition:transform .25s ease,filter .25s ease}
+.polaroid:hover{z-index:8!important;filter:saturate(1.08);transform:rotate(0deg) translateY(-5px)!important}
+.polaroid img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.polaroid.p1{left:5%;top:18px;width:44%;height:220px;transform:rotate(-5deg);z-index:2}.polaroid.p2{right:4%;top:0;width:42%;height:205px;transform:rotate(6deg);z-index:3}.polaroid.p3{left:34%;bottom:0;width:34%;height:160px;transform:rotate(1.5deg);z-index:4}
+.tape{position:absolute;z-index:9;width:72px;height:22px;background:rgba(73,184,214,.76);border:1px solid rgba(38,53,74,.28);transform:rotate(-9deg);animation:wiggle 4.8s ease-in-out infinite;pointer-events:none}.tape.t1{left:20%;top:4px}.tape.t2{right:16%;top:-5px;background:rgba(255,111,97,.7);transform:rotate(12deg);animation-delay:-1.7s}.tape.t3{left:46%;bottom:145px;background:rgba(255,255,255,.72);transform:rotate(-2deg);animation-delay:-3.2s}
+.hero-note{position:absolute;right:22px;bottom:24px;z-index:7;padding:6px 12px;border:2px solid var(--ink);border-radius:50%;background:#fff;font:800 12px/1.5 "Microsoft YaHei",sans-serif;transform:rotate(-8deg);animation:floaty 3.8s ease-in-out infinite}
+.campus-decor{position:absolute;z-index:6;pointer-events:none;text-align:center;animation:campusFloat 5.5s ease-in-out infinite}.campus-decor img{display:block;width:158px;max-width:23vw;object-fit:contain;filter:drop-shadow(3px 4px 0 rgba(27,27,27,.18));opacity:.96}.campus-decor span{display:inline-block;margin-top:4px;padding:2px 9px;background:#fff;border:1.5px solid var(--ink);font:900 11px/1.3 "Microsoft YaHei",sans-serif;transform:rotate(-3deg)}.campus-west{left:6px;bottom:20px;transform:rotate(-8deg)}.campus-north{right:6px;top:58px;transform:rotate(8deg);animation-delay:-2.2s}@keyframes campusFloat{0%,100%{translate:0 0}50%{translate:0 -7px}}.video-section{background:linear-gradient(145deg,rgba(255,251,220,.92),rgba(231,242,255,.94))!important}
+.video-card{position:relative;padding:20px;background:rgba(255,255,255,.86);border:3px solid var(--ink);box-shadow:var(--shadow);transform:rotate(-.6deg)}
+.video-intro{margin:0 0 18px;font-size:16px;line-height:1.9}
+.video-shell{position:relative;overflow:hidden;background:#1b1b1b;border:2px solid var(--ink);aspect-ratio:16/9;display:grid;place-items:center}
+.video-shell video{display:none;width:100%;height:100%;object-fit:contain;background:#111}
+.video-shell.has-video video{display:block}.video-shell.has-video .video-empty{display:none}
+.video-empty{padding:28px 20px;text-align:center;color:#fff;background:linear-gradient(135deg,rgba(27,27,27,.92),rgba(79,117,145,.9)),url("assets/style-sky.jpg") center/cover;font:900 20px/1.6 "Microsoft YaHei",sans-serif}
+.video-empty span{display:block;margin-top:6px;font:500 12px/1.7 "Microsoft YaHei",sans-serif;opacity:.82}
+.video-note{margin:14px 0 0;color:rgba(27,27,27,.72);font-size:12px;line-height:1.7}.section{position:relative;padding:70px 52px}
+.section:nth-of-type(odd){background:rgba(255,255,255,.82)}
+.section:nth-of-type(even){background:rgba(231,242,255,.78)}
+.section + .section{border-top:2px dashed rgba(27,27,27,.28)}
+.section-no{position:absolute;left:22px;top:18px;font:900 64px/.9 Georgia,serif;color:transparent;-webkit-text-stroke:2px var(--ink);opacity:.2;letter-spacing:-.06em}
+.section-label{display:inline-block;margin:0 0 8px;padding:4px 11px;background:var(--coral);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);font:900 11px/1.4 "Microsoft YaHei",sans-serif;color:#fff;letter-spacing:.12em;transform:rotate(-2deg)}
+.section-title{position:relative;margin:6px 0 28px;font-family:"Microsoft YaHei",sans-serif;font-size:clamp(29px,6vw,42px);font-weight:1000;line-height:1.17;letter-spacing:-.045em}
+.section-title:after{content:"";display:block;width:96px;height:8px;margin-top:10px;background:var(--yellow);border:2px solid var(--ink);transform:skewX(-22deg)}
+.section-title .mark{position:relative;z-index:1;color:var(--coral)}
+.section-title .mark:after{content:"";position:absolute;left:-4px;right:-4px;bottom:1px;height:9px;z-index:-1;background:var(--yellow);transform:rotate(-2deg)}
+.lead-card{position:relative;padding:28px 28px 26px;background:#fff;border:2px solid var(--ink);box-shadow:var(--shadow);font-size:18px;line-height:2}
+.lead-card:before{content:"FROM AUDIENCE TO BACKSTAGE";position:absolute;left:20px;top:-16px;padding:4px 10px;background:var(--blue);border:2px solid var(--ink);color:#fff;font:800 10px/1.4 Georgia,serif;letter-spacing:.08em;transform:rotate(-1.5deg)}
+.lead-card strong{color:var(--coral);font-weight:900}
+.doodle-arrow{position:absolute;right:12px;bottom:-47px;font:900 48px/1 Georgia;color:var(--blue);transform:rotate(18deg);animation:floaty 3s ease-in-out infinite}
+.intro-photo{position:relative;margin:38px 6px 0;padding:9px 9px 30px;background:#fff;border:2px solid var(--ink);box-shadow:var(--small-shadow);transform:rotate(1deg)}
+.intro-photo img{display:block;width:100%;height:330px;object-fit:cover;cursor:pointer}.intro-photo figcaption{text-align:center;margin-top:9px;font-size:12px;color:#667085}
+.role-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 18px}
+.role-card{position:relative;padding:24px 20px 20px;border:2px solid var(--ink);box-shadow:var(--small-shadow);background:#fff;min-height:220px;transition:transform .24s ease}
+.role-card:hover{transform:translate(-2px,-4px) rotate(0deg)!important;box-shadow:8px 9px 0 var(--ink)}
+.role-card:nth-child(1){background:var(--yellow-soft);transform:rotate(-1.2deg)}.role-card:nth-child(2){background:var(--blue-soft);transform:rotate(1.3deg)}.role-card:nth-child(3){background:var(--coral-soft);transform:rotate(.6deg);grid-column:1/-1}
+.role-index{position:absolute;right:12px;top:-22px;width:45px;height:45px;display:grid;place-items:center;border:2px solid var(--ink);border-radius:50%;background:#fff;font:900 18px/1 Georgia,serif;box-shadow:3px 3px 0 var(--ink)}
+.role-card h3{margin:4px 0 10px;font:1000 21px/1.35 "Microsoft YaHei",sans-serif}
+.role-card p{margin:0;font-size:15px;line-height:1.95}
+.role-card .mini{display:inline-block;margin-top:14px;padding:3px 8px;border:1.5px solid var(--ink);background:#fff;font-size:11px;font-weight:800;transform:rotate(-2deg)}
+.detail-photo{display:grid;grid-template-columns:1.4fr .8fr;gap:12px;margin-top:34px}
+.detail-photo .frame{position:relative;border:2px solid var(--ink);background:#fff;padding:7px;box-shadow:var(--small-shadow);overflow:hidden}.detail-photo .frame:first-child{transform:rotate(-1deg)}.detail-photo .frame:last-child{transform:rotate(2deg)}
+.detail-photo img{display:block;width:100%;height:300px;object-fit:cover;cursor:pointer;transition:transform .5s ease}.detail-photo .frame:hover img{transform:scale(1.035)}
+.roles-gallery{margin-top:36px;padding:18px 16px 16px;background:var(--yellow-soft);border:2px solid var(--ink);box-shadow:var(--small-shadow);transform:rotate(.7deg)}.roles-gallery-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px}.roles-gallery-label{display:inline-block;padding:4px 8px;background:var(--coral);color:#fff;border:2px solid var(--ink);font:900 10px/1.2 Georgia,serif;letter-spacing:.12em;transform:rotate(-2deg)}.roles-gallery-title{margin:0;max-width:360px;font:1000 20px/1.35 "Microsoft YaHei",sans-serif;text-align:right}.roles-gallery-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px}.roles-gallery-card{position:relative;min-height:154px;padding:6px;background:#fff;border:2px solid var(--ink);box-shadow:4px 4px 0 rgba(38,53,74,.2);overflow:hidden}.roles-gallery-card:nth-child(1){grid-column:span 7;transform:rotate(-1.2deg)}.roles-gallery-card:nth-child(2){grid-column:span 5;transform:rotate(1.5deg)}.roles-gallery-card:nth-child(3){grid-column:span 4;transform:rotate(1deg)}.roles-gallery-card:nth-child(4){grid-column:span 8;transform:rotate(-.8deg)}.roles-gallery-card:nth-child(5),.roles-gallery-card:nth-child(6){grid-column:span 6;transform:rotate(-1.4deg)}.roles-gallery-card:nth-child(6){transform:rotate(1.3deg)}.roles-gallery-card img{display:block;width:100%;height:100%;min-height:142px;object-fit:cover;cursor:pointer;transition:transform .45s ease}.roles-gallery-card:hover img{transform:scale(1.05)}.roles-gallery-card figcaption{position:absolute;left:10px;right:10px;bottom:10px;padding:5px 7px;background:rgba(255,250,237,.9);border:1px solid var(--ink);font:800 11px/1.35 "Microsoft YaHei",sans-serif}.roles-gallery-hint{margin:15px 0 0;color:#53606a;font-size:12px;line-height:1.7}
+.ticket-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:6px}
+.ticket{position:relative;padding:20px 22px 20px 70px;border:2px solid var(--ink);background:#fff;box-shadow:var(--small-shadow);min-height:145px;overflow:hidden}
+.ticket:nth-child(2n){background:var(--blue-soft)}.ticket:nth-child(3n){background:var(--coral-soft)}.ticket:nth-child(4n){background:var(--yellow-soft)}
+.ticket:before,.ticket:after{content:"";position:absolute;left:-11px;width:22px;height:22px;border:2px solid var(--ink);border-radius:50%;background:var(--cream)}.ticket:before{top:-11px}.ticket:after{bottom:-11px}
+.ticket-num{position:absolute;left:20px;top:20px;font:900 31px/1 Georgia,serif;color:var(--coral)}
+.ticket strong{display:block;margin-bottom:7px;font:1000 18px/1.35 "Microsoft YaHei",sans-serif}.ticket p{margin:0;font-size:14px;line-height:1.75}
+.memory-wall{position:relative;height:590px;margin-top:12px}
+.memory{position:absolute;padding:8px 8px 30px;background:#fff;border:2px solid var(--ink);box-shadow:var(--small-shadow);cursor:pointer}
+.memory img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none}.memory span{position:absolute;left:0;right:0;bottom:4px;text-align:center;font-size:11px;font-weight:800}
+.memory.m1{left:0;top:22px;width:58%;height:315px;transform:rotate(-3deg);z-index:2}.memory.m2{right:0;top:0;width:43%;height:250px;transform:rotate(4deg);z-index:3}.memory.m3{right:2%;bottom:18px;width:54%;height:320px;transform:rotate(2deg);z-index:4}.memory.m4{left:4%;bottom:0;width:37%;height:228px;transform:rotate(-5deg);z-index:5}
+.wall-sticker{position:absolute;left:42%;top:44%;z-index:8;width:118px;height:118px;display:grid;place-items:center;text-align:center;border:2px solid var(--ink);border-radius:50%;background:var(--yellow);box-shadow:var(--small-shadow);font:1000 15px/1.45 "Microsoft YaHei",sans-serif;transform:rotate(-8deg);animation:floaty 4s ease-in-out infinite}
+/* 移动端优先：图片说明独立放在照片下方，避免文字盖住画面 */
+.roles-gallery-card{display:flex;flex-direction:column;min-height:0;margin:0;padding:7px}.roles-gallery-card img{flex:none;width:100%;height:auto;min-height:0;aspect-ratio:4/3;object-fit:cover}.roles-gallery-card figcaption{position:static;display:block;flex:1;margin:7px 1px 0;padding:6px 7px;background:var(--cream);border:1px solid rgba(38,53,74,.45);font:800 11px/1.45 "Microsoft YaHei",sans-serif;overflow-wrap:anywhere}
+/* 青春照片墙改为不遮图的卡片拼贴，标语独立成一张横幅 */
+.memory-wall{display:grid;grid-template-columns:1.15fr .85fr;grid-template-areas:"m1 m2" "m3 m4" "sticker sticker";gap:14px;height:auto;margin-top:26px;padding:8px 4px 0}.memory-wall .memory{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:auto;height:auto;min-height:0;padding:8px 8px 9px;transform:none;z-index:auto}.memory-wall .memory img{width:100%;height:auto;min-height:0;aspect-ratio:4/3;object-fit:cover}.memory-wall .memory span{position:static;display:block;margin-top:7px;text-align:center;font-size:11px;line-height:1.35}.memory-wall .memory.m1{grid-area:m1;transform:rotate(-2.2deg)}.memory-wall .memory.m2{grid-area:m2;transform:rotate(2.6deg)}.memory-wall .memory.m3{grid-area:m3;transform:rotate(1.8deg)}.memory-wall .memory.m4{grid-area:m4;transform:rotate(-2.6deg)}.memory-wall .wall-sticker{grid-area:sticker;position:relative;left:auto;right:auto;top:auto;bottom:auto;justify-self:center;width:min(86%,320px);height:auto;min-height:0;padding:12px 18px;border-radius:18px;transform:rotate(-1.5deg);font-size:17px;line-height:1.35;animation:none}.check-paper{position:relative;padding:30px 28px;background:#fff;border:2px solid var(--ink);box-shadow:var(--shadow)}
+.check-paper:before{content:"CHECK LIST";position:absolute;right:18px;top:-17px;padding:5px 12px;background:var(--yellow);border:2px solid var(--ink);font:900 12px/1 Georgia,serif;letter-spacing:.08em;transform:rotate(3deg)}
+.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;margin:14px 0;padding:11px 12px 11px 52px;border-bottom:2px dashed rgba(38,53,74,.25);font-size:16px}.checklist li:last-child{border-bottom:0}.checklist li:before{content:"✓";position:absolute;left:7px;top:8px;width:30px;height:30px;display:grid;place-items:center;border:2px solid var(--ink);background:var(--blue);color:#fff;font:900 18px/1 Arial;transform:rotate(-4deg)}
+.encourage{margin:26px 0 0;padding:18px 21px;background:var(--coral-soft);border-left:7px solid var(--coral);font-weight:700}
+.apply-section{background:linear-gradient(145deg,rgba(178,214,248,.94) 0%,rgba(223,240,255,.92) 72%,rgba(255,251,220,.94) 100%),url("assets/style-sky.jpg") center/cover!important;color:var(--ink)}
+.apply-section .section-label{background:var(--yellow);color:var(--ink)}
+.apply-section .section-title:after{background:var(--coral)}
+.admission{position:relative;padding:29px 26px 32px;background:var(--cream);border:3px solid var(--ink);box-shadow:10px 10px 0 var(--coral);overflow:hidden}
+.admission:before{content:"ADMIT ONE · 2026 · ADMIT ONE · 2026 ·";display:block;margin:-29px -26px 25px;padding:8px 12px;background:var(--yellow);border-bottom:2px dashed var(--ink);font:900 11px/1.4 Georgia,serif;letter-spacing:.17em;text-align:center}
+.admission h3{margin:0 0 12px;font:1000 24px/1.35 "Microsoft YaHei",sans-serif}.admission .apply-meta{margin:0;padding:14px 16px;background:#fff;border:2px solid var(--ink);font-size:15px}.pending{display:inline-block;padding:1px 7px;background:var(--coral);color:#fff;border:1.5px solid var(--ink);font-weight:900;transform:rotate(-1deg)}
+.qrgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px;margin-top:25px}
+.qrcard{position:relative;padding:13px 13px 15px;background:#fff;border:2px solid var(--ink);box-shadow:var(--small-shadow);text-align:center;transition:transform .2s ease}.qrcard:nth-child(odd){transform:rotate(-1deg)}.qrcard:nth-child(even){transform:rotate(1deg)}.qrcard:hover{transform:translateY(-4px) rotate(0deg)}
+.qrcard:before{content:"SCAN";position:absolute;right:-8px;top:-11px;padding:3px 8px;background:var(--coral);border:2px solid var(--ink);color:#fff;font:900 9px/1 Georgia,serif;letter-spacing:.08em;transform:rotate(6deg)}
+.qrcard img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#fff;border:1.5px dashed #b7bec8;cursor:pointer}.qrcard span{display:block;margin-top:9px;font:900 13px/1.5 "Microsoft YaHei",sans-serif}
+.closing{position:relative;padding:72px 38px 55px;background:var(--coral);text-align:center;overflow:hidden}
+.closing:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent 0 18px,rgba(255,255,255,.11) 18px 20px)}
+.photo-wall{position:relative;z-index:2;width:min(100%,640px);margin:0 auto;padding:20px 18px 17px;background:var(--cream);border:3px solid var(--ink);box-shadow:10px 10px 0 var(--yellow);transform:rotate(-1.2deg)}.intro-photo-wall{z-index:1;margin-top:30px;transform:rotate(.8deg);box-shadow:8px 8px 0 var(--blue)}
+.photo-wall-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px;text-align:left}.photo-wall-label{display:inline-block;padding:4px 8px;background:var(--blue);border:2px solid var(--ink);font:900 10px/1.2 Georgia,serif;letter-spacing:.14em;transform:rotate(-2deg)}.photo-wall-title{margin:0;font:1000 18px/1.3 "Microsoft YaHei",sans-serif;text-align:right}
+.photo-wall-stage{position:relative;height:392px;min-height:250px;touch-action:pan-y;user-select:none;-webkit-user-select:none;perspective:1100px}.photo-card{position:absolute;inset:0;padding:10px 10px 35px;background:#fff;border:2px solid var(--ink);box-shadow:6px 6px 0 rgba(38,53,74,.25);opacity:0;pointer-events:none;transform:translate3d(34px,30px,0) rotate(7deg) scale(.9);transition:opacity .35s ease,transform .48s cubic-bezier(.2,.8,.2,1),filter .35s ease;will-change:transform,opacity}.photo-card.is-active{z-index:5;opacity:1;pointer-events:auto;transform:translate3d(0,0,20px) rotate(-1deg) scale(1)}.photo-card.is-prev{z-index:3;opacity:.68;filter:saturate(.72);transform:translate3d(-18px,15px,0) rotate(-5deg) scale(.95)}.photo-card.is-next{z-index:4;opacity:.78;filter:saturate(.82);transform:translate3d(19px,17px,0) rotate(4deg) scale(.96)}.photo-card.is-prev-2{z-index:2;opacity:.34;filter:saturate(.6);transform:translate3d(-31px,29px,0) rotate(-8deg) scale(.9)}.photo-card.is-next-2{z-index:2;opacity:.42;filter:saturate(.64);transform:translate3d(35px,30px,0) rotate(8deg) scale(.9)}.photo-card.is-prev-3{z-index:1;opacity:.16;filter:saturate(.48);transform:translate3d(-43px,43px,0) rotate(-11deg) scale(.85)}.photo-card.is-next-3{z-index:1;opacity:.2;filter:saturate(.5);transform:translate3d(48px,44px,0) rotate(11deg) scale(.85)}.photo-card img{display:block;width:100%;height:100%;object-fit:cover;background:#eef7fb;cursor:pointer}.photo-card>span:last-child{position:absolute;left:12px;right:12px;bottom:7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 12px/1.4 "Microsoft YaHei",sans-serif}.photo-wall-hint{margin:13px 0 0;color:#53606a;font-size:12px}.photo-wall-controls,.photo-wall-count,.photo-card-index{display:none!important}
+.closing-copy{position:relative;z-index:4;margin:40px auto 0;max-width:610px;padding:26px 25px;background:var(--cream);border:3px solid var(--ink);box-shadow:8px 8px 0 var(--blue);transform:rotate(1deg)}
+.closing-copy p{margin:0;font-size:16px;line-height:2}.closing-copy strong{color:var(--coral);font-weight:1000}
+.closing-title{position:relative;z-index:4;margin:40px 0 5px;font:1000 clamp(36px,8vw,62px)/1.05 "Microsoft YaHei",sans-serif;color:#fff;text-shadow:4px 4px 0 var(--ink);animation:pulse 3.2s ease-in-out infinite}.closing-sub{position:relative;z-index:4;margin:10px 0 0;font:900 15px/1.7 "Microsoft YaHei",sans-serif;color:var(--ink)}
+.footer{padding:23px 18px;background:var(--ink);color:#fff;text-align:center;font:700 12px/1.8 "Microsoft YaHei",sans-serif;letter-spacing:.08em}
+.reveal{opacity:1;transform:none;transition:opacity .75s ease,transform .75s cubic-bezier(.2,.8,.2,1)}.reveal-motion .reveal{opacity:0;transform:translateY(28px) rotate(.35deg)}.reveal-motion .reveal.is-visible{opacity:1;transform:none}
+.floaty{animation:floaty 4s ease-in-out infinite}
+@keyframes floaty{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -8px;rotate:1deg}}
+@keyframes wiggle{0%,100%{rotate:-2deg}50%{rotate:3deg}}
+@keyframes spark{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+@media(max-width:640px){
+ body{line-height:1.78}
+ .page{width:100%;margin:0;border-width:0;box-shadow:none}.hero{min-height:730px;padding:26px 17px 18px}.hero-ribbon{top:10px}.hero-year{right:13px;top:12px}.hero-copy{width:98%;margin-top:30px}.hero h1{font-size:clamp(62px,17vw,72px)}.collage{height:266px}.polaroid.p1{left:1%;width:48%;height:205px}.polaroid.p2{right:1%;width:47%;height:192px}.polaroid.p3{left:31%;width:39%;height:145px}.hero-note{right:12px;bottom:17px}
+ .section{padding:62px 20px}.section-no{left:8px;font-size:55px}.section-title{font-size:30px}.lead-card{padding:26px 20px 20px;font-size:16px}.intro-photo{margin-left:0;margin-right:0}.intro-photo img{height:235px}
+ .role-grid,.ticket-grid{grid-template-columns:1fr}.role-card:nth-child(3){grid-column:auto}.detail-photo{grid-template-columns:1fr 1fr}.detail-photo img{height:220px}.roles-gallery{padding:15px 11px 14px}.roles-gallery-head{display:block}.roles-gallery-title{max-width:none;margin-top:10px;text-align:left;font-size:18px}.roles-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.roles-gallery-card,.roles-gallery-card:nth-child(n){grid-column:span 1;min-height:0;transform:none}.roles-gallery-card:nth-child(3n){transform:rotate(1deg)}.roles-gallery-card:nth-child(4n){transform:rotate(-1deg)}.roles-gallery-card img{height:auto;min-height:0;aspect-ratio:4/3}.roles-gallery-card figcaption{margin-top:6px;padding:5px 6px;font-size:10px;line-height:1.4}.memory-wall{grid-template-columns:1fr 1fr;gap:10px;padding:6px 1px 0}.memory-wall .memory{padding:6px 6px 8px}.memory-wall .memory span{margin-top:6px;font-size:10px}.memory-wall .wall-sticker{width:92%;padding:10px 12px;font-size:15px}.photo-wall-stage{height:258px}.photo-card{padding:7px 7px 30px}.photo-card>span:last-child{left:9px;right:9px;bottom:5px;font-size:11px}.photo-wall{overflow:hidden}
+ .check-paper{padding:27px 17px}.checklist li{padding-left:45px;font-size:15px}.admission{padding:25px 16px 28px}.admission:before{margin:-25px -16px 22px}.qrgrid{gap:10px}.qrcard{padding:8px}.qrcard span{font-size:11px}.closing{padding:58px 18px 45px}.photo-wall{width:100%;padding:16px 12px 14px}.photo-wall-head{display:block;margin-bottom:11px}.photo-wall-title{margin-top:10px;text-align:left;font-size:17px}.photo-wall-stage{height:245px}.photo-card{padding:7px 7px 30px}.photo-card>span:last-child{left:9px;right:9px;bottom:5px;font-size:11px}.photo-wall-controls{margin-top:16px;gap:14px}.photo-wall-controls button{width:46px;height:40px}.closing-copy{padding:22px 17px}.closing-copy p{font-size:15px}
+}
+@media(max-width:520px){.campus-decor img{width:98px;max-width:27vw}.campus-west{left:-6px;bottom:14px}.campus-north{right:-6px;top:46px}.campus-decor span{font-size:9px;padding:2px 6px}}@media(max-width:390px){.hero{min-height:880px}.hero h1{font-size:clamp(62px,17vw,68px)}.hero-sub{font-size:14px}.section{padding-left:16px;padding-right:16px}.section-title{font-size:28px}.memory-wall{height:auto}.qrgrid{gap:8px}.qrcard span{font-size:10px}.ticket{padding-left:62px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-spark,.tape,.hero-note,.wall-sticker,.closing-title,.floaty,.campus-decor{animation:none!important}.reveal{opacity:1;transform:none;transition:none}.polaroid,.role-card,.qrcard,.photo-card,.photo-wall-controls button{transition:none}}
+.cloud-pending .page img{visibility:hidden}.cloud-loading{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:#fffefb;backdrop-filter:blur(7px);font:700 14px/1.6 "Microsoft YaHei",sans-serif;color:var(--ink);transition:opacity .2s ease}.cloud-loading.is-hidden{opacity:0;pointer-events:none}.cloud-loading-card{padding:16px 20px;background:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);text-align:center}.cloud-loading-dot{display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:var(--coral);animation:cloudPulse 1s ease-in-out infinite alternate}@keyframes cloudPulse{to{transform:scale(1.45);background:var(--blue)}}@media print{body{background:#fff}.page{width:100%;margin:0;border:0;box-shadow:none}.reveal{opacity:1;transform:none}.section{break-inside:avoid}.hero{min-height:640px}}
+
+/* 2026 招新重构：公开页只读、岗位卡、零基础重点和可视化布局覆盖 */
+.hero-mascot{position:absolute;z-index:7;pointer-events:none}.hero-mascot img{display:block;width:clamp(82px,17vw,138px);height:auto;object-fit:contain;filter:drop-shadow(4px 5px 0 rgba(27,27,27,.18))}.hero-wolf{left:-10px;bottom:8px;transform:rotate(-9deg)}.hero-owl{right:-8px;top:94px;transform:rotate(8deg)}
+.zero-section{position:relative;margin:26px auto;padding:26px 22px;width:min(88%,650px);background:var(--ink);color:#fff;border:3px solid var(--ink);box-shadow:10px 10px 0 var(--coral);text-align:center;transform:rotate(-.6deg)}.zero-section:after{content:"!";position:absolute;right:14px;top:-34px;color:var(--yellow);font:1000 82px/1 Georgia,serif;text-shadow:3px 3px 0 var(--ink);transform:rotate(8deg)}.zero-badge{display:inline-block;padding:5px 10px;background:var(--yellow);color:var(--ink);border:2px solid #fff;font:900 10px/1.3 Arial,sans-serif;letter-spacing:.12em}.zero-section h2{margin:13px 0 8px;font:1000 clamp(27px,6vw,40px)/1.15 "Microsoft YaHei",sans-serif;color:var(--yellow)}.zero-main{margin:0;font:1000 clamp(19px,4.8vw,28px)/1.55 "Microsoft YaHei",sans-serif}.zero-note{margin:10px 0 0;color:#dceeff;font-size:14px;line-height:1.7}
+.roles-intro{margin:-8px 0 28px;padding:15px 17px;border-left:6px solid var(--blue);background:#fff;font-weight:800}.roles-more-note{display:block;width:max-content;max-width:100%;margin:28px auto 0;padding:10px 16px;background:var(--blue-soft);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--coral);color:var(--ink);font:1000 15px/1.5 "Microsoft YaHei",sans-serif;text-align:center;transform:rotate(-1deg)}.skill-grid{grid-template-columns:1fr}.skill-card{display:grid;grid-template-columns:minmax(150px,.9fr) minmax(0,1.1fr);gap:18px;align-items:stretch;padding:10px;min-height:230px}.skill-card:nth-child(n){grid-column:auto}.skill-card:nth-child(4){background:var(--yellow-soft)}.skill-card:nth-child(5){background:var(--blue-soft)}.skill-card img{display:block;width:100%;height:100%;min-height:205px;object-fit:cover;border:2px solid var(--ink);background:#eef7fb}.skill-copy{align-self:center;padding:13px 12px 12px 0}.skill-card h3{font-size:27px}.benefit-hot{background:var(--yellow)!important}.benefit-hot strong:after{content:"重点福利";display:inline-block;margin-left:8px;padding:2px 6px;background:var(--coral);color:#fff;border:1.5px solid var(--ink);font:900 9px/1.4 "Microsoft YaHei",sans-serif;transform:rotate(-3deg)}
+.photo-wall-hint{margin:30px auto 4px!important;width:max-content;max-width:100%;padding:8px 14px;background:var(--ink);color:#fff!important;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--yellow);font:900 13px/1.5 "Microsoft YaHei",sans-serif;text-align:center;transform:rotate(-1deg)}.photo-wall-hint:before{content:"↔ ";color:var(--yellow);font-size:16px}.encourage{font-size:20px!important;line-height:1.65!important;text-align:center;background:var(--yellow)!important;border:3px solid var(--ink)!important;border-left:3px solid var(--ink)!important;box-shadow:7px 7px 0 var(--coral);font-weight:1000!important}.page img{cursor:default}.roles-gallery-card img,.detail-photo img,.photo-card img,.qrcard img,.intro-photo img{cursor:default}
+[data-layout-id]{translate:var(--layout-x,0px) var(--layout-y,0px)}
+@media(max-width:640px){.hero-mascot img{width:102px}.hero-wolf{left:-16px;bottom:5px}.hero-owl{right:-38px;top:105px}.zero-section{width:calc(100% - 28px);margin:20px auto;padding:23px 16px;box-shadow:7px 7px 0 var(--coral)}.zero-section:after{right:7px;top:-26px;font-size:62px}.zero-main{font-size:20px}.skill-card{grid-template-columns:1fr;gap:0;padding:8px;min-height:0}.skill-card img{height:auto;min-height:0;aspect-ratio:16/10}.skill-copy{padding:14px 10px 13px}.skill-card h3{font-size:24px}.photo-wall-hint{margin-top:34px!important;font-size:13px;padding:9px 13px}.encourage{font-size:18px!important}.ticket-grid{grid-template-columns:1fr}.benefit-hot strong:after{font-size:9px}}
+
+/* Manual hero gallery: centered lead card, lower side previews with corner overlap */
+.hero-gallery{position:relative;z-index:4;margin-top:8px;margin-bottom:96px;overflow:hidden}
+.hero-gallery-track{position:relative;width:100%;height:min(87vw,350px);margin:0 auto;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab;outline:none}
+.hero-gallery-track:active{cursor:grabbing}
+.hero-gallery-card{position:absolute;left:50%;top:18px;width:min(54vw,230px);margin:0;padding:8px 8px 54px;background:#fff;border:2px solid var(--ink);box-shadow:6px 7px 0 rgba(38,53,74,.72);opacity:0;pointer-events:none;transform:translate3d(-50%,2%,0) scale(.86);transition:opacity .28s ease,transform .48s cubic-bezier(.2,.8,.2,1),filter .3s ease;will-change:transform,opacity}
+.hero-gallery-card.is-active{z-index:6;opacity:1;pointer-events:auto;filter:none;transform:translate3d(-50%,0,24px) rotate(-1.2deg) scale(1.06)}
+.hero-gallery-card.is-prev{z-index:4;opacity:.82;filter:saturate(.78);transform:translate3d(calc(-50% - 78%),58%,0) rotate(-5deg) scale(.92)}
+.hero-gallery-card.is-next{z-index:5;opacity:.86;filter:saturate(.82);transform:translate3d(calc(-50% + 78%),58%,8px) rotate(5deg) scale(.92)}
+.hero-gallery-card.is-next-2{z-index:2;opacity:0;transform:translate3d(calc(-50% + 112%),62%,0) rotate(7deg) scale(.86)}
+.hero-gallery-card:before{content:"";position:absolute;left:50%;top:-10px;width:72px;height:19px;background:rgba(73,184,214,.72);border:1px solid rgba(38,53,74,.25);transform:translateX(-50%) rotate(-3deg)}
+.hero-gallery-card:nth-child(2n):before{background:rgba(255,111,97,.68);transform:translateX(-50%) rotate(4deg)}
+.hero-gallery-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#edf8fc;border:1px solid rgba(38,53,74,.22)}
+.hero-gallery-card span{position:absolute;left:8px;right:8px;bottom:7px;min-height:40px;display:grid;place-items:center;padding:4px 7px;overflow:hidden;background:var(--yellow-soft);border-top:2px solid var(--ink);text-align:center;white-space:normal;font:900 12px/1.35 "Microsoft YaHei",sans-serif;color:var(--ink)}
+.hero-gallery-card.is-active span{background:var(--blue-soft)}
+.hero-gallery-hint{position:relative;z-index:10;display:flex;align-items:center;width:max-content;max-width:calc(100% - 36px);margin:24px auto 0;padding:10px 17px;background:var(--blue-soft);color:var(--ink);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--coral);font:900 13px/1.45 "Microsoft YaHei",sans-serif;letter-spacing:.03em;text-align:center;transform:none}
+.hero-gallery-hint:before{content:"\2194";flex:none;margin-right:8px;color:var(--coral);font-size:19px}
+.skill-grid{grid-template-columns:1fr;gap:24px}
+.skill-card{--skill-accent:var(--yellow);display:grid;grid-template-columns:minmax(210px,.92fr) minmax(0,1.08fr);gap:0;align-items:stretch;min-height:250px;padding:0!important;overflow:hidden;background:#fff!important;border:3px solid var(--ink);box-shadow:8px 9px 0 rgba(38,53,74,.78);transform:none!important}
+.skill-card:nth-child(2),.skill-card:nth-child(5){--skill-accent:var(--blue)}.skill-card:nth-child(3){--skill-accent:var(--coral)}.skill-card:nth-child(4){--skill-accent:#ffe26a}
+.skill-card:before{content:"";position:absolute;inset:0 0 auto;height:10px;z-index:3;background:repeating-linear-gradient(90deg,var(--skill-accent) 0 34px,var(--ink) 34px 39px)}
+.skill-card:hover{transform:translateY(-3px)!important;box-shadow:10px 12px 0 var(--ink)}
+.skill-card .role-index{left:14px;right:auto;top:20px;width:auto;height:auto;z-index:4;padding:6px 10px;border-radius:0;background:var(--ink);color:#fff;box-shadow:3px 3px 0 var(--skill-accent);font:900 12px/1.2 Georgia,serif;letter-spacing:.08em}
+.skill-card .role-index:before{content:"CONTROL ";color:var(--skill-accent)}
+.skill-card img{display:block;width:100%;height:100%;min-height:250px;object-fit:cover;border:0!important;border-right:3px solid var(--ink)!important;background:#edf8fc}
+.skill-copy{position:relative;align-self:stretch;display:flex;flex-direction:column;justify-content:center;padding:40px 28px 25px!important;background:linear-gradient(145deg,#fff 0 70%,color-mix(in srgb,var(--skill-accent) 28%,white) 70%)}
+.skill-copy:before{content:"岗位技能";position:absolute;right:16px;top:20px;padding:3px 8px;border:1.5px solid var(--ink);background:var(--skill-accent);font:900 10px/1.35 "Microsoft YaHei",sans-serif;transform:rotate(2deg)}
+.skill-card h3{margin:0 0 11px!important;font-size:30px!important;letter-spacing:.08em}.skill-card h3:after{content:"";display:block;width:54px;height:5px;margin-top:9px;background:var(--skill-accent);border:1px solid var(--ink)}
+.skill-card p{font-size:15px;line-height:1.85}.skill-card .mini{align-self:flex-start;margin-top:15px;padding:5px 10px;background:var(--ink);color:#fff;border:0;box-shadow:3px 3px 0 var(--skill-accent);font-size:11px;letter-spacing:.04em;transform:none}
+@media(max-width:640px){
+ .hero{min-height:730px}.hero-gallery-hint{margin-top:24px;font-size:13px}
+ .skill-grid{gap:22px}.skill-card{grid-template-columns:1fr;min-height:0}.skill-card img{height:auto;min-height:0;aspect-ratio:16/10;border-right:0!important;border-bottom:3px solid var(--ink)!important}.skill-copy{padding:28px 19px 22px!important}.skill-copy:before{right:12px;top:12px}.skill-card h3{font-size:26px!important}.skill-card .role-index{top:18px;left:12px}
+}
+@media(min-width:641px){.hero-gallery-track{height:350px}}
+@media(max-width:390px){.hero{min-height:730px}.hero-gallery-card span{font-size:11px}.hero-gallery{margin-bottom:100px}.hero-gallery-hint{max-width:calc(100% - 44px)}}
+</style>
+</head>
+<body>
+
+<div id="cloudLoading" class="cloud-loading" role="status" aria-live="polite"><div class="cloud-loading-card"><span class="cloud-loading-dot"></span>正在同步最新内容…</div></div>
+
+<main class="page">
+<header class="hero">
+    <div class="hero-ribbon">WELCOME · JOIN US</div>
+    <div class="hero-year">2026</div>
+    <span class="hero-spark s1">✦</span><span class="hero-spark s2">✦</span><span class="hero-spark s3">✦</span>
+    <div class="hero-copy reveal">
+      <div class="hero-kicker">校团委艺术教育中心</div>
+      <h1>等你加入<span class="outline">等你发光</span></h1>
+      <div class="hero-sub"><span>●</span> 2026级新生招新 <span>→</span></div>
+    </div>
+    <div class="hero-gallery reveal" data-hero-gallery>
+      <div class="hero-gallery-track" data-hero-gallery-track tabindex="0" aria-label="首屏手动横向滑动照片"></div>
+      <p class="hero-gallery-hint" data-hero-gallery-hint>手指左右滑动，按顺序看看我们的现场</p>
+    </div>
+    <div class="hero-note">从观众席<br>走向舞台幕后</div>
+    <div class="hero-mascot hero-wolf" aria-hidden="true"><img src="assets/qq-west.png" alt="白狼装饰"></div>
+    <div class="hero-mascot hero-owl" aria-hidden="true"><img src="assets/qq-north.png" alt="猫头鹰装饰"></div>
+  </header>
+
+  <section class="section intro">
+    <div class="section-no">00</div>
+    <div class="section-label">READY TO START</div>
+    <h2 class="section-title reveal">一场演出，<span class="mark">从来不只发生在台前</span></h2>
+    <div class="lead-card reveal">
+      你可能在台下看过一场晚会，记住了舞台上的歌声、灯光和掌声。但一场演出从来不是按下播放键就会发生。<strong>校团委艺术教育中心</strong>，邀请2026级新生从观众席走到舞台幕后，把热爱变成真实发生的现场。
+      <span class="doodle-arrow">↘</span>
+    </div>
+    <div class="photo-wall intro-photo-wall reveal" data-photo-wall="intro">
+      <div class="photo-wall-head"><div class="photo-wall-label">BACKSTAGE ALBUM</div><h3 class="photo-wall-title" data-photo-wall-title>幕后的一切，也值得被看见</h3></div>
+      <div class="photo-wall-stage" data-photo-wall-stage tabindex="0" aria-label="幕后图片翻页册"></div>
+      <p class="photo-wall-hint" data-photo-wall-hint>手指左右滑动，看看舞台亮起之前</p>
+    </div>
+  </section>
+
+  <section class="zero-section reveal" aria-label="零基础招新说明">
+    <div class="zero-badge">ZERO BASE · WELCOME</div>
+    <h2>零基础也能大胆来</h2>
+    <p class="zero-main">不用有基础！师兄师姐从 0 讲起，包教包会，不用有压力！</p>
+    <p class="zero-note">不懂设备、没做过活动都没关系。愿意学、愿意来，就是最好的开场。</p>
+  </section>
+
+  <section class="section roles">
+    <div class="section-no">01</div>
+    <div class="section-label">SKILLS YOU CAN LEARN</div>
+    <h2 class="section-title reveal">进到我们部门，<span class="mark">这些技能都能学</span></h2>
+    <p class="roles-intro reveal">五个岗位都可以从零开始。先跟着师兄师姐练，再到真实活动里上手，慢慢找到你最喜欢的位置。</p>
+    <div class="role-grid skill-grid">
+      <article class="role-card skill-card reveal"><span class="role-index">01</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="音控岗位"><div class="skill-copy"><h3>音控</h3><p>把人声、音乐和现场音量调到舒服又清楚。你会从接线、调音台基础和话筒使用学起。</p><span class="mini">调音台 / 话筒 / 音频</span></div></article>
+      <article class="role-card skill-card reveal"><span class="role-index">02</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="灯控岗位"><div class="skill-copy"><h3>灯控</h3><p>根据节目节奏切换灯光，让舞台该亮时亮、该炸时炸。先认灯位，再学基础编程和现场操作。</p><span class="mini">灯位 / 编程 / 氛围</span></div></article>
+      <article class="role-card skill-card reveal"><span class="role-index">03</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="打碟岗位"><div class="skill-copy"><h3>打碟</h3><p>学会衔接音乐、抓节拍和控制现场气氛。不是专业 DJ 也能从最基础的按键与节奏开始。</p><span class="mini">节拍 / 串歌 / 氛围</span></div></article>
+      <article class="role-card skill-card reveal"><span class="role-index">04</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="追光岗位"><div class="skill-copy"><h3>追光</h3><p>用一束光稳稳跟住舞台上的主角。要练眼力、反应和配合，成就感直接拉满。</p><span class="mini">跟光 / 预判 / 配合</span></div></article>
+      <article class="role-card skill-card reveal"><span class="role-index">05</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="场控岗位"><div class="skill-copy"><h3>场控</h3><p>拿着流程、盯住时间、对接台前幕后。哪里需要人，哪里就有场控把现场接住。</p><span class="mini">流程 / 对接 / 应变</span></div></article>
+    </div>
+      <p class="roles-more-note reveal">更多幕后岗位等待你来发现</p>
+  </section>
+
+  <section class="section gains">
+    <div class="section-no">02</div>
+    <div class="section-label">GROW WITH US</div>
+    <h2 class="section-title reveal">加入之后，<span class="mark">你能拿到这些</span></h2>
+    <div class="ticket-grid">
+      <article class="ticket reveal"><span class="ticket-num">01</span><strong>真技能</strong><p>从音控、灯控到场控，学到能直接上手的舞台技能。</p></article>
+      <article class="ticket reveal"><span class="ticket-num">02</span><strong>一群搭子</strong><p>认识不同专业的新朋友，忙完一起聊天、拍照、吃饭。</p></article>
+      <article class="ticket reveal"><span class="ticket-num">03</span><strong>校园大场面</strong><p>迎新、晚会、音乐会等活动，都可能留下你的名字和身影。</p></article>
+      <article class="ticket reveal benefit-hot"><span class="ticket-num">04</span><strong>综测分</strong><p>参与符合学校认定要求的活动，可按实际规定申请相应综测分。</p></article>
+      <article class="ticket reveal benefit-hot"><span class="ticket-num">05</span><strong>饭票福利</strong><p>部分活动会按实际安排提供工作餐或饭票，干活也要记得好好吃饭。</p></article>
+      <article class="ticket reveal benefit-hot"><span class="ticket-num">06</span><strong>志愿时长</strong><p>参与符合认定要求的校内活动，可按学校实际规定登记相应志愿服务时长。</p></article>
+    </div>
+  </section>
+
+  <section class="section moments">
+    <div class="section-no">03</div>
+    <div class="section-label">OUR MOMENTS</div>
+    <h2 class="section-title reveal">忙完正事，<span class="mark">我们也很会玩</span></h2>
+    <p class="reveal">这里不是只有对讲机和流程表。活动结束后一起拍照、聚餐、复盘吐槽，很多大学里的熟人和朋友，就是这样认识的。</p>
+    <p class="reveal">你可以认真学技能，也可以放心交朋友。忙的时候一起扛，轻松的时候一起笑，这才是我们的部门日常。</p>
+    <div class="memory-wall reveal">
+      <div class="memory m1"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="团队协作活动照片"><span>一起合照</span></div>
+      <div class="memory m2"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="工作人员活动现场"><span>一起吃饭</span></div>
+      <div class="memory m3"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="校园舞台精彩瞬间"><span>一起出发</span></div>
+      <div class="memory m4"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="舞台设备细节照片"><span>一起快乐</span></div>
+      <div class="wall-sticker">青春<br>不设限<br>等你加入</div>
+    </div>
+  </section>
+
+  <section class="section video-section">
+    <div class="section-no">04</div>
+    <div class="section-label">WATCH THE STORY</div>
+    <h2 class="section-title reveal">宣传片，<span class="mark">先看见我们</span></h2>
+    <div class="video-card reveal">
+      <p class="video-intro">一支宣传片，记录舞台亮起之前的准备、协作与期待。把视频放在这里，让新生先用几分钟认识艺术教育中心。</p>
+      <div class="video-shell" id="promoVideoShell"><video id="promoVideo" controls playsinline preload="metadata" poster="assets/style-sky.jpg"></video><div class="video-empty">宣传片视频位置<span>在在线编辑器中粘贴 MP4 / WebM 视频地址</span></div></div>
+      <p class="video-note">视频地址可填写 GitHub Pages 可访问的 MP4、WebM 或其他浏览器支持的视频链接。</p>
+    </div>
+  </section>
+  <section class="section suitable">
+    <div class="section-no">05</div>
+    <div class="section-label">IS THAT YOU?</div>
+    <h2 class="section-title reveal">只要你愿意来，<span class="mark">就有位置给你</span></h2>
+    <div class="check-paper reveal">
+      <ul class="checklist">
+        <li>对舞台、音乐、灯光或校园活动有一点点好奇；</li>
+        <li>愿意从零学，不会就问，不懂就练；</li>
+        <li>做事靠谱，答应的任务会认真完成；</li>
+        <li>愿意和大家沟通，一起把现场做好；</li>
+        <li>想让大学生活多点技能、多点朋友、多点故事。</li>
+      </ul>
+    </div>
+    <p class="encourage reveal">不用有基础！师兄师姐从 0 讲起，包教包会，不用有压力！</p>
+  </section>
+
+  <section class="section apply-section">
+    <div class="section-no">06</div>
+    <div class="section-label">YOUR TICKET</div>
+    <h2 class="section-title reveal">现在，轮到你<span class="mark">入场了</span></h2>
+    <div class="admission reveal">
+      <div class="campus-decor campus-west" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qq-west.png" alt="西区 QQ 人装饰"><span>西区</span></div>
+      <div class="campus-decor campus-north" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qq-north.png" alt="北区 QQ 人装饰"><span>北区</span></div>
+      <h3>招新对象：2026级新生</h3>
+      <p class="apply-meta">报名时间：<strong class="pending">【待补充】</strong><br>报名截止：<strong class="pending">【待补充】</strong><br>报名方式：长按识别对应二维码，进入咨询群或填写报名表。</p>
+      <div class="qrgrid">
+        <div class="qrcard"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qr-west-group-placeholder.png" alt="西校区咨询群二维码占位图"><span>西校区 · 咨询群</span></div>
+        <div class="qrcard"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qr-west-signup-placeholder.png" alt="西校区报名表二维码占位图"><span>西校区 · 报名表</span></div>
+        <div class="qrcard"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qr-north-group-placeholder.png" alt="北校区咨询群二维码占位图"><span>北校区 · 咨询群</span></div>
+        <div class="qrcard"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qr-north-signup-placeholder.png" alt="北校区报名表二维码占位图"><span>北校区 · 报名表</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="photo-wall reveal" data-photo-wall>
+      <div class="photo-wall-head"><div class="photo-wall-label">TEAM PHOTO WALL</div><h3 class="photo-wall-title" data-photo-wall-title>下一张团队合照，也许就有你</h3></div>
+      <div class="photo-wall-stage" data-photo-wall-stage>
+        <article class="photo-card is-active" data-photo-card><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="下一张团队合照，也许就有你"><span>下一张团队合照，也许就有你</span></article>
+      </div>
+      <p class="photo-wall-hint" data-photo-wall-hint>手指左右滑动，翻看属于我们的共同瞬间</p>
+    </div>
+    <div class="closing-copy reveal"><p>如果你愿意让大学生活多一段并肩忙碌的经历，如果你想把兴趣变成真正发生的现场，如果你也期待认识一群认真、热情、愿意一起做事的人——那就来艺教中心，和我们<strong>一起开演</strong>。</p></div>
+    <h2 class="closing-title">新生入场，请就位！</h2>
+    <p class="closing-sub">校团委艺术教育中心<br>等你加入 · 等你发光</p>
+  </section>
+  <footer class="footer">ART EDUCATION CENTER · 2026 RECRUITMENT<br><span>零基础友好 · 等你加入</span></footer>
+</main>
+<script>
+(() => {
+  const items = [...document.querySelectorAll('.reveal')];
+  const showAll = () => {
+    document.documentElement.classList.remove('reveal-motion');
+    items.forEach(item => item.classList.add('is-visible'));
+  };
+  if (!items.length || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    showAll();
+    return;
+  }
+  document.documentElement.classList.add('reveal-motion');
+  const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    }
+  }), { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
+  items.forEach(item => observer.observe(item));
+  requestAnimationFrame(() => items.forEach(item => {
+    const rect = item.getBoundingClientRect();
+    if (rect.top < innerHeight && rect.bottom > 0) item.classList.add('is-visible');
+  }));
+  setTimeout(() => {
+    if (!items.some(item => item.classList.contains('is-visible'))) showAll();
+  }, 1200);
+})();
+</script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="cloud-sync.js"></script>
+<script>
+(() => {
+  const draftKey = 'wechatRecruitmentDraft2026';
+  const readDraft = () => { try { return JSON.parse(localStorage.getItem(draftKey) || 'null'); } catch { return null; } };
+  const setText = (selector, value, root = document) => { const el = root.querySelector(selector); if (el && value !== undefined) el.textContent = value; };
+  const setTitle = (selector, before, mark) => { const el = document.querySelector(selector); if (!el) return; el.firstChild && (el.firstChild.nodeValue = before || ''); const span = el.querySelector('.mark'); if (span) span.textContent = mark || ''; };
+  const setImg = (selector, src) => { const el = document.querySelector(selector); if (el && src) { const critical = selector.includes('hero-gallery'); el.loading = critical ? 'eager' : 'lazy'; el.decoding = 'async'; if (critical) el.fetchPriority = 'high'; el.src = src; } };
+  const photoWallStates = new WeakMap();
+  const getPhotoWallState = root => {
+    let state = photoWallStates.get(root);
+    if (!state) { state = { items: [], index: 0 }; photoWallStates.set(root, state); }
+    return state;
+  };
+  const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const mergeContent = (base, override) => {
+    if (override === undefined || override === null) return base;
+    if (Array.isArray(override) || typeof override !== 'object') return override;
+    const result = {...(base && typeof base === 'object' && !Array.isArray(base) ? base : {})};
+    Object.keys(override).forEach(key => { result[key] = mergeContent(result[key], override[key]); });
+    return result;
+  };
+  const mergePublishedContent = (base, override) => {
+    const result = mergeContent(base, override || {});
+    if (override && !override.introPhotoWall && base?.photoWall && result.photoWall) {
+      result.photoWall.title = base.photoWall.title;
+      result.photoWall.hint = base.photoWall.hint;
+      result.photoWall.captions = [...(base.photoWall.captions || [])];
+    }
+    return result;
+  };
+  let stopHeroGalleryLoop = () => {};
+  const renderHeroGallery = c => {
+    stopHeroGalleryLoop();
+    const root = document.querySelector('[data-hero-gallery]'); if (!root) return;
+    const gallery = c.heroGallery || {}; const images = c.images || {};
+    const keys = (Array.isArray(gallery.imageKeys) && gallery.imageKeys.length ? gallery.imageKeys : ['hero1','hero2','hero3','hero4','hero5','hero6']).slice(0,6);
+    const captions = Array.isArray(gallery.captions) ? gallery.captions : [];
+    const defaultCaptions = ['大家集合，先把现场准备好','一起搬设备，把每个细节摆到位','反复确认流程，忙起来也很有默契','演出开始前，大家都在认真准备','现场协作，边忙边把事情做好','下一次幕后合影，等你加入'];
+    const track = root.querySelector('[data-hero-gallery-track]');
+    if (track) {
+      const items = keys.map((key,index) => { const rawCaption=String(captions[index] || '').trim(); const caption=!rawCaption || /^\u7b49\u5f85\u4e0a\u4f20\s*\d+$/i.test(rawCaption) ? defaultCaptions[index] : rawCaption; return {src:images[key] || 'assets/photo-placeholder.svg',caption}; });
+      track.innerHTML = items.map((item,index) => '<figure class="hero-gallery-card" data-hero-card><img loading="eager"'+(index<2?' fetchpriority="high"':'')+' decoding="async" src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></figure>').join('');
+      const cards = [...track.querySelectorAll('[data-hero-card]')]; let activeIndex = 0; let startX = 0; let startY = 0; let pointerId = null;
+      const update = () => { const total=cards.length; cards.forEach((card,index)=>{ const offset=(index-activeIndex+total)%total; const previous=(activeIndex-index+total)%total; card.classList.remove('is-active','is-next','is-next-2','is-prev'); const stateClass=offset===0?'is-active':offset===1?'is-next':previous===1?'is-prev':offset===2?'is-next-2':''; if(stateClass)card.classList.add(stateClass); card.setAttribute('aria-hidden',offset===0?'false':'true'); card.setAttribute('tabindex',offset===0?'0':'-1'); }); track.dataset.activeIndex=String(activeIndex); };
+      const step = direction => { if(cards.length<2)return; activeIndex=(activeIndex+direction+cards.length)%cards.length; update(); };
+      const onPointerDown = event => { if(!event.isPrimary)return; pointerId=event.pointerId; startX=event.clientX; startY=event.clientY; try{track.setPointerCapture?.(event.pointerId)}catch{} };
+      const onPointerUp = event => { if(pointerId!==event.pointerId)return; const deltaX=event.clientX-startX,deltaY=event.clientY-startY; pointerId=null; if(Math.abs(deltaX)>38&&Math.abs(deltaX)>Math.abs(deltaY)*1.15)step(deltaX<0?1:-1); };
+      const onPointerCancel = () => { pointerId=null; };
+      const onKeyDown = event => { if(event.key==='ArrowLeft')step(-1); if(event.key==='ArrowRight')step(1); };
+      track.addEventListener('pointerdown',onPointerDown); track.addEventListener('pointerup',onPointerUp); track.addEventListener('pointercancel',onPointerCancel); track.addEventListener('keydown',onKeyDown);
+      update();
+      stopHeroGalleryLoop = () => { track.removeEventListener('pointerdown',onPointerDown); track.removeEventListener('pointerup',onPointerUp); track.removeEventListener('pointercancel',onPointerCancel); track.removeEventListener('keydown',onKeyDown); };
+    }
+    const hint = root.querySelector('[data-hero-gallery-hint]'); if (hint) hint.textContent = gallery.hint || '手指左右滑动，一次切换一张图片';
+  };
+  const photoWallItems = (c, wallKey) => {
+    const wall = c[wallKey] || {}; const images = c.images || {}; const isIntro = wallKey === 'introPhotoWall';
+    const fallbackKeys = (isIntro ? 'introPhotoWall' : 'photoWall');
+    const keys = Array.isArray(wall.imageKeys) && wall.imageKeys.length ? wall.imageKeys : Array.from({length:6},(_,i)=>fallbackKeys+(i+1));
+    const keyed = keys.map(key => images[key]).filter(Boolean);
+    const sources = keyed.length ? keyed : (Array.isArray(wall.images) ? wall.images : []);
+    const captions = Array.isArray(wall.captions) ? wall.captions : [];
+    const fallbackTitle = isIntro ? '幕后的一切，也值得被看见' : (c.closing?.photoCaption || '下一张团队合照，也许就有你');
+    return sources.map((src, index) => ({ src, caption: captions[index] || wall.title || fallbackTitle }));
+  };
+  const updatePhotoWall = root => {
+    const state = getPhotoWallState(root);
+    const cards = [...root.querySelectorAll('[data-photo-card]')]; const total = cards.length; if (!total) return;
+    state.index = (state.index + total) % total;
+    cards.forEach((card, index) => {
+      const offset = (index - state.index + total) % total;
+      const previous = (state.index - index + total) % total;
+      card.classList.remove('is-active','is-prev','is-next','is-prev-2','is-next-2','is-prev-3','is-next-3');
+      const stateClass = offset === 0 ? 'is-active' : previous === 1 ? 'is-prev' : offset === 1 ? 'is-next' : previous === 2 ? 'is-prev-2' : offset === 2 ? 'is-next-2' : previous === 3 ? 'is-prev-3' : offset === 3 ? 'is-next-3' : '';
+      if (stateClass) card.classList.add(stateClass);
+      card.setAttribute('aria-hidden', offset === 0 ? 'false' : 'true'); card.setAttribute('tabindex', offset === 0 ? '0' : '-1');
+    });
+  };
+  const stepPhotoWall = (root, direction) => { const state = getPhotoWallState(root); if (state.items.length < 2) return; state.index = (state.index + direction + state.items.length) % state.items.length; updatePhotoWall(root); };
+  const rolesGalleryItems = c => { const gallery = c.roles?.gallery || {}; const images = c.images || {}; const keys = Array.isArray(gallery.imageKeys) ? gallery.imageKeys : []; const captions = Array.isArray(gallery.captions) ? gallery.captions : []; return keys.map((key,index) => ({src:images[key],caption:captions[index] || ''})).filter(item => item.src); };
+  const renderRolesGallery = c => {
+    const root = document.querySelector('[data-roles-gallery]'); if (!root) return; const gallery = c.roles?.gallery || {};
+    const title = root.querySelector('[data-roles-gallery-title]'); if (title) title.textContent = gallery.title || '一场演出，正在许多细节里发生';
+    const hintText = root.querySelector('[data-roles-gallery-hint]'); if (hintText) hintText.textContent = gallery.hint || '从设备、排练到现场协作，每一张都是真实发生的准备';
+    const grid = root.querySelector('[data-roles-gallery-grid]'); const items = rolesGalleryItems(c);
+    if (grid) grid.innerHTML = items.map(item => '<figure class="roles-gallery-card"><img loading="lazy" decoding="async" src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><figcaption>'+escapeHtml(item.caption)+'</figcaption></figure>').join('');
+
+  };
+  const renderPhotoWall = c => {
+    document.querySelectorAll('[data-photo-wall]').forEach(root => {
+      const isIntro = root.dataset.photoWall === 'intro'; const wallKey = isIntro ? 'introPhotoWall' : 'photoWall'; const wall = c[wallKey] || {}; const items = photoWallItems(c, wallKey);
+      const state = getPhotoWallState(root); state.items = items; state.index = 0;
+      const fallbackTitle = isIntro ? '幕后的一切，也值得被看见' : (c.closing?.photoCaption || '下一张团队合照，也许就有你');
+      const fallbackHint = isIntro ? '手指左右滑动，看看舞台亮起之前' : '手指左右滑动，翻看属于我们的共同瞬间';
+      const title = root.querySelector('[data-photo-wall-title]'); if (title) title.textContent = wall.title || fallbackTitle;
+      const hintText = root.querySelector('[data-photo-wall-hint]'); if (hintText) hintText.textContent = wall.hint || fallbackHint;
+      const stage = root.querySelector('[data-photo-wall-stage]'); const fallbackSrc = 'assets/photo-placeholder.svg';
+      if (stage) stage.innerHTML = items.length ? items.map(item => '<article class="photo-card" data-photo-card><img loading="lazy" decoding="async" src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></article>').join('') : '<article class="photo-card is-active" data-photo-card><img src="'+fallbackSrc+'" alt="'+escapeHtml(fallbackTitle)+'"><span>'+escapeHtml(fallbackTitle)+'</span></article>';
+      updatePhotoWall(root);
+    });
+  };
+  document.querySelectorAll('[data-photo-wall]').forEach(root => {
+    let touchStartX = 0; let touchStartY = 0; let touchMoved = false; const stage = root.querySelector('[data-photo-wall-stage]');
+    stage?.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0]?.clientX || 0; touchStartY = event.changedTouches[0]?.clientY || 0; touchMoved = false; }, {passive:true});
+    stage?.addEventListener('touchmove', event => { const touch = event.changedTouches[0]; if (touch) touchMoved = Math.abs(touch.clientX-touchStartX) > Math.abs(touch.clientY-touchStartY); }, {passive:true});
+    stage?.addEventListener('touchend', event => { const touch = event.changedTouches[0]; if (!touch || !touchMoved) return; const delta = touch.clientX-touchStartX; if (Math.abs(delta)>34) stepPhotoWall(root, delta<0?1:-1); }, {passive:true});
+    stage?.addEventListener('keydown', event => { if (event.key==='ArrowLeft') stepPhotoWall(root, -1); if (event.key==='ArrowRight') stepPhotoWall(root, 1); });
+  });
+  const prepareEditableMap = () => {
+    const textSelector = '.page h1,.page h2,.page h3,.page p,.page li,.page figcaption,.page .hero-kicker,.page .hero-sub,.page .section-label,.page .mini,.page .photo-wall-label,.page .photo-card>span:last-child,.page .roles-gallery-card figcaption,.page .memory span,.page .qrcard span,.page .footer,.page .hero-ribbon,.page .hero-note';
+    document.querySelectorAll(textSelector).forEach((el,index)=>el.dataset.richId='rich-'+index);
+
+    const legacyAssetSelector = '.page img,.page .hero-ribbon,.page .hero-year,.page .hero-note,.page .hero-spark,.page .wall-sticker,.page .campus-decor,.page .hero-mascot';
+    const groupedAssetSelector = '.page .hero-gallery-card,.page .intro-photo,.page .skill-card,.page .roles-gallery-card,.page .memory,.page .qrcard,.page .photo-card,.page .campus-decor,.page .hero-mascot,.page .detail-photo .frame';
+    const legacyAssets = [...document.querySelectorAll(legacyAssetSelector)];
+    const legacyIds = new Map(legacyAssets.map((el,index)=>[el,'asset-'+index]));
+
+    document.querySelectorAll('[data-layout-id]').forEach(el=>el.removeAttribute('data-layout-id'));
+    document.querySelectorAll(groupedAssetSelector).forEach(group=>{
+      const inheritedAsset = legacyIds.has(group) ? group : legacyAssets.find(asset=>asset!==group&&group.contains(asset));
+      if(inheritedAsset) group.dataset.layoutId=legacyIds.get(inheritedAsset);
+    });
+    legacyAssets.forEach(asset=>{
+      if(asset.closest(groupedAssetSelector))return;
+      asset.dataset.layoutId=legacyIds.get(asset);
+    });
+    document.querySelectorAll('[data-rich-id]').forEach(el=>{
+      if(!el.dataset.layoutId) el.dataset.layoutId='rich-layout-'+el.dataset.richId.slice(5);
+    });
+  };
+  const applyVisualOverrides = c => {
+    prepareEditableMap();
+    const rich=c.richText||{}; document.querySelectorAll('[data-rich-id]').forEach(el=>{const value=rich[el.dataset.richId];if(typeof value==='string')el.innerHTML=value;});
+    const layout=c.layout||{}; document.querySelectorAll('[data-layout-id]').forEach(el=>{const value=layout[el.dataset.layoutId]||{};const x=Number(value.x)||0,y=Number(value.y)||0,z=Number(value.z)||0;el.style.setProperty('--layout-x',x+'px');el.style.setProperty('--layout-y',y+'px');if(z){el.style.zIndex=String(z);if(getComputedStyle(el).position==='static')el.style.position='relative';}else el.style.removeProperty('z-index');});
+    window.__wechatRenderedContent=c;
+    window.dispatchEvent(new CustomEvent('wechat-content-rendered',{detail:c}));
+  };
+  const applyContent = (c) => {
+    if (!c) return;
+    document.title = c.siteTitle === '新生入场，请就位｜校团委艺术教育中心 2026 招新' ? '等你加入，等你发光｜校团委艺术教育中心 2026 招新' : (c.siteTitle || document.title);
+    setText('.hero-kicker', c.hero?.kicker); setText('.hero-sub', '●  ' + (c.hero?.sub || '') + '  →');
+    const h1 = document.querySelector('.hero h1'); if (h1) { const mainTitle=c.hero?.titleMain === '新生入场' ? '等你加入' : (c.hero?.titleMain || '等你加入'); const accentTitle=c.hero?.titleAccent === '请就位' ? '等你发光' : (c.hero?.titleAccent || '等你发光'); h1.firstChild.nodeValue = mainTitle; const o=h1.querySelector('.outline'); if(o)o.textContent=accentTitle; }
+    setTitle('.intro .section-title', c.intro?.titleBefore, c.intro?.titleMark); setText('.intro .lead-card', c.intro?.lead); setText('.intro figcaption', c.intro?.caption);
+    setTitle('.roles .section-title', c.roles?.titleBefore, c.roles?.titleMark); setText('.roles-intro',c.roles?.intro); setText('.roles-more-note', c.roles?.more);
+    document.querySelectorAll('.role-card').forEach((card,i)=>{ const x=c.roles?.cards?.[i]; if(!x)return; setText('h3',x.title,card); setText('p',x.body,card); setText('.mini',x.tag,card); const image=card.querySelector('img'); if(image&&x.imageKey&&c.images?.[x.imageKey]) image.src=c.images[x.imageKey]; });
+    setTitle('.gains .section-title', c.gains?.titleBefore, c.gains?.titleMark); document.querySelectorAll('.ticket').forEach((card,i)=>{const x=c.gains?.cards?.[i];if(!x)return;setText('strong',x.title,card);setText('p',x.body,card);});
+    setTitle('.moments .section-title', c.moments?.titleBefore, c.moments?.titleMark); document.querySelectorAll('.moments>p').forEach((p,i)=>{if(c.moments?.paragraphs?.[i]!==undefined)p.textContent=c.moments.paragraphs[i];});
+    setTitle('.suitable .section-title', c.suitable?.titleBefore, c.suitable?.titleMark); document.querySelectorAll('.checklist li').forEach((li,i)=>{if(c.suitable?.items?.[i]!==undefined)li.textContent=c.suitable.items[i];}); setText('.encourage',c.suitable?.encourage);
+    setTitle('.apply-section .section-title', c.apply?.titleBefore, c.apply?.titleMark); setText('.admission h3',c.apply?.object); const meta=document.querySelector('.apply-meta'); if(meta)meta.innerHTML='报名时间：<strong class="pending">'+(c.apply?.signupTime||'【待补充】')+'</strong><br>报名截止：<strong class="pending">'+(c.apply?.deadline||'【待补充】')+'</strong><br>报名方式：'+(c.apply?.method||'') ;
+    document.querySelectorAll('.qrcard span').forEach((span,i)=>{if(c.apply?.qrLabels?.[i])span.textContent=c.apply.qrLabels[i];});
+    setText('.zero-section h2',c.barrier?.title);setText('.zero-main',c.barrier?.body);setText('.zero-note',c.barrier?.note);
+    const cp=document.querySelector('.closing-copy p'); if(cp)cp.innerHTML=(c.closing?.body||'')+'<strong>'+(c.closing?.emphasis||'一起开演')+'</strong>。'; setText('.closing-title',c.closing?.title); const cs=document.querySelector('.closing-sub'); if(cs)cs.innerHTML=(c.closing?.subLine1||'')+'<br>'+(c.closing?.subLine2||'');
+    const v=c.video||{};
+    setTitle('.video-section .section-title',v.titleBefore||'宣传片，',v.titleMark||'先看见我们'); setText('.video-intro',v.intro); setText('.video-note',v.note);
+    const pv=document.querySelector('#promoVideo'), pvs=document.querySelector('#promoVideoShell'); if(pv&&pvs){if(v.url){pv.src=v.url;if(v.poster)pv.poster=v.poster;pvs.classList.add('has-video');pv.load()}else{pv.removeAttribute('src');pvs.classList.remove('has-video')}}
+    const imgs=c.images||{};
+    renderHeroGallery(c);
+    renderPhotoWall(c);
+    renderRolesGallery(c);
+    const qq=c.decorations?.qq||[];
+    document.querySelectorAll('.campus-decor img').forEach((img,index)=>{ if(qq[index]) img.src=qq[index]; });
+    document.querySelectorAll('.hero-mascot img').forEach((img,index)=>{ const item=c.decorations?.mascots?.[index]; if(item?.src) img.src=item.src; }); [['.intro-photo img',imgs.intro],['.detail-photo .frame:nth-child(1) img',imgs.detail1],['.detail-photo .frame:nth-child(2) img',imgs.detail2],['.m1 img',imgs.moment1],['.m2 img',imgs.moment2],['.m3 img',imgs.moment3],['.m4 img',imgs.moment4],['.skill-card:nth-child(1) img',imgs.skillAudio],['.skill-card:nth-child(2) img',imgs.skillLight],['.skill-card:nth-child(3) img',imgs.skillDJ],['.skill-card:nth-child(4) img',imgs.skillSpotlight],['.skill-card:nth-child(5) img',imgs.skillStageControl],['.qrcard:nth-child(1) img',imgs.qrWestGroup],['.qrcard:nth-child(2) img',imgs.qrWestSignup],['.qrcard:nth-child(3) img',imgs.qrNorthGroup],['.qrcard:nth-child(4) img',imgs.qrNorthSignup]].forEach(([s,v])=>setImg(s,v));
+    applyVisualOverrides(c);
+  };
+  let fallbackContent = {};
+  let lastAppliedUpdatedAt = '';
+  const loading = document.getElementById('cloudLoading');
+  const finishLoading = () => { document.documentElement.classList.remove('cloud-pending'); document.documentElement.classList.add('cloud-ready'); loading?.classList.add('is-hidden'); setTimeout(() => loading?.remove(), 350); };
+  const applySnapshot = (content, updatedAt = '') => { if (!content) return; lastAppliedUpdatedAt = updatedAt || lastAppliedUpdatedAt; applyContent(mergePublishedContent(fallbackContent, content)); finishLoading(); };
+  const isEditorPreview = new URLSearchParams(location.search).get('editorPreview') === '1';
+  let previewContentReceived = false;
+  if (isEditorPreview) window.addEventListener('message', event => {
+    if (event.data?.type !== 'wechat-recruitment-preview' || !event.data.content) return;
+    previewContentReceived = true;
+    applySnapshot(event.data.content);
+  });
+  const loadPublishedContent = async () => {
+    const fallbackPromise = fetch('content.json?ts=' + Date.now(), { cache: 'no-store' }).then(response => response.json()).catch(() => ({}));
+    if (isEditorPreview) {
+      fallbackContent = await fallbackPromise || {};
+      if (!previewContentReceived) applySnapshot(fallbackContent);
+      return;
+    }
+    const cloudPromise = window.__wechatCloudBootstrap || Promise.resolve(null);
+    const [fallback, snapshot] = await Promise.all([fallbackPromise, cloudPromise]);
+    fallbackContent = fallback || {};
+    if (snapshot?.content_json) applySnapshot(snapshot.content_json, snapshot.updated_at);
+    else {
+      let cloudContent = null;
+      try { cloudContent = await window.WechatCloudSync?.loadContent?.(); } catch (error) { console.warn('云端内容读取失败，回退静态内容', error); }
+      applySnapshot(cloudContent || fallbackContent, cloudContent ? window.WechatCloudSync?.getLastUpdatedAt?.() : '');
+    }
+    const sync = window.WechatCloudSync;
+    if (sync?.isConfigured?.()) sync.subscribe((content, updatedAt) => { if (updatedAt && lastAppliedUpdatedAt && updatedAt <= lastAppliedUpdatedAt) return; applySnapshot(content, updatedAt); });
+  };
+  loadPublishedContent();
+})();
+</script>
+</body>
+</html>
