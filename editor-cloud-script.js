@@ -136,10 +136,10 @@
   const clearDraft = async () => { try { await deleteIndexedDraft(); } catch {} try { localStorage.removeItem(KEY); } catch {} };
   const buildSlimDraft = () => { const draft = cloneValue(content); const original = baseContent || {}; Object.keys(draft.images || {}).forEach(key => { if (isDataUrl(draft.images[key])) draft.images[key] = original.images?.[key] || ''; }); syncPhotoWallValue(draft); return draft; };
   const persistDraft = async () => { syncPhotoWall(); try { await writeIndexedDraft(content); return true; } catch { try { localStorage.setItem(KEY, JSON.stringify(buildSlimDraft())); return true; } catch { status('文字修改已保留在当前页面，但本机草稿保存失败。请配置云端或清理浏览器站点数据。', true); return false; } } };
-  const labelVisualSelection = message => { const el=$('#visualSelection'); if(el) el.textContent=message||'可视化编辑：点文字直接改，点图片后拖动'; };
+  const labelVisualSelection = message => { const el=$('#visualSelection'); if(el) el.textContent=message||'可视化编辑：点文字直接改，拖住图片、外框或空白处整体移动'; };
   const selectedLayout = () => visual.selected?.dataset?.layoutId || '';
   const updateRichFromElement = element => { const id=element?.dataset?.richId; if(!id)return; content.richText=content.richText||{}; content.richText[id]=element.innerHTML; scheduleDraft(); };
-  const updateLayoutStyle = (element,value) => { element.style.setProperty('--layout-x',(Number(value.x)||0)+'px'); element.style.setProperty('--layout-y',(Number(value.y)||0)+'px'); if(Number(value.z)) element.style.zIndex=String(value.z); else element.style.removeProperty('z-index'); element.style.position=element.style.position||'relative'; };
+  const updateLayoutStyle = (element,value) => { element.style.setProperty('--layout-x',(Number(value.x)||0)+'px'); element.style.setProperty('--layout-y',(Number(value.y)||0)+'px'); if(Number(value.z)){element.style.zIndex=String(value.z);if(getComputedStyle(element).position==='static')element.style.position='relative';}else element.style.removeProperty('z-index'); };
   const selectVisual = element => { visual.doc?.querySelectorAll('.editor-selected').forEach(el=>el.classList.remove('editor-selected')); visual.selected=element||null; if(element){element.classList.add('editor-selected');const kind=element.dataset.richId?'文字':'素材';labelVisualSelection('已选中'+kind+'：'+(element.innerText||element.alt||element.dataset.layoutId||'当前元素').trim().slice(0,24));}else labelVisualSelection(); };
   const setupVisualEditor = () => {
     const frame=$('#preview'); const doc=frame?.contentDocument;
@@ -162,9 +162,10 @@
     doc.querySelectorAll('[data-layout-id]').forEach(el=>{
       if(el.dataset.layoutBound)return;
       el.dataset.layoutBound='1';
-      el.addEventListener('click',event=>{event.stopPropagation();selectVisual(el)});
+      el.addEventListener('click',event=>{if(event.target.closest('[data-rich-id]'))return;event.stopPropagation();selectVisual(el)});
       el.addEventListener('pointerdown',event=>{
         if(event.button!==undefined&&event.button!==0)return;
+        if(event.target.closest('[data-rich-id]'))return;
         event.preventDefault(); event.stopPropagation(); selectVisual(el);
         const id=el.dataset.layoutId; content.layout=content.layout||{}; const current=content.layout[id]||{};
         visual.drag={el,id,startX:event.clientX,startY:event.clientY,x:Number(current.x)||0,y:Number(current.y)||0,z:Number(current.z)||0};
@@ -179,7 +180,7 @@
       doc.addEventListener('pointercancel',finishDrag);
       doc.addEventListener('click',event=>{if(!event.target.closest('[data-rich-id],[data-layout-id]'))selectVisual(null)});
     }
-    labelVisualSelection(decodeURIComponent('%E5%8F%AF%E8%A7%86%E5%8C%96%E7%BC%96%E8%BE%91%E5%B7%B2%E5%BC%80%E5%90%AF%EF%BC%9A%E7%82%B9%E6%96%87%E5%AD%97%E7%9B%B4%E6%8E%A5%E6%94%B9%EF%BC%8C%E7%82%B9%E5%9B%BE%E7%89%87%E5%90%8E%E6%8B%96%E5%8A%A8'));
+    labelVisualSelection('可视化编辑已开启：点文字直接改；拖住图片、外框或空白处可整体移动');
   };
   const armVisualEditor = () => [0,120,360,900].forEach(delay=>setTimeout(setupVisualEditor,delay));
   const changeLayer = mode => { const id=selectedLayout(); if(!id){status('请先在右侧预览中点选一张图片或装饰素材。',true);return;} content.layout=content.layout||{};const value={x:0,y:0,z:0,...content.layout[id]};if(mode==='top')value.z=999;else if(mode==='up')value.z=Math.min(999,(Number(value.z)||0)+1);else if(mode==='down')value.z=Math.max(-99,(Number(value.z)||0)-1);else if(mode==='bottom')value.z=-99;else if(mode==='reset')Object.assign(value,{x:0,y:0,z:0});content.layout[id]=value;updateLayoutStyle(visual.selected,value);scheduleDraft(); };

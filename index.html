@@ -485,13 +485,26 @@ button{font:inherit}
   const prepareEditableMap = () => {
     const textSelector = '.page h1,.page h2,.page h3,.page p,.page li,.page .hero-kicker,.page .hero-sub,.page .section-label,.page .mini,.page .photo-wall-label,.page .photo-card>span:last-child,.page .roles-gallery-card figcaption,.page .memory span,.page .qrcard span,.page .footer,.page .hero-ribbon,.page .hero-note';
     document.querySelectorAll(textSelector).forEach((el,index)=>el.dataset.richId='rich-'+index);
-    const assetSelector = '.page img,.page .hero-ribbon,.page .hero-year,.page .hero-note,.page .hero-spark,.page .wall-sticker,.page .campus-decor,.page .hero-mascot';
-    document.querySelectorAll(assetSelector).forEach((el,index)=>el.dataset.layoutId='asset-'+index);
+
+    const legacyAssetSelector = '.page img,.page .hero-ribbon,.page .hero-year,.page .hero-note,.page .hero-spark,.page .wall-sticker,.page .campus-decor,.page .hero-mascot';
+    const groupedAssetSelector = '.page .hero-gallery-card,.page .intro-photo,.page .skill-card,.page .roles-gallery-card,.page .memory,.page .qrcard,.page .photo-card,.page .campus-decor,.page .hero-mascot,.page .detail-photo .frame';
+    const legacyAssets = [...document.querySelectorAll(legacyAssetSelector)];
+    const legacyIds = new Map(legacyAssets.map((el,index)=>[el,'asset-'+index]));
+
+    document.querySelectorAll('[data-layout-id]').forEach(el=>el.removeAttribute('data-layout-id'));
+    document.querySelectorAll(groupedAssetSelector).forEach(group=>{
+      const inheritedAsset = legacyIds.has(group) ? group : legacyAssets.find(asset=>asset!==group&&group.contains(asset));
+      if(inheritedAsset) group.dataset.layoutId=legacyIds.get(inheritedAsset);
+    });
+    legacyAssets.forEach(asset=>{
+      if(asset.closest(groupedAssetSelector))return;
+      asset.dataset.layoutId=legacyIds.get(asset);
+    });
   };
   const applyVisualOverrides = c => {
     prepareEditableMap();
     const rich=c.richText||{}; document.querySelectorAll('[data-rich-id]').forEach(el=>{const value=rich[el.dataset.richId];if(typeof value==='string')el.innerHTML=value;});
-    const layout=c.layout||{}; document.querySelectorAll('[data-layout-id]').forEach(el=>{const value=layout[el.dataset.layoutId]||{};const x=Number(value.x)||0,y=Number(value.y)||0,z=Number(value.z)||0;el.style.setProperty('--layout-x',x+'px');el.style.setProperty('--layout-y',y+'px');if(z)el.style.zIndex=String(z);else el.style.removeProperty('z-index');if(x||y||z)el.style.position=el.style.position||'relative';});
+    const layout=c.layout||{}; document.querySelectorAll('[data-layout-id]').forEach(el=>{const value=layout[el.dataset.layoutId]||{};const x=Number(value.x)||0,y=Number(value.y)||0,z=Number(value.z)||0;el.style.setProperty('--layout-x',x+'px');el.style.setProperty('--layout-y',y+'px');if(z){el.style.zIndex=String(z);if(getComputedStyle(el).position==='static')el.style.position='relative';}else el.style.removeProperty('z-index');});
     window.__wechatRenderedContent=c;
     window.dispatchEvent(new CustomEvent('wechat-content-rendered',{detail:c}));
   };
