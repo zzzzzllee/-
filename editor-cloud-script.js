@@ -12,7 +12,7 @@
   let dirty = false;
   let unsubscribeCloud = () => {};
   const pending = {};
-  const visual = { selected: null, doc: null, drag: null };
+  const visual = { selected: null, doc: null, drag: null, pendingDrag: null };
   const $ = selector => document.querySelector(selector);
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
   const cloneValue = value => {
@@ -95,7 +95,7 @@
     let html = '';
     html += `<div class="section"><h2>基础与首屏</h2><div class="grid">${field('网页标题', 'siteTitle', text('siteTitle'), true)}${field('顶部单位名称', 'hero.kicker', text('hero.kicker'))}${field('主标题', 'hero.titleMain', text('hero.titleMain'))}${field('强调标题', 'hero.titleAccent', text('hero.titleAccent'))}${field('副标题', 'hero.sub', text('hero.sub'))}${field('首屏滑动提示', 'heroGallery.hint', text('heroGallery.hint'), true)}</div></div>`;
     html += `<div class="section"><h2>零基础重点提示</h2><div class="grid">${field('醒目标题','barrier.title',text('barrier.title'))}${field('重点大字','barrier.body',text('barrier.body'),true,true)}${field('补充说明','barrier.note',text('barrier.note'),true,true)}</div></div>`;
-    html += `<div class="section"><h2>开场</h2><div class="grid">${field('标题前半句', 'intro.titleBefore', text('intro.titleBefore'))}${field('标题高亮句', 'intro.titleMark', text('intro.titleMark'))}${field('开场引导文字', 'intro.lead', text('intro.lead'), true, true)}${field('开场相册标题', 'introPhotoWall.title', text('introPhotoWall.title'), true)}${field('开场相册滑动提示', 'introPhotoWall.hint', text('introPhotoWall.hint'), true)}</div></div>`;
+    html += `<div class="section"><h2>开场：台前很闪，幕后也超酷</h2><div class="grid">${field('标题前半句', 'intro.titleBefore', text('intro.titleBefore'))}${field('标题高亮句', 'intro.titleMark', text('intro.titleMark'))}${field('开场引导文字', 'intro.lead', text('intro.lead'), true, true)}${field('开场照片说明', 'intro.caption', text('intro.caption'), true, true)}${field('开场相册标题', 'introPhotoWall.title', text('introPhotoWall.title'), true)}${field('开场相册滑动提示', 'introPhotoWall.hint', text('introPhotoWall.hint'), true)}</div></div>`;
     html += `<div class="section"><h2>五个技能岗位</h2><div class="grid">${field('板块标题前半句', 'roles.titleBefore', text('roles.titleBefore'), true)}${field('板块高亮句', 'roles.titleMark', text('roles.titleMark'), true)}${field('岗位总说明', 'roles.intro', text('roles.intro'), true, true)}</div>`;
     roles.forEach((item, index) => { html += `<div class="card"><div class="card-title">岗位内容 ${index + 1}</div><div class="grid">${field('小标题', `roles.cards.${index}.title`, item.title)}${field('标签', `roles.cards.${index}.tag`, item.tag)}${field('正文', `roles.cards.${index}.body`, item.body, true, true)}</div></div>`; });
     html += '</div>';
@@ -136,7 +136,7 @@
   const clearDraft = async () => { try { await deleteIndexedDraft(); } catch {} try { localStorage.removeItem(KEY); } catch {} };
   const buildSlimDraft = () => { const draft = cloneValue(content); const original = baseContent || {}; Object.keys(draft.images || {}).forEach(key => { if (isDataUrl(draft.images[key])) draft.images[key] = original.images?.[key] || ''; }); syncPhotoWallValue(draft); return draft; };
   const persistDraft = async () => { syncPhotoWall(); try { await writeIndexedDraft(content); return true; } catch { try { localStorage.setItem(KEY, JSON.stringify(buildSlimDraft())); return true; } catch { status('文字修改已保留在当前页面，但本机草稿保存失败。请配置云端或清理浏览器站点数据。', true); return false; } } };
-  const labelVisualSelection = message => { const el=$('#visualSelection'); if(el) el.textContent=message||'可视化编辑：点文字直接改，拖住图片、外框或空白处整体移动'; };
+  const labelVisualSelection = message => { const el=$('#visualSelection'); if(el) el.textContent=message||'可视化编辑：点文字直接改；拖住文字、图片、外框或空白处整体移动'; };
   const selectedLayout = () => visual.selected?.dataset?.layoutId || '';
   const updateRichFromElement = element => { const id=element?.dataset?.richId; if(!id)return; content.richText=content.richText||{}; content.richText[id]=element.innerHTML; scheduleDraft(); };
   const updateLayoutStyle = (element,value) => { element.style.setProperty('--layout-x',(Number(value.x)||0)+'px'); element.style.setProperty('--layout-y',(Number(value.y)||0)+'px'); if(Number(value.z)){element.style.zIndex=String(value.z);if(getComputedStyle(element).position==='static')element.style.position='relative';}else element.style.removeProperty('z-index'); };
@@ -149,16 +149,24 @@
     if(win&&!win.__wechatVisualEditorListenerBound){win.__wechatVisualEditorListenerBound=true;win.addEventListener('wechat-content-rendered',()=>armVisualEditor());}
     if(!doc.getElementById('editorVisualStyle')){
       const style=doc.createElement('style'); style.id='editorVisualStyle';
-      style.textContent='[data-rich-id]{outline:1px dashed transparent;cursor:text}[data-rich-id]:hover{outline-color:#f39b8e}.editor-selected{outline:3px solid #ff5b4d!important;outline-offset:3px!important}[data-layout-id]{touch-action:none;pointer-events:auto!important;cursor:move}[data-layout-id]:hover{filter:drop-shadow(0 0 3px #ff5b4d)}';
+       style.textContent='html .reveal{transition:none!important}[data-rich-id]{outline:1px dashed transparent;cursor:text}[data-rich-id]:hover{outline-color:#f39b8e}.editor-selected{outline:3px solid #ff5b4d!important;outline-offset:3px!important}[data-layout-id]{touch-action:none;pointer-events:auto!important;cursor:move}[data-rich-id][data-layout-id]{cursor:grab}[data-rich-id][data-layout-id]:active{cursor:grabbing}[data-layout-id]:hover{filter:drop-shadow(0 0 3px #ff5b4d)}';
       doc.head.appendChild(style);
     }
-    doc.querySelectorAll('[data-rich-id]').forEach(el=>{
-      el.contentEditable='true'; el.spellcheck=false;
-      if(el.dataset.richBound)return;
-      el.dataset.richBound='1';
-      el.addEventListener('focus',()=>selectVisual(el));
-      el.addEventListener('input',()=>updateRichFromElement(el));
-    });
+doc.querySelectorAll('[data-rich-id]').forEach(el=>{
+       el.contentEditable='true'; el.spellcheck=false;
+       if(el.dataset.richBound)return;
+       el.dataset.richBound='1';
+       el.addEventListener('focus',()=>selectVisual(el));
+       el.addEventListener('input',()=>updateRichFromElement(el));
+       el.addEventListener('pointerdown',event=>{
+         if(event.button!==undefined&&event.button!==0)return;
+         const id=el.dataset.layoutId; if(!id)return;
+         event.stopPropagation();
+         content.layout=content.layout||{}; const current=content.layout[id]||{};
+         visual.pendingDrag={el,id,startX:event.clientX,startY:event.clientY,x:Number(current.x)||0,y:Number(current.y)||0,z:Number(current.z)||0,pointerId:event.pointerId};
+         try { el.setPointerCapture?.(event.pointerId); } catch {}
+       });
+     });
     doc.querySelectorAll('[data-layout-id]').forEach(el=>{
       if(el.dataset.layoutBound)return;
       el.dataset.layoutBound='1';
@@ -174,13 +182,24 @@
     });
     if(!doc.documentElement.dataset.visualEditorBound){
       doc.documentElement.dataset.visualEditorBound='1';
-      doc.addEventListener('pointermove',event=>{const d=visual.drag;if(!d)return;const value={x:Math.round(d.x+event.clientX-d.startX),y:Math.round(d.y+event.clientY-d.startY),z:d.z};content.layout[d.id]=value;updateLayoutStyle(d.el,value);});
-      const finishDrag=()=>{if(!visual.drag)return;visual.drag=null;scheduleDraft();};
-      doc.addEventListener('pointerup',finishDrag);
-      doc.addEventListener('pointercancel',finishDrag);
+doc.addEventListener('pointermove',event=>{
+         if(!visual.drag&&visual.pendingDrag){
+           const pending=visual.pendingDrag; const dx=event.clientX-pending.startX; const dy=event.clientY-pending.startY;
+           if(Math.hypot(dx,dy)>=6){
+             visual.pendingDrag=null; event.preventDefault();
+             try { visual.doc.getSelection?.().removeAllRanges(); } catch {}
+             selectVisual(pending.el);
+             visual.drag={el:pending.el,id:pending.id,startX:pending.startX,startY:pending.startY,x:pending.x,y:pending.y,z:pending.z};
+           }
+         }
+         const d=visual.drag; if(!d)return; event.preventDefault(); const value={x:Math.round(d.x+event.clientX-d.startX),y:Math.round(d.y+event.clientY-d.startY),z:d.z};content.layout[d.id]=value;updateLayoutStyle(d.el,value);
+       });
+       const finishDrag=()=>{visual.pendingDrag=null;if(!visual.drag)return;visual.drag=null;scheduleDraft();};
+       doc.addEventListener('pointerup',finishDrag);
+       doc.addEventListener('pointercancel',finishDrag);
       doc.addEventListener('click',event=>{if(!event.target.closest('[data-rich-id],[data-layout-id]'))selectVisual(null)});
     }
-    labelVisualSelection('可视化编辑已开启：点文字直接改；拖住图片、外框或空白处可整体移动');
+    labelVisualSelection('可视化编辑已开启：轻点文字直接改，按住文字或素材即可拖动');
   };
   const armVisualEditor = () => [0,120,360,900].forEach(delay=>setTimeout(setupVisualEditor,delay));
   const changeLayer = mode => { const id=selectedLayout(); if(!id){status('请先在右侧预览中点选一张图片或装饰素材。',true);return;} content.layout=content.layout||{};const value={x:0,y:0,z:0,...content.layout[id]};if(mode==='top')value.z=999;else if(mode==='up')value.z=Math.min(999,(Number(value.z)||0)+1);else if(mode==='down')value.z=Math.max(-99,(Number(value.z)||0)-1);else if(mode==='bottom')value.z=-99;else if(mode==='reset')Object.assign(value,{x:0,y:0,z:0});content.layout[id]=value;updateLayoutStyle(visual.selected,value);scheduleDraft(); };

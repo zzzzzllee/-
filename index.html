@@ -483,7 +483,7 @@ button{font:inherit}
     stage?.addEventListener('keydown', event => { if (event.key==='ArrowLeft') stepPhotoWall(root, -1); if (event.key==='ArrowRight') stepPhotoWall(root, 1); });
   });
   const prepareEditableMap = () => {
-    const textSelector = '.page h1,.page h2,.page h3,.page p,.page li,.page .hero-kicker,.page .hero-sub,.page .section-label,.page .mini,.page .photo-wall-label,.page .photo-card>span:last-child,.page .roles-gallery-card figcaption,.page .memory span,.page .qrcard span,.page .footer,.page .hero-ribbon,.page .hero-note';
+    const textSelector = '.page h1,.page h2,.page h3,.page p,.page li,.page figcaption,.page .hero-kicker,.page .hero-sub,.page .section-label,.page .mini,.page .photo-wall-label,.page .photo-card>span:last-child,.page .roles-gallery-card figcaption,.page .memory span,.page .qrcard span,.page .footer,.page .hero-ribbon,.page .hero-note';
     document.querySelectorAll(textSelector).forEach((el,index)=>el.dataset.richId='rich-'+index);
 
     const legacyAssetSelector = '.page img,.page .hero-ribbon,.page .hero-year,.page .hero-note,.page .hero-spark,.page .wall-sticker,.page .campus-decor,.page .hero-mascot';
@@ -499,6 +499,9 @@ button{font:inherit}
     legacyAssets.forEach(asset=>{
       if(asset.closest(groupedAssetSelector))return;
       asset.dataset.layoutId=legacyIds.get(asset);
+    });
+    document.querySelectorAll('[data-rich-id]').forEach(el=>{
+      if(!el.dataset.layoutId) el.dataset.layoutId='rich-layout-'+el.dataset.richId.slice(5);
     });
   };
   const applyVisualOverrides = c => {
@@ -540,8 +543,20 @@ button{font:inherit}
   const loading = document.getElementById('cloudLoading');
   const finishLoading = () => { document.documentElement.classList.remove('cloud-pending'); document.documentElement.classList.add('cloud-ready'); loading?.classList.add('is-hidden'); setTimeout(() => loading?.remove(), 350); };
   const applySnapshot = (content, updatedAt = '') => { if (!content) return; lastAppliedUpdatedAt = updatedAt || lastAppliedUpdatedAt; applyContent(mergePublishedContent(fallbackContent, content)); finishLoading(); };
+  const isEditorPreview = new URLSearchParams(location.search).get('editorPreview') === '1';
+  let previewContentReceived = false;
+  if (isEditorPreview) window.addEventListener('message', event => {
+    if (event.data?.type !== 'wechat-recruitment-preview' || !event.data.content) return;
+    previewContentReceived = true;
+    applySnapshot(event.data.content);
+  });
   const loadPublishedContent = async () => {
     const fallbackPromise = fetch('content.json?ts=' + Date.now(), { cache: 'no-store' }).then(response => response.json()).catch(() => ({}));
+    if (isEditorPreview) {
+      fallbackContent = await fallbackPromise || {};
+      if (!previewContentReceived) applySnapshot(fallbackContent);
+      return;
+    }
     const cloudPromise = window.__wechatCloudBootstrap || Promise.resolve(null);
     const [fallback, snapshot] = await Promise.all([fallbackPromise, cloudPromise]);
     fallbackContent = fallback || {};
@@ -555,8 +570,6 @@ button{font:inherit}
     if (sync?.isConfigured?.()) sync.subscribe((content, updatedAt) => { if (updatedAt && lastAppliedUpdatedAt && updatedAt <= lastAppliedUpdatedAt) return; applySnapshot(content, updatedAt); });
   };
   loadPublishedContent();
-  const isEditorPreview = new URLSearchParams(location.search).get('editorPreview') === '1';
-  if (isEditorPreview) window.addEventListener('message', event => { if (event.data?.type === 'wechat-recruitment-preview' && event.data.content) applySnapshot(event.data.content); });
 })();
 </script>
 </body>
