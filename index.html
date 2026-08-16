@@ -163,15 +163,15 @@ button{font:inherit}
 [data-layout-id]{translate:var(--layout-x,0px) var(--layout-y,0px)}
 @media(max-width:640px){.hero-mascot img{width:102px}.hero-wolf{left:-16px;bottom:5px}.hero-owl{right:-17px;top:105px}.zero-section{width:calc(100% - 28px);margin:20px auto;padding:23px 16px;box-shadow:7px 7px 0 var(--coral)}.zero-section:after{right:7px;top:-26px;font-size:62px}.zero-main{font-size:20px}.skill-card{grid-template-columns:1fr;gap:0;padding:8px;min-height:0}.skill-card img{height:auto;min-height:0;aspect-ratio:16/10}.skill-copy{padding:14px 10px 13px}.skill-card h3{font-size:24px}.photo-wall-hint{margin-top:34px!important;font-size:13px;padding:9px 13px}.encourage{font-size:18px!important}.ticket-grid{grid-template-columns:1fr}.benefit-hot strong:after{font-size:9px}}
 
-/* 首屏手动堆叠相册：当前照片在最上层，下方两张各露出约半张 */
+/* 首屏手动横向堆叠相册：当前照片居中，左右各露出一张预览图 */
 .hero-gallery{position:relative;z-index:4;margin-top:18px;overflow:hidden}
-.hero-gallery-track{position:relative;width:100%;height:min(122vw,480px);margin:0 auto;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab;outline:none}
+.hero-gallery-track{position:relative;width:100%;height:min(72vw,300px);margin:0 auto;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab;outline:none}
 .hero-gallery-track:active{cursor:grabbing}
-.hero-gallery-card{position:absolute;left:50%;top:10px;width:min(76vw,300px);margin:0;padding:8px 8px 31px;background:#fff;border:2px solid var(--ink);box-shadow:6px 7px 0 rgba(38,53,74,.72);opacity:0;pointer-events:none;transform:translate3d(calc(-50% - 72%),-4%,0) rotate(-7deg) scale(.9);transition:opacity .28s ease,transform .48s cubic-bezier(.2,.8,.2,1),filter .3s ease;will-change:transform,opacity}
-.hero-gallery-card.is-active{z-index:6;opacity:1;pointer-events:auto;filter:none;transform:translate3d(-50%,0,24px) rotate(-1.2deg) scale(1)}
-.hero-gallery-card.is-next{z-index:5;opacity:.88;filter:saturate(.82);transform:translate3d(calc(-50% + 12px),42%,12px) rotate(3.2deg) scale(.96)}
-.hero-gallery-card.is-next-2{z-index:4;opacity:.72;filter:saturate(.68);transform:translate3d(calc(-50% - 10px),84%,0) rotate(-4deg) scale(.92)}
-.hero-gallery-card.is-prev{z-index:3;opacity:0;transform:translate3d(calc(-50% - 72%),-4%,0) rotate(-7deg) scale(.9)}
+.hero-gallery-card{position:absolute;left:50%;top:18px;width:min(54vw,230px);margin:0;padding:8px 8px 31px;background:#fff;border:2px solid var(--ink);box-shadow:6px 7px 0 rgba(38,53,74,.72);opacity:0;pointer-events:none;transform:translate3d(-50%,2%,0) scale(.86);transition:opacity .28s ease,transform .48s cubic-bezier(.2,.8,.2,1),filter .3s ease;will-change:transform,opacity}
+.hero-gallery-card.is-active{z-index:6;opacity:1;pointer-events:auto;filter:none;transform:translate3d(-50%,0,24px) rotate(-1.2deg) scale(1.04)}
+.hero-gallery-card.is-prev{z-index:4;opacity:.8;filter:saturate(.72);transform:translate3d(calc(-50% - 50%),5%,0) rotate(-5deg) scale(.94)}
+.hero-gallery-card.is-next{z-index:5;opacity:.84;filter:saturate(.78);transform:translate3d(calc(-50% + 50%),5%,8px) rotate(5deg) scale(.94)}
+.hero-gallery-card.is-next-2{z-index:2;opacity:0;transform:translate3d(calc(-50% + 92%),3%,0) rotate(7deg) scale(.88)}
 .hero-gallery-card:before{content:"";position:absolute;left:50%;top:-10px;width:72px;height:19px;background:rgba(73,184,214,.72);border:1px solid rgba(38,53,74,.25);transform:translateX(-50%) rotate(-3deg)}
 .hero-gallery-card:nth-child(2n):before{background:rgba(255,111,97,.68);transform:translateX(-50%) rotate(4deg)}
 .hero-gallery-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#edf8fc;border:1px solid rgba(38,53,74,.22)}
@@ -195,7 +195,7 @@ button{font:inherit}
  .hero{min-height:680px}.hero-gallery-hint{margin-top:12px;font-size:13px}
  .skill-grid{gap:22px}.skill-card{grid-template-columns:1fr;min-height:0}.skill-card img{height:auto;min-height:0;aspect-ratio:16/10;border-right:0!important;border-bottom:3px solid var(--ink)!important}.skill-copy{padding:28px 19px 22px!important}.skill-copy:before{right:12px;top:12px}.skill-card h3{font-size:26px!important}.skill-card .role-index{top:18px;left:12px}
 }
-@media(min-width:641px){.hero-gallery-track{height:470px}}
+@media(min-width:641px){.hero-gallery-track{height:300px}}
 @media(max-width:390px){.hero-gallery-card span{font-size:10px}}
 </style>
 </head>
@@ -214,7 +214,7 @@ button{font:inherit}
       <div class="hero-sub"><span>●</span> 2026级新生招新 <span>→</span></div>
     </div>
     <div class="hero-gallery reveal" data-hero-gallery>
-      <div class="hero-gallery-track" data-hero-gallery-track tabindex="0" aria-label="首屏连续滑动照片"></div>
+      <div class="hero-gallery-track" data-hero-gallery-track tabindex="0" aria-label="首屏手动横向滑动照片"></div>
       <p class="hero-gallery-hint" data-hero-gallery-hint>手指左右滑动，按顺序看看我们的现场</p>
     </div>
     <div class="hero-note">从观众席<br>走向舞台幕后</div>
@@ -415,7 +415,7 @@ button{font:inherit}
       const items = keys.map((key,index) => ({src:images[key] || 'assets/photo-placeholder.svg',caption:captions[index] || ('等待上传 '+String(index+1).padStart(2,'0'))}));
       track.innerHTML = items.map((item,index) => '<figure class="hero-gallery-card" data-hero-card><img loading="eager"'+(index<2?' fetchpriority="high"':'')+' decoding="async" src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></figure>').join('');
       const cards = [...track.querySelectorAll('[data-hero-card]')]; let activeIndex = 0; let startX = 0; let startY = 0; let pointerId = null;
-      const update = () => { const total=cards.length; cards.forEach((card,index)=>{ const offset=(index-activeIndex+total)%total; const previous=(activeIndex-index+total)%total; card.classList.remove('is-active','is-next','is-next-2','is-prev'); const stateClass=offset===0?'is-active':offset===1?'is-next':offset===2?'is-next-2':previous===1?'is-prev':''; if(stateClass)card.classList.add(stateClass); card.setAttribute('aria-hidden',offset===0?'false':'true'); card.setAttribute('tabindex',offset===0?'0':'-1'); }); track.dataset.activeIndex=String(activeIndex); };
+      const update = () => { const total=cards.length; cards.forEach((card,index)=>{ const offset=(index-activeIndex+total)%total; const previous=(activeIndex-index+total)%total; card.classList.remove('is-active','is-next','is-next-2','is-prev'); const stateClass=offset===0?'is-active':offset===1?'is-next':previous===1?'is-prev':offset===2?'is-next-2':''; if(stateClass)card.classList.add(stateClass); card.setAttribute('aria-hidden',offset===0?'false':'true'); card.setAttribute('tabindex',offset===0?'0':'-1'); }); track.dataset.activeIndex=String(activeIndex); };
       const step = direction => { if(cards.length<2)return; activeIndex=(activeIndex+direction+cards.length)%cards.length; update(); };
       const onPointerDown = event => { if(!event.isPrimary)return; pointerId=event.pointerId; startX=event.clientX; startY=event.clientY; try{track.setPointerCapture?.(event.pointerId)}catch{} };
       const onPointerUp = event => { if(pointerId!==event.pointerId)return; const deltaX=event.clientX-startX,deltaY=event.clientY-startY; pointerId=null; if(Math.abs(deltaX)>38&&Math.abs(deltaX)>Math.abs(deltaY)*1.15)step(deltaX<0?1:-1); };
