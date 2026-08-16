@@ -163,11 +163,12 @@ button{font:inherit}
 [data-layout-id]{translate:var(--layout-x,0px) var(--layout-y,0px)}
 @media(max-width:640px){.hero-mascot img{width:102px}.hero-wolf{left:-16px;bottom:5px}.hero-owl{right:-17px;top:105px}.zero-section{width:calc(100% - 28px);margin:20px auto;padding:23px 16px;box-shadow:7px 7px 0 var(--coral)}.zero-section:after{right:7px;top:-26px;font-size:62px}.zero-main{font-size:20px}.skill-card{grid-template-columns:1fr;gap:0;padding:8px;min-height:0}.skill-card img{height:auto;min-height:0;aspect-ratio:16/10}.skill-copy{padding:14px 10px 13px}.skill-card h3{font-size:24px}.photo-wall-hint{margin-top:34px!important;font-size:13px;padding:9px 13px}.encourage{font-size:18px!important}.ticket-grid{grid-template-columns:1fr}.benefit-hot strong:after{font-size:9px}}
 
-/* 首屏连续滑动照片带：原生触控滚动，不使用翻页按钮或页码 */
-.hero-gallery{position:relative;z-index:4;margin-top:18px}
-.hero-gallery-track{display:flex;gap:17px;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scroll-padding-inline:34px;padding:16px 34px 22px;margin:0 -34px;-webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-x pan-y}
+/* 首屏 6 张半叠放照片带：手指可拖动，并自动无缝循环 */
+.hero-gallery{position:relative;z-index:4;margin-top:18px;overflow:hidden}
+.hero-gallery-track{--hero-card-width:min(82vw,305px);--hero-card-overlap:min(41vw,152.5px);display:flex;gap:0;overflow-x:auto;overscroll-behavior-inline:contain;padding:17px 20px 22px;margin:0 -17px;-webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-x pan-y}
 .hero-gallery-track::-webkit-scrollbar{display:none}
-.hero-gallery-card{position:relative;flex:0 0 min(310px,72vw);scroll-snap-align:start;padding:8px 8px 31px;background:#fff;border:2px solid var(--ink);box-shadow:6px 7px 0 rgba(38,53,74,.72);transform:rotate(-1.2deg)}
+.hero-gallery-card{position:relative;flex:0 0 var(--hero-card-width);margin:0 0 0 calc(0px - var(--hero-card-overlap));padding:8px 8px 31px;background:#fff;border:2px solid var(--ink);box-shadow:6px 7px 0 rgba(38,53,74,.72);transform:rotate(-1.2deg)}
+.hero-gallery-card:first-child{margin-left:0}
 .hero-gallery-card:nth-child(2n){transform:rotate(1.3deg)}.hero-gallery-card:nth-child(3n){transform:rotate(-.4deg)}
 .hero-gallery-card:before{content:"";position:absolute;left:50%;top:-10px;width:72px;height:19px;background:rgba(73,184,214,.72);border:1px solid rgba(38,53,74,.25);transform:translateX(-50%) rotate(-3deg)}
 .hero-gallery-card:nth-child(2n):before{background:rgba(255,111,97,.68);transform:translateX(-50%) rotate(4deg)}
@@ -189,10 +190,11 @@ button{font:inherit}
 .skill-card h3{margin:0 0 11px!important;font-size:30px!important;letter-spacing:.08em}.skill-card h3:after{content:"";display:block;width:54px;height:5px;margin-top:9px;background:var(--skill-accent);border:1px solid var(--ink)}
 .skill-card p{font-size:15px;line-height:1.85}.skill-card .mini{align-self:flex-start;margin-top:15px;padding:5px 10px;background:var(--ink);color:#fff;border:0;box-shadow:3px 3px 0 var(--skill-accent);font-size:11px;letter-spacing:.04em;transform:none}
 @media(max-width:640px){
- .hero{min-height:680px}.hero-gallery-track{gap:14px;margin:0 -17px;padding:17px 20px 22px;scroll-padding-inline:20px}.hero-gallery-card{flex-basis:min(82vw,305px)}.hero-gallery-hint{margin-top:12px;font-size:13px}
+ .hero{min-height:680px}.hero-gallery-hint{margin-top:12px;font-size:13px}
  .skill-grid{gap:22px}.skill-card{grid-template-columns:1fr;min-height:0}.skill-card img{height:auto;min-height:0;aspect-ratio:16/10;border-right:0!important;border-bottom:3px solid var(--ink)!important}.skill-copy{padding:28px 19px 22px!important}.skill-copy:before{right:12px;top:12px}.skill-card h3{font-size:26px!important}.skill-card .role-index{top:18px;left:12px}
 }
-@media(max-width:390px){.hero-gallery-card{flex-basis:84vw}.hero-gallery-card span{font-size:10px}}
+@media(min-width:641px){.hero-gallery-track{--hero-card-width:min(310px,72vw);--hero-card-overlap:min(155px,36vw);margin:0 -34px;padding:16px 34px 22px}}
+@media(max-width:390px){.hero-gallery-track{--hero-card-width:84vw;--hero-card-overlap:42vw}.hero-gallery-card span{font-size:10px}}
 </style>
 </head>
 <body>
@@ -399,15 +401,35 @@ button{font:inherit}
     }
     return result;
   };
+  let stopHeroGalleryLoop = () => {};
   const renderHeroGallery = c => {
+    stopHeroGalleryLoop();
     const root = document.querySelector('[data-hero-gallery]'); if (!root) return;
     const gallery = c.heroGallery || {}; const images = c.images || {};
-    const keys = Array.isArray(gallery.imageKeys) && gallery.imageKeys.length ? gallery.imageKeys : ['hero1','hero2','hero3','hero4','hero5','hero6'];
+    const keys = (Array.isArray(gallery.imageKeys) && gallery.imageKeys.length ? gallery.imageKeys : ['hero1','hero2','hero3','hero4','hero5','hero6']).slice(0,6);
     const captions = Array.isArray(gallery.captions) ? gallery.captions : [];
     const track = root.querySelector('[data-hero-gallery-track]');
-    if (track) track.innerHTML = keys.map((key,index) => { const src=images[key] || 'assets/photo-placeholder.svg'; const caption=captions[index] || ('等待上传 '+String(index+1).padStart(2,'0')); return '<figure class="hero-gallery-card"><img '+(index<2?'loading="eager" fetchpriority="high"':'loading="lazy"')+' decoding="async" src="'+escapeHtml(src)+'" alt="'+escapeHtml(caption)+'"><span>'+escapeHtml(caption)+'</span></figure>'; }).join('');
+    if (track) {
+      const items = keys.map((key,index) => ({src:images[key] || 'assets/photo-placeholder.svg',caption:captions[index] || ('等待上传 '+String(index+1).padStart(2,'0'))}));
+      track.innerHTML = [...items,...items].map((item,index) => '<figure class="hero-gallery-card" data-hero-card'+(index>=items.length?' data-loop-copy="true" aria-hidden="true"':'')+' style="z-index:'+((index%items.length)+1)+'"><img '+(index<items.length?'loading="eager"'+(index<2?' fetchpriority="high"':''):'loading="lazy"')+' decoding="async" src="'+escapeHtml(item.src)+'" alt="'+(index>=items.length?'':escapeHtml(item.caption))+'"><span>'+escapeHtml(item.caption)+'</span></figure>').join('');
+      track.scrollLeft = 0;
+      let frame = 0; let resumeTimer = 0; let cycleWidth = 0; let position = 0; let paused = false; let lastTime = performance.now();
+      const measure = () => { const cards=track.querySelectorAll('[data-hero-card]'); cycleWidth=cards.length>items.length ? cards[items.length].offsetLeft-cards[0].offsetLeft : 0; };
+      const wrap = () => { if(cycleWidth>0){ position=((position%cycleWidth)+cycleWidth)%cycleWidth; track.scrollLeft=position; } };
+      const tick = now => { const elapsed=Math.min(40,now-lastTime); lastTime=now; if(!paused && !document.hidden && cycleWidth>0){ position+=elapsed*.025; wrap(); } frame=requestAnimationFrame(tick); };
+      const pause = () => { paused=true; position=track.scrollLeft; clearTimeout(resumeTimer); };
+      const resume = () => { clearTimeout(resumeTimer); position=track.scrollLeft; resumeTimer=setTimeout(()=>{ paused=false; position=track.scrollLeft; lastTime=performance.now(); wrap(); },1800); };
+      const onScroll = () => { if(paused) position=track.scrollLeft; };
+      const onVisibility = () => { position=track.scrollLeft; lastTime=performance.now(); };
+      const onResize = () => { const progress=cycleWidth ? track.scrollLeft/cycleWidth : 0; measure(); position=cycleWidth ? (progress%1)*cycleWidth : 0; wrap(); };
+      const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const onWheel = () => { pause(); resume(); };
+      track.addEventListener('pointerdown',pause,{passive:true}); track.addEventListener('pointerup',resume,{passive:true}); track.addEventListener('pointercancel',resume,{passive:true}); track.addEventListener('wheel',onWheel,{passive:true}); track.addEventListener('scroll',onScroll,{passive:true});
+      document.addEventListener('visibilitychange',onVisibility); window.addEventListener('resize',onResize,{passive:true});
+      const setupFrame = requestAnimationFrame(()=>{ measure(); if(!reducedMotion) frame=requestAnimationFrame(tick); });
+      stopHeroGalleryLoop = () => { cancelAnimationFrame(setupFrame); cancelAnimationFrame(frame); clearTimeout(resumeTimer); track.removeEventListener('pointerdown',pause); track.removeEventListener('pointerup',resume); track.removeEventListener('pointercancel',resume); track.removeEventListener('wheel',onWheel); track.removeEventListener('scroll',onScroll); document.removeEventListener('visibilitychange',onVisibility); window.removeEventListener('resize',onResize); };
+    }
     const hint = root.querySelector('[data-hero-gallery-hint]'); if (hint) hint.textContent = gallery.hint || '手指左右滑动，按顺序看看我们的现场';
-    if (track) track.scrollLeft = 0;
   };
   const photoWallItems = (c, wallKey) => {
     const wall = c[wallKey] || {}; const images = c.images || {}; const isIntro = wallKey === 'introPhotoWall';
