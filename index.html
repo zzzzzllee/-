@@ -185,7 +185,7 @@ button{font:inherit}
 .skill-card:nth-child(2),.skill-card:nth-child(5){--skill-accent:var(--blue)}.skill-card:nth-child(3){--skill-accent:var(--coral)}.skill-card:nth-child(4){--skill-accent:#ffe26a}
 .skill-card:before{content:"";position:absolute;inset:0 0 auto;height:10px;z-index:3;background:repeating-linear-gradient(90deg,var(--skill-accent) 0 34px,var(--ink) 34px 39px)}
 .skill-card:hover{transform:translateY(-3px)!important;box-shadow:10px 12px 0 var(--ink)}
-.skill-card .role-index{left:14px;right:auto;top:20px;width:auto;height:auto;z-index:4;padding:6px 10px;border-radius:0;background:var(--ink);color:#fff;box-shadow:3px 3px 0 var(--skill-accent);font:900 12px/1.2 Georgia,serif;letter-spacing:.08em}
+.skill-card .role-index{position:static;align-self:flex-start;display:inline-flex;width:max-content;height:auto;margin:0 0 16px;padding:6px 10px;border-radius:0;background:var(--ink);color:#fff;box-shadow:3px 3px 0 var(--skill-accent);font:900 12px/1.2 Georgia,serif;letter-spacing:.08em}
 .skill-card .role-index:before{content:"CONTROL ";color:var(--skill-accent)}
 .skill-card img{display:block;width:100%;height:100%;min-height:250px;object-fit:cover;border:0!important;border-right:3px solid var(--ink)!important;background:#edf8fc}
 .skill-copy{position:relative;align-self:stretch;display:flex;flex-direction:column;justify-content:center;padding:40px 28px 25px!important;background:linear-gradient(145deg,#fff 0 70%,color-mix(in srgb,var(--skill-accent) 28%,white) 70%)}
@@ -194,7 +194,7 @@ button{font:inherit}
 .skill-card p{font-size:15px;line-height:1.85}.skill-card .mini{align-self:flex-start;margin-top:15px;padding:5px 10px;background:var(--ink);color:#fff;border:0;box-shadow:3px 3px 0 var(--skill-accent);font-size:11px;letter-spacing:.04em;transform:none}
 @media(max-width:640px){
  .hero{min-height:730px}.hero-gallery-hint{margin-top:24px;font-size:13px}
- .skill-grid{gap:22px}.skill-card{grid-template-columns:1fr;min-height:0}.skill-card img{height:auto;min-height:0;aspect-ratio:16/10;border-right:0!important;border-bottom:3px solid var(--ink)!important}.skill-copy{padding:28px 19px 22px!important}.skill-copy:before{right:12px;top:12px}.skill-card h3{font-size:26px!important}.skill-card .role-index{top:18px;left:12px}
+ .skill-grid{gap:22px}.skill-card{grid-template-columns:1fr;min-height:0}.skill-card img{height:auto;min-height:0;aspect-ratio:16/10;border-right:0!important;border-bottom:3px solid var(--ink)!important}.skill-copy{padding:28px 19px 22px!important}.skill-copy:before{right:12px;top:12px}.skill-card h3{font-size:26px!important}.skill-card .role-index{margin-bottom:12px}
 }
 @media(min-width:641px){.hero-gallery-track{height:350px}}
 @media(max-width:390px){.hero{min-height:730px}.hero-gallery-card span{font-size:11px}.hero-gallery{margin-bottom:100px}.hero-gallery-hint{max-width:calc(100% - 44px)}}
@@ -251,11 +251,11 @@ button{font:inherit}
     <h2 class="section-title reveal">进到我们部门，<span class="mark">这些技能都能学</span></h2>
     <p class="roles-intro reveal">五个岗位都可以从零开始。先跟着师兄师姐练，再到真实活动里上手，慢慢找到你最喜欢的位置。</p>
     <div class="role-grid skill-grid">
-      <article class="role-card skill-card reveal"><span class="role-index">01</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="音控岗位"><div class="skill-copy"><h3>音控</h3><p>把人声、音乐和现场音量调到舒服又清楚。你会从接线、调音台基础和话筒使用学起。</p><span class="mini">调音台 / 话筒 / 音频</span></div></article>
-      <article class="role-card skill-card reveal"><span class="role-index">02</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="灯控岗位"><div class="skill-copy"><h3>灯控</h3><p>根据节目节奏切换灯光，让舞台该亮时亮、该炸时炸。先认灯位，再学基础编程和现场操作。</p><span class="mini">灯位 / 编程 / 氛围</span></div></article>
-      <article class="role-card skill-card reveal"><span class="role-index">03</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="打碟岗位"><div class="skill-copy"><h3>打碟</h3><p>学会衔接音乐、抓节拍和控制现场气氛。不是专业 DJ 也能从最基础的按键与节奏开始。</p><span class="mini">节拍 / 串歌 / 氛围</span></div></article>
-      <article class="role-card skill-card reveal"><span class="role-index">04</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="追光岗位"><div class="skill-copy"><h3>追光</h3><p>用一束光稳稳跟住舞台上的主角。要练眼力、反应和配合，成就感直接拉满。</p><span class="mini">跟光 / 预判 / 配合</span></div></article>
-      <article class="role-card skill-card reveal"><span class="role-index">05</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="场控岗位"><div class="skill-copy"><h3>场控</h3><p>拿着流程、盯住时间、对接台前幕后。哪里需要人，哪里就有场控把现场接住。</p><span class="mini">流程 / 对接 / 应变</span></div></article>
+      <article class="role-card skill-card reveal"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="音控岗位"><div class="skill-copy"><span class="role-index">01</span><h3>音控</h3><p>把人声、音乐和现场音量调到舒服又清楚。你会从接线、调音台基础和话筒使用学起。</p><span class="mini">调音台 / 话筒 / 音频</span></div></article>
+      <article class="role-card skill-card reveal"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="灯控岗位"><div class="skill-copy"><span class="role-index">02</span><h3>灯控</h3><p>根据节目节奏切换灯光，让舞台该亮时亮、该炸时炸。先认灯位，再学基础编程和现场操作。</p><span class="mini">灯位 / 编程 / 氛围</span></div></article>
+      <article class="role-card skill-card reveal"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="打碟岗位"><div class="skill-copy"><span class="role-index">03</span><h3>打碟</h3><p>学会衔接音乐、抓节拍和控制现场气氛。不是专业 DJ 也能从最基础的按键与节奏开始。</p><span class="mini">节拍 / 串歌 / 氛围</span></div></article>
+      <article class="role-card skill-card reveal"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="追光岗位"><div class="skill-copy"><span class="role-index">04</span><h3>追光</h3><p>用一束光稳稳跟住舞台上的主角。要练眼力、反应和配合，成就感直接拉满。</p><span class="mini">跟光 / 预判 / 配合</span></div></article>
+      <article class="role-card skill-card reveal"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="场控岗位"><div class="skill-copy"><span class="role-index">05</span><h3>场控</h3><p>拿着流程、盯住时间、对接台前幕后。哪里需要人，哪里就有场控把现场接住。</p><span class="mini">流程 / 对接 / 应变</span></div></article>
     </div>
       <p class="roles-more-note reveal">更多幕后岗位等待你来发现</p>
   </section>
