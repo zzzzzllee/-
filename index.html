@@ -15,7 +15,7 @@
   const readCached = () => { try { return JSON.parse(sessionStorage.getItem(key) || 'null'); } catch { return null; } };
   const saveCached = value => { try { sessionStorage.setItem(key, JSON.stringify(value)); } catch {} };
   const preload = content => {
-    const urls = [content?.images?.hero1, content?.images?.hero2, content?.images?.hero3].filter(src => /^https?:/i.test(String(src || '')));
+    const urls = ['hero1','hero2','hero3','hero4','hero5','hero6'].map(key => content?.images?.[key]).filter(src => /^https?:/i.test(String(src || '')));
     urls.forEach(src => { const image = new Image(); image.decoding = 'async'; image.fetchPriority = 'high'; image.src = src; });
   };
   window.__wechatCloudBootstrap = (async () => {
@@ -65,7 +65,7 @@ button{font:inherit}
 .polaroid.p1{left:5%;top:18px;width:44%;height:220px;transform:rotate(-5deg);z-index:2}.polaroid.p2{right:4%;top:0;width:42%;height:205px;transform:rotate(6deg);z-index:3}.polaroid.p3{left:34%;bottom:0;width:34%;height:160px;transform:rotate(1.5deg);z-index:4}
 .tape{position:absolute;z-index:9;width:72px;height:22px;background:rgba(73,184,214,.76);border:1px solid rgba(38,53,74,.28);transform:rotate(-9deg);animation:wiggle 4.8s ease-in-out infinite;pointer-events:none}.tape.t1{left:20%;top:4px}.tape.t2{right:16%;top:-5px;background:rgba(255,111,97,.7);transform:rotate(12deg);animation-delay:-1.7s}.tape.t3{left:46%;bottom:145px;background:rgba(255,255,255,.72);transform:rotate(-2deg);animation-delay:-3.2s}
 .hero-note{position:absolute;right:22px;bottom:24px;z-index:7;padding:6px 12px;border:2px solid var(--ink);border-radius:50%;background:#fff;font:800 12px/1.5 "Microsoft YaHei",sans-serif;transform:rotate(-8deg);animation:floaty 3.8s ease-in-out infinite}
-.campus-decor{position:absolute;z-index:6;pointer-events:none;text-align:center;animation:campusFloat 5.5s ease-in-out infinite}.campus-decor img{display:block;width:126px;max-width:18vw;object-fit:contain;filter:drop-shadow(3px 4px 0 rgba(27,27,27,.18));opacity:.96}.campus-decor span{display:inline-block;margin-top:4px;padding:2px 9px;background:#fff;border:1.5px solid var(--ink);font:900 11px/1.3 "Microsoft YaHei",sans-serif;transform:rotate(-3deg)}.campus-west{left:6px;bottom:20px;transform:rotate(-8deg)}.campus-north{right:6px;top:58px;transform:rotate(8deg);animation-delay:-2.2s}@keyframes campusFloat{0%,100%{translate:0 0}50%{translate:0 -7px}}.video-section{background:linear-gradient(145deg,rgba(255,251,220,.92),rgba(231,242,255,.94))!important}
+.campus-decor{position:absolute;z-index:6;pointer-events:none;text-align:center;animation:campusFloat 5.5s ease-in-out infinite}.campus-decor img{display:block;width:158px;max-width:23vw;object-fit:contain;filter:drop-shadow(3px 4px 0 rgba(27,27,27,.18));opacity:.96}.campus-decor span{display:inline-block;margin-top:4px;padding:2px 9px;background:#fff;border:1.5px solid var(--ink);font:900 11px/1.3 "Microsoft YaHei",sans-serif;transform:rotate(-3deg)}.campus-west{left:6px;bottom:20px;transform:rotate(-8deg)}.campus-north{right:6px;top:58px;transform:rotate(8deg);animation-delay:-2.2s}@keyframes campusFloat{0%,100%{translate:0 0}50%{translate:0 -7px}}.video-section{background:linear-gradient(145deg,rgba(255,251,220,.92),rgba(231,242,255,.94))!important}
 .video-card{position:relative;padding:20px;background:rgba(255,255,255,.86);border:3px solid var(--ink);box-shadow:var(--shadow);transform:rotate(-.6deg)}
 .video-intro{margin:0 0 18px;font-size:16px;line-height:1.9}
 .video-shell{position:relative;overflow:hidden;background:#1b1b1b;border:2px solid var(--ink);aspect-ratio:16/9;display:grid;place-items:center}
@@ -151,7 +151,7 @@ button{font:inherit}
  .role-grid,.ticket-grid{grid-template-columns:1fr}.role-card:nth-child(3){grid-column:auto}.detail-photo{grid-template-columns:1fr 1fr}.detail-photo img{height:220px}.roles-gallery{padding:15px 11px 14px}.roles-gallery-head{display:block}.roles-gallery-title{max-width:none;margin-top:10px;text-align:left;font-size:18px}.roles-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.roles-gallery-card,.roles-gallery-card:nth-child(n){grid-column:span 1;min-height:0;transform:none}.roles-gallery-card:nth-child(3n){transform:rotate(1deg)}.roles-gallery-card:nth-child(4n){transform:rotate(-1deg)}.roles-gallery-card img{height:auto;min-height:0;aspect-ratio:4/3}.roles-gallery-card figcaption{margin-top:6px;padding:5px 6px;font-size:10px;line-height:1.4}.memory-wall{grid-template-columns:1fr 1fr;gap:10px;padding:6px 1px 0}.memory-wall .memory{padding:6px 6px 8px}.memory-wall .memory span{margin-top:6px;font-size:10px}.memory-wall .wall-sticker{width:92%;padding:10px 12px;font-size:15px}.photo-wall-stage{height:258px}.photo-card{padding:7px 7px 30px}.photo-card>span:last-child{left:9px;right:9px;bottom:5px;font-size:11px}.photo-wall{overflow:hidden}
  .check-paper{padding:27px 17px}.checklist li{padding-left:45px;font-size:15px}.admission{padding:25px 16px 28px}.admission:before{margin:-25px -16px 22px}.qrgrid{gap:10px}.qrcard{padding:8px}.qrcard span{font-size:11px}.closing{padding:58px 18px 45px}.photo-wall{width:100%;padding:16px 12px 14px}.photo-wall-head{display:block;margin-bottom:11px}.photo-wall-title{margin-top:10px;text-align:left;font-size:17px}.photo-wall-stage{height:245px}.photo-card{padding:7px 7px 30px}.photo-card>span:last-child{left:9px;right:9px;bottom:5px;font-size:11px}.photo-wall-controls{margin-top:16px;gap:14px}.photo-wall-controls button{width:46px;height:40px}.closing-copy{padding:22px 17px}.closing-copy p{font-size:15px}
 }
-@media(max-width:520px){.campus-decor img{width:78px}.campus-west{left:-6px;bottom:14px}.campus-north{right:-6px;top:46px}.campus-decor span{font-size:9px;padding:2px 6px}}@media(max-width:390px){.hero{min-height:625px}.hero h1{font-size:45px}.hero-sub{font-size:13px}.section{padding-left:16px;padding-right:16px}.section-title{font-size:28px}.memory-wall{height:auto}.qrgrid{gap:8px}.qrcard span{font-size:10px}.ticket{padding-left:62px}}
+@media(max-width:520px){.campus-decor img{width:98px;max-width:27vw}.campus-west{left:-6px;bottom:14px}.campus-north{right:-6px;top:46px}.campus-decor span{font-size:9px;padding:2px 6px}}@media(max-width:390px){.hero{min-height:625px}.hero h1{font-size:45px}.hero-sub{font-size:13px}.section{padding-left:16px;padding-right:16px}.section-title{font-size:28px}.memory-wall{height:auto}.qrgrid{gap:8px}.qrcard span{font-size:10px}.ticket{padding-left:62px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-spark,.tape,.hero-note,.wall-sticker,.closing-title,.floaty,.campus-decor{animation:none!important}.reveal{opacity:1;transform:none;transition:none}.polaroid,.role-card,.qrcard,.photo-card,.photo-wall-controls button{transition:none}}
 .cloud-pending .page img{visibility:hidden}.cloud-loading{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:#fffefb;backdrop-filter:blur(7px);font:700 14px/1.6 "Microsoft YaHei",sans-serif;color:var(--ink);transition:opacity .2s ease}.cloud-loading.is-hidden{opacity:0;pointer-events:none}.cloud-loading-card{padding:16px 20px;background:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);text-align:center}.cloud-loading-dot{display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:var(--coral);animation:cloudPulse 1s ease-in-out infinite alternate}@keyframes cloudPulse{to{transform:scale(1.45);background:var(--blue)}}@media print{body{background:#fff}.page{width:100%;margin:0;border:0;box-shadow:none}.reveal{opacity:1;transform:none}.section{break-inside:avoid}.hero{min-height:640px}}
 
@@ -161,7 +161,38 @@ button{font:inherit}
 .roles-intro{margin:-8px 0 28px;padding:15px 17px;border-left:6px solid var(--blue);background:#fff;font-weight:800}.skill-grid{grid-template-columns:1fr}.skill-card{display:grid;grid-template-columns:minmax(150px,.9fr) minmax(0,1.1fr);gap:18px;align-items:stretch;padding:10px;min-height:230px}.skill-card:nth-child(n){grid-column:auto}.skill-card:nth-child(4){background:var(--yellow-soft)}.skill-card:nth-child(5){background:var(--blue-soft)}.skill-card img{display:block;width:100%;height:100%;min-height:205px;object-fit:cover;border:2px solid var(--ink);background:#eef7fb}.skill-copy{align-self:center;padding:13px 12px 12px 0}.skill-card h3{font-size:27px}.benefit-hot{background:var(--yellow)!important}.benefit-hot strong:after{content:"重点福利";display:inline-block;margin-left:8px;padding:2px 6px;background:var(--coral);color:#fff;border:1.5px solid var(--ink);font:900 9px/1.4 "Microsoft YaHei",sans-serif;transform:rotate(-3deg)}
 .photo-wall-hint{margin:30px auto 4px!important;width:max-content;max-width:100%;padding:8px 14px;background:var(--ink);color:#fff!important;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--yellow);font:900 13px/1.5 "Microsoft YaHei",sans-serif;text-align:center;transform:rotate(-1deg)}.photo-wall-hint:before{content:"↔ ";color:var(--yellow);font-size:16px}.encourage{font-size:20px!important;line-height:1.65!important;text-align:center;background:var(--yellow)!important;border:3px solid var(--ink)!important;border-left:3px solid var(--ink)!important;box-shadow:7px 7px 0 var(--coral);font-weight:1000!important}.page img{cursor:default}.roles-gallery-card img,.detail-photo img,.photo-card img,.qrcard img,.intro-photo img{cursor:default}
 [data-layout-id]{translate:var(--layout-x,0px) var(--layout-y,0px)}
-@media(max-width:640px){.hero-mascot img{width:88px}.hero-wolf{left:-16px;bottom:5px}.hero-owl{right:-17px;top:105px}.zero-section{width:calc(100% - 28px);margin:20px auto;padding:23px 16px;box-shadow:7px 7px 0 var(--coral)}.zero-section:after{right:7px;top:-26px;font-size:62px}.zero-main{font-size:20px}.skill-card{grid-template-columns:1fr;gap:0;padding:8px;min-height:0}.skill-card img{height:auto;min-height:0;aspect-ratio:16/10}.skill-copy{padding:14px 10px 13px}.skill-card h3{font-size:24px}.photo-wall-hint{margin-top:34px!important;font-size:13px;padding:9px 13px}.encourage{font-size:18px!important}.ticket-grid{grid-template-columns:1fr}.benefit-hot strong:after{font-size:9px}}
+@media(max-width:640px){.hero-mascot img{width:102px}.hero-wolf{left:-16px;bottom:5px}.hero-owl{right:-17px;top:105px}.zero-section{width:calc(100% - 28px);margin:20px auto;padding:23px 16px;box-shadow:7px 7px 0 var(--coral)}.zero-section:after{right:7px;top:-26px;font-size:62px}.zero-main{font-size:20px}.skill-card{grid-template-columns:1fr;gap:0;padding:8px;min-height:0}.skill-card img{height:auto;min-height:0;aspect-ratio:16/10}.skill-copy{padding:14px 10px 13px}.skill-card h3{font-size:24px}.photo-wall-hint{margin-top:34px!important;font-size:13px;padding:9px 13px}.encourage{font-size:18px!important}.ticket-grid{grid-template-columns:1fr}.benefit-hot strong:after{font-size:9px}}
+
+/* 首屏连续滑动照片带：原生触控滚动，不使用翻页按钮或页码 */
+.hero-gallery{position:relative;z-index:4;margin-top:18px}
+.hero-gallery-track{display:flex;gap:17px;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scroll-padding-inline:34px;padding:16px 34px 22px;margin:0 -34px;-webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-x pan-y}
+.hero-gallery-track::-webkit-scrollbar{display:none}
+.hero-gallery-card{position:relative;flex:0 0 min(310px,72vw);scroll-snap-align:start;padding:8px 8px 31px;background:#fff;border:2px solid var(--ink);box-shadow:6px 7px 0 rgba(38,53,74,.72);transform:rotate(-1.2deg)}
+.hero-gallery-card:nth-child(2n){transform:rotate(1.3deg)}.hero-gallery-card:nth-child(3n){transform:rotate(-.4deg)}
+.hero-gallery-card:before{content:"";position:absolute;left:50%;top:-10px;width:72px;height:19px;background:rgba(73,184,214,.72);border:1px solid rgba(38,53,74,.25);transform:translateX(-50%) rotate(-3deg)}
+.hero-gallery-card:nth-child(2n):before{background:rgba(255,111,97,.68);transform:translateX(-50%) rotate(4deg)}
+.hero-gallery-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#edf8fc;border:1px solid rgba(38,53,74,.22)}
+.hero-gallery-card span{position:absolute;left:10px;right:10px;bottom:6px;overflow:hidden;text-align:center;text-overflow:ellipsis;white-space:nowrap;font:900 11px/1.5 "Microsoft YaHei",sans-serif;color:var(--ink)}
+.hero-gallery-hint{display:table;margin:8px auto 0;padding:8px 15px;background:var(--ink);color:#fff;border:2px solid #fff;box-shadow:3px 3px 0 var(--coral);font:900 12px/1.45 "Microsoft YaHei",sans-serif;letter-spacing:.04em;transform:rotate(-1deg)}
+.hero-gallery-hint:before{content:"↔";margin-right:8px;color:var(--yellow);font-size:17px}
+/* 技能卡：设备操作台 / 后台工牌视觉，图文完全分区 */
+.skill-grid{grid-template-columns:1fr;gap:24px}
+.skill-card{--skill-accent:var(--yellow);display:grid;grid-template-columns:minmax(210px,.92fr) minmax(0,1.08fr);gap:0;align-items:stretch;min-height:250px;padding:0!important;overflow:hidden;background:#fff!important;border:3px solid var(--ink);box-shadow:8px 9px 0 rgba(38,53,74,.78);transform:none!important}
+.skill-card:nth-child(2),.skill-card:nth-child(5){--skill-accent:var(--blue)}.skill-card:nth-child(3){--skill-accent:var(--coral)}.skill-card:nth-child(4){--skill-accent:#ffe26a}
+.skill-card:before{content:"";position:absolute;inset:0 0 auto;height:10px;z-index:3;background:repeating-linear-gradient(90deg,var(--skill-accent) 0 34px,var(--ink) 34px 39px)}
+.skill-card:hover{transform:translateY(-3px)!important;box-shadow:10px 12px 0 var(--ink)}
+.skill-card .role-index{left:14px;right:auto;top:20px;width:auto;height:auto;z-index:4;padding:6px 10px;border-radius:0;background:var(--ink);color:#fff;box-shadow:3px 3px 0 var(--skill-accent);font:900 12px/1.2 Georgia,serif;letter-spacing:.08em}
+.skill-card .role-index:before{content:"CONTROL ";color:var(--skill-accent)}
+.skill-card img{display:block;width:100%;height:100%;min-height:250px;object-fit:cover;border:0!important;border-right:3px solid var(--ink)!important;background:#edf8fc}
+.skill-copy{position:relative;align-self:stretch;display:flex;flex-direction:column;justify-content:center;padding:40px 28px 25px!important;background:linear-gradient(145deg,#fff 0 70%,color-mix(in srgb,var(--skill-accent) 28%,white) 70%)}
+.skill-copy:before{content:"岗位技能";position:absolute;right:16px;top:20px;padding:3px 8px;border:1.5px solid var(--ink);background:var(--skill-accent);font:900 10px/1.35 "Microsoft YaHei",sans-serif;transform:rotate(2deg)}
+.skill-card h3{margin:0 0 11px!important;font-size:30px!important;letter-spacing:.08em}.skill-card h3:after{content:"";display:block;width:54px;height:5px;margin-top:9px;background:var(--skill-accent);border:1px solid var(--ink)}
+.skill-card p{font-size:15px;line-height:1.85}.skill-card .mini{align-self:flex-start;margin-top:15px;padding:5px 10px;background:var(--ink);color:#fff;border:0;box-shadow:3px 3px 0 var(--skill-accent);font-size:11px;letter-spacing:.04em;transform:none}
+@media(max-width:640px){
+ .hero{min-height:680px}.hero-gallery-track{gap:14px;margin:0 -17px;padding:17px 20px 22px;scroll-padding-inline:20px}.hero-gallery-card{flex-basis:min(82vw,305px)}.hero-gallery-hint{margin-top:12px;font-size:13px}
+ .skill-grid{gap:22px}.skill-card{grid-template-columns:1fr;min-height:0}.skill-card img{height:auto;min-height:0;aspect-ratio:16/10;border-right:0!important;border-bottom:3px solid var(--ink)!important}.skill-copy{padding:28px 19px 22px!important}.skill-copy:before{right:12px;top:12px}.skill-card h3{font-size:26px!important}.skill-card .role-index{top:18px;left:12px}
+}
+@media(max-width:390px){.hero-gallery-card{flex-basis:84vw}.hero-gallery-card span{font-size:10px}}
 </style>
 </head>
 <body>
@@ -178,11 +209,9 @@ button{font:inherit}
       <h1>新生入场<span class="outline">请就位</span></h1>
       <div class="hero-sub"><span>●</span> 2026级新生招新 <span>→</span></div>
     </div>
-    <div class="collage reveal">
-      <div class="tape t1"></div><div class="tape t2"></div><div class="tape t3"></div>
-      <div class="polaroid p1"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/group_01.jpg" alt="艺术教育中心活动合照"></div>
-      <div class="polaroid p2"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/casual_03.jpg" alt="舞台活动现场"></div>
-      <div class="polaroid p3"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_01.jpg" alt="舞台设备与工作现场"></div>
+    <div class="hero-gallery reveal" data-hero-gallery>
+      <div class="hero-gallery-track" data-hero-gallery-track tabindex="0" aria-label="首屏连续滑动照片"></div>
+      <p class="hero-gallery-hint" data-hero-gallery-hint>手指左右滑动，按顺序看看我们的现场</p>
     </div>
     <div class="hero-note">从观众席<br>走向舞台幕后</div>
     <div class="hero-mascot hero-wolf" aria-hidden="true"><img src="assets/qq-west.png" alt="白狼装饰"></div>
@@ -217,11 +246,11 @@ button{font:inherit}
     <h2 class="section-title reveal">进到我们部门，<span class="mark">这些技能都能学</span></h2>
     <p class="roles-intro reveal">五个岗位都可以从零开始。先跟着师兄师姐练，再到真实活动里上手，慢慢找到你最喜欢的位置。</p>
     <div class="role-grid skill-grid">
-      <article class="role-card skill-card reveal"><span class="role-index">01</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_02.jpg" alt="音控岗位"><div class="skill-copy"><h3>音控</h3><p>把人声、音乐和现场音量调到舒服又清楚。你会从接线、调音台基础和话筒使用学起。</p><span class="mini">调音台 / 话筒 / 音频</span></div></article>
-      <article class="role-card skill-card reveal"><span class="role-index">02</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_04.jpg" alt="灯控岗位"><div class="skill-copy"><h3>灯控</h3><p>根据节目节奏切换灯光，让舞台该亮时亮、该炸时炸。先认灯位，再学基础编程和现场操作。</p><span class="mini">灯位 / 编程 / 氛围</span></div></article>
-      <article class="role-card skill-card reveal"><span class="role-index">03</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_07.jpg" alt="打碟岗位"><div class="skill-copy"><h3>打碟</h3><p>学会衔接音乐、抓节拍和控制现场气氛。不是专业 DJ 也能从最基础的按键与节奏开始。</p><span class="mini">节拍 / 串歌 / 氛围</span></div></article>
-      <article class="role-card skill-card reveal"><span class="role-index">04</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_09.jpg" alt="追光岗位"><div class="skill-copy"><h3>追光</h3><p>用一束光稳稳跟住舞台上的主角。要练眼力、反应和配合，成就感直接拉满。</p><span class="mini">跟光 / 预判 / 配合</span></div></article>
-      <article class="role-card skill-card reveal"><span class="role-index">05</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/work_02.jpg" alt="场控岗位"><div class="skill-copy"><h3>场控</h3><p>拿着流程、盯住时间、对接台前幕后。哪里需要人，哪里就有场控把现场接住。</p><span class="mini">流程 / 对接 / 应变</span></div></article>
+      <article class="role-card skill-card reveal"><span class="role-index">01</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="音控岗位"><div class="skill-copy"><h3>音控</h3><p>把人声、音乐和现场音量调到舒服又清楚。你会从接线、调音台基础和话筒使用学起。</p><span class="mini">调音台 / 话筒 / 音频</span></div></article>
+      <article class="role-card skill-card reveal"><span class="role-index">02</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="灯控岗位"><div class="skill-copy"><h3>灯控</h3><p>根据节目节奏切换灯光，让舞台该亮时亮、该炸时炸。先认灯位，再学基础编程和现场操作。</p><span class="mini">灯位 / 编程 / 氛围</span></div></article>
+      <article class="role-card skill-card reveal"><span class="role-index">03</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="打碟岗位"><div class="skill-copy"><h3>打碟</h3><p>学会衔接音乐、抓节拍和控制现场气氛。不是专业 DJ 也能从最基础的按键与节奏开始。</p><span class="mini">节拍 / 串歌 / 氛围</span></div></article>
+      <article class="role-card skill-card reveal"><span class="role-index">04</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="追光岗位"><div class="skill-copy"><h3>追光</h3><p>用一束光稳稳跟住舞台上的主角。要练眼力、反应和配合，成就感直接拉满。</p><span class="mini">跟光 / 预判 / 配合</span></div></article>
+      <article class="role-card skill-card reveal"><span class="role-index">05</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="场控岗位"><div class="skill-copy"><h3>场控</h3><p>拿着流程、盯住时间、对接台前幕后。哪里需要人，哪里就有场控把现场接住。</p><span class="mini">流程 / 对接 / 应变</span></div></article>
     </div>
   </section>
 
@@ -235,7 +264,7 @@ button{font:inherit}
       <article class="ticket reveal"><span class="ticket-num">03</span><strong>校园大场面</strong><p>迎新、晚会、音乐会等活动，都可能留下你的名字和身影。</p></article>
       <article class="ticket reveal benefit-hot"><span class="ticket-num">04</span><strong>综测分</strong><p>参与符合学校认定要求的活动，可按实际规定申请相应综测分。</p></article>
       <article class="ticket reveal benefit-hot"><span class="ticket-num">05</span><strong>饭票福利</strong><p>部分活动会按实际安排提供工作餐或饭票，干活也要记得好好吃饭。</p></article>
-      <article class="ticket reveal"><span class="ticket-num">06</span><strong>轻松日常</strong><p>不只有工作，也有聚餐、团建、合照和一堆好玩的幕后瞬间。</p></article>
+      <article class="ticket reveal benefit-hot"><span class="ticket-num">06</span><strong>志愿时长</strong><p>参与符合认定要求的校内活动，可按学校实际规定登记相应志愿服务时长。</p></article>
     </div>
   </section>
 
@@ -246,10 +275,10 @@ button{font:inherit}
     <p class="reveal">这里不是只有对讲机和流程表。活动结束后一起拍照、聚餐、复盘吐槽，很多大学里的熟人和朋友，就是这样认识的。</p>
     <p class="reveal">你可以认真学技能，也可以放心交朋友。忙的时候一起扛，轻松的时候一起笑，这才是我们的部门日常。</p>
     <div class="memory-wall reveal">
-      <div class="memory m1"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/group_02.jpg" alt="团队协作活动照片"><span>一起合照</span></div>
-      <div class="memory m2"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/work_01.jpg" alt="工作人员活动现场"><span>一起吃饭</span></div>
-      <div class="memory m3"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/casual_01.jpg" alt="校园舞台精彩瞬间"><span>一起出发</span></div>
-      <div class="memory m4"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_03.jpg" alt="舞台设备细节照片"><span>一起快乐</span></div>
+      <div class="memory m1"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="团队协作活动照片"><span>一起合照</span></div>
+      <div class="memory m2"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="工作人员活动现场"><span>一起吃饭</span></div>
+      <div class="memory m3"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="校园舞台精彩瞬间"><span>一起出发</span></div>
+      <div class="memory m4"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="舞台设备细节照片"><span>一起快乐</span></div>
       <div class="wall-sticker">青春<br>不设限<br>等你加入</div>
     </div>
   </section>
@@ -302,7 +331,7 @@ button{font:inherit}
     <div class="photo-wall reveal" data-photo-wall>
       <div class="photo-wall-head"><div class="photo-wall-label">TEAM PHOTO WALL</div><h3 class="photo-wall-title" data-photo-wall-title>下一张团队合照，也许就有你</h3></div>
       <div class="photo-wall-stage" data-photo-wall-stage>
-        <article class="photo-card is-active" data-photo-card><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/group_03.jpg" alt="下一张团队合照，也许就有你"><span>下一张团队合照，也许就有你</span></article>
+        <article class="photo-card is-active" data-photo-card><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="下一张团队合照，也许就有你"><span>下一张团队合照，也许就有你</span></article>
       </div>
       <p class="photo-wall-hint" data-photo-wall-hint>手指左右滑动，翻看属于我们的共同瞬间</p>
     </div>
@@ -346,7 +375,7 @@ button{font:inherit}
   const readDraft = () => { try { return JSON.parse(localStorage.getItem(draftKey) || 'null'); } catch { return null; } };
   const setText = (selector, value, root = document) => { const el = root.querySelector(selector); if (el && value !== undefined) el.textContent = value; };
   const setTitle = (selector, before, mark) => { const el = document.querySelector(selector); if (!el) return; el.firstChild && (el.firstChild.nodeValue = before || ''); const span = el.querySelector('.mark'); if (span) span.textContent = mark || ''; };
-  const setImg = (selector, src) => { const el = document.querySelector(selector); if (el && src) { const critical = /^\.p[123] img$/.test(selector); el.loading = critical ? 'eager' : 'lazy'; el.decoding = 'async'; if (critical) el.fetchPriority = 'high'; el.src = src; } };
+  const setImg = (selector, src) => { const el = document.querySelector(selector); if (el && src) { const critical = selector.includes('hero-gallery'); el.loading = critical ? 'eager' : 'lazy'; el.decoding = 'async'; if (critical) el.fetchPriority = 'high'; el.src = src; } };
   const photoWallStates = new WeakMap();
   const getPhotoWallState = root => {
     let state = photoWallStates.get(root);
@@ -369,6 +398,16 @@ button{font:inherit}
       result.photoWall.captions = [...(base.photoWall.captions || [])];
     }
     return result;
+  };
+  const renderHeroGallery = c => {
+    const root = document.querySelector('[data-hero-gallery]'); if (!root) return;
+    const gallery = c.heroGallery || {}; const images = c.images || {};
+    const keys = Array.isArray(gallery.imageKeys) && gallery.imageKeys.length ? gallery.imageKeys : ['hero1','hero2','hero3','hero4','hero5','hero6'];
+    const captions = Array.isArray(gallery.captions) ? gallery.captions : [];
+    const track = root.querySelector('[data-hero-gallery-track]');
+    if (track) track.innerHTML = keys.map((key,index) => { const src=images[key] || 'assets/photo-placeholder.svg'; const caption=captions[index] || ('等待上传 '+String(index+1).padStart(2,'0')); return '<figure class="hero-gallery-card"><img '+(index<2?'loading="eager" fetchpriority="high"':'loading="lazy"')+' decoding="async" src="'+escapeHtml(src)+'" alt="'+escapeHtml(caption)+'"><span>'+escapeHtml(caption)+'</span></figure>'; }).join('');
+    const hint = root.querySelector('[data-hero-gallery-hint]'); if (hint) hint.textContent = gallery.hint || '手指左右滑动，按顺序看看我们的现场';
+    if (track) track.scrollLeft = 0;
   };
   const photoWallItems = (c, wallKey) => {
     const wall = c[wallKey] || {}; const images = c.images || {}; const isIntro = wallKey === 'introPhotoWall';
@@ -411,7 +450,7 @@ button{font:inherit}
       const fallbackHint = isIntro ? '手指左右滑动，看看舞台亮起之前' : '手指左右滑动，翻看属于我们的共同瞬间';
       const title = root.querySelector('[data-photo-wall-title]'); if (title) title.textContent = wall.title || fallbackTitle;
       const hintText = root.querySelector('[data-photo-wall-hint]'); if (hintText) hintText.textContent = wall.hint || fallbackHint;
-      const stage = root.querySelector('[data-photo-wall-stage]'); const fallbackSrc = isIntro ? 'assets/group_04.jpg' : 'assets/group_03.jpg';
+      const stage = root.querySelector('[data-photo-wall-stage]'); const fallbackSrc = 'assets/photo-placeholder.svg';
       if (stage) stage.innerHTML = items.length ? items.map(item => '<article class="photo-card" data-photo-card><img loading="lazy" decoding="async" src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></article>').join('') : '<article class="photo-card is-active" data-photo-card><img src="'+fallbackSrc+'" alt="'+escapeHtml(fallbackTitle)+'"><span>'+escapeHtml(fallbackTitle)+'</span></article>';
       updatePhotoWall(root);
     });
@@ -455,11 +494,12 @@ button{font:inherit}
     setTitle('.video-section .section-title',v.titleBefore||'宣传片，',v.titleMark||'先看见我们'); setText('.video-intro',v.intro); setText('.video-note',v.note);
     const pv=document.querySelector('#promoVideo'), pvs=document.querySelector('#promoVideoShell'); if(pv&&pvs){if(v.url){pv.src=v.url;if(v.poster)pv.poster=v.poster;pvs.classList.add('has-video');pv.load()}else{pv.removeAttribute('src');pvs.classList.remove('has-video')}}
     const imgs=c.images||{};
+    renderHeroGallery(c);
     renderPhotoWall(c);
     renderRolesGallery(c);
     const qq=c.decorations?.qq||[];
     document.querySelectorAll('.campus-decor img').forEach((img,index)=>{ if(qq[index]) img.src=qq[index]; });
-    document.querySelectorAll('.hero-mascot img').forEach((img,index)=>{ const item=c.decorations?.mascots?.[index]; if(item?.src) img.src=item.src; }); [['.p1 img',imgs.hero1],['.p2 img',imgs.hero2],['.p3 img',imgs.hero3],['.intro-photo img',imgs.intro],['.detail-photo .frame:nth-child(1) img',imgs.detail1],['.detail-photo .frame:nth-child(2) img',imgs.detail2],['.m1 img',imgs.moment1],['.m2 img',imgs.moment2],['.m3 img',imgs.moment3],['.m4 img',imgs.moment4],['.skill-card:nth-child(1) img',imgs.skillAudio],['.skill-card:nth-child(2) img',imgs.skillLight],['.skill-card:nth-child(3) img',imgs.skillDJ],['.skill-card:nth-child(4) img',imgs.skillSpotlight],['.skill-card:nth-child(5) img',imgs.skillStageControl],['.qrcard:nth-child(1) img',imgs.qrWestGroup],['.qrcard:nth-child(2) img',imgs.qrWestSignup],['.qrcard:nth-child(3) img',imgs.qrNorthGroup],['.qrcard:nth-child(4) img',imgs.qrNorthSignup]].forEach(([s,v])=>setImg(s,v));
+    document.querySelectorAll('.hero-mascot img').forEach((img,index)=>{ const item=c.decorations?.mascots?.[index]; if(item?.src) img.src=item.src; }); [['.intro-photo img',imgs.intro],['.detail-photo .frame:nth-child(1) img',imgs.detail1],['.detail-photo .frame:nth-child(2) img',imgs.detail2],['.m1 img',imgs.moment1],['.m2 img',imgs.moment2],['.m3 img',imgs.moment3],['.m4 img',imgs.moment4],['.skill-card:nth-child(1) img',imgs.skillAudio],['.skill-card:nth-child(2) img',imgs.skillLight],['.skill-card:nth-child(3) img',imgs.skillDJ],['.skill-card:nth-child(4) img',imgs.skillSpotlight],['.skill-card:nth-child(5) img',imgs.skillStageControl],['.qrcard:nth-child(1) img',imgs.qrWestGroup],['.qrcard:nth-child(2) img',imgs.qrWestSignup],['.qrcard:nth-child(3) img',imgs.qrNorthGroup],['.qrcard:nth-child(4) img',imgs.qrNorthSignup]].forEach(([s,v])=>setImg(s,v));
     applyVisualOverrides(c);
   };
   let fallbackContent = {};

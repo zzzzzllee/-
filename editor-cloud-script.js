@@ -48,7 +48,7 @@
   const text = (path, fallback = '') => getPath(content, path) ?? fallback;
   const arr = (path, fallback = []) => Array.isArray(getPath(content, path)) ? getPath(content, path) : fallback;
   const imageNames = {
-    hero1: '首屏拼贴 · 左侧大图', hero2: '首屏拼贴 · 右侧大图', hero3: '首屏拼贴 · 中下小图', skillAudio:'技能岗位 · 音控', skillLight:'技能岗位 · 灯控', skillDJ:'技能岗位 · 打碟', skillSpotlight:'技能岗位 · 追光', skillStageControl:'技能岗位 · 场控', detail1: '旧版岗位图 · 备用 1', detail2: '旧版岗位图 · 备用 2',
+    hero1: '首屏滑动照片 · 第 1 张', hero2: '首屏滑动照片 · 第 2 张', hero3: '首屏滑动照片 · 第 3 张', hero4: '首屏滑动照片 · 第 4 张', hero5: '首屏滑动照片 · 第 5 张', hero6: '首屏滑动照片 · 第 6 张', skillAudio:'技能岗位 · 音控', skillLight:'技能岗位 · 灯控', skillDJ:'技能岗位 · 打碟', skillSpotlight:'技能岗位 · 追光', skillStageControl:'技能岗位 · 场控', detail1: '旧版岗位图 · 备用 1', detail2: '旧版岗位图 · 备用 2',
     moment1: '青春照片墙 · 左上', moment2: '青春照片墙 · 右上', moment3: '青春照片墙 · 左下', moment4: '青春照片墙 · 右下',
     qrWestGroup: '西区 · 咨询群二维码', qrWestSignup: '西区 · 报名表二维码', qrNorthGroup: '北区 · 咨询群二维码', qrNorthSignup: '北区 · 报名表二维码',
     introPhotoWall1: '开场幕后相册 · 第 1 张', introPhotoWall2: '开场幕后相册 · 第 2 张', introPhotoWall3: '开场幕后相册 · 第 3 张', introPhotoWall4: '开场幕后相册 · 第 4 张', introPhotoWall5: '开场幕后相册 · 第 5 张', introPhotoWall6: '开场幕后相册 · 第 6 张',
@@ -56,7 +56,7 @@
     rolesGallery1: '幕后图片展 · 第 1 张', rolesGallery2: '幕后图片展 · 第 2 张', rolesGallery3: '幕后图片展 · 第 3 张', rolesGallery4: '幕后图片展 · 第 4 张', rolesGallery5: '幕后图片展 · 第 5 张', rolesGallery6: '幕后图片展 · 第 6 张', intro: '备用旧图 · 原开场单图', closing: '备用旧图 · 原结尾合照'
   };
   const imageGroups = [
-    {title:'01 · 首屏三张拼贴',note:'按页面位置排列：左侧大图、右侧大图、中下小图。',items:[{key:'hero1'},{key:'hero2'},{key:'hero3'}]},
+    {title:'01 · 首屏连续滑动照片',note:'第 1 张到第 6 张按手机左右连续滑动顺序排列，不是翻页相册。',items:[{key:'hero1',captionPath:'heroGallery.captions.0'},{key:'hero2',captionPath:'heroGallery.captions.1'},{key:'hero3',captionPath:'heroGallery.captions.2'},{key:'hero4',captionPath:'heroGallery.captions.3'},{key:'hero5',captionPath:'heroGallery.captions.4'},{key:'hero6',captionPath:'heroGallery.captions.5'}]},
     {title:'02 · 开场幕后翻页相册',note:'仅用于开场幕后板块。第 1 张到第 6 张就是手机左右滑动顺序，图片和说明均与结尾相册独立。',items:[{key:'introPhotoWall1',captionPath:'introPhotoWall.captions.0'},{key:'introPhotoWall2',captionPath:'introPhotoWall.captions.1'},{key:'introPhotoWall3',captionPath:'introPhotoWall.captions.2'},{key:'introPhotoWall4',captionPath:'introPhotoWall.captions.3'},{key:'introPhotoWall5',captionPath:'introPhotoWall.captions.4'},{key:'introPhotoWall6',captionPath:'introPhotoWall.captions.5'}]},
     {title:'03 · 五个技能岗位图片',note:'按音控、灯控、打碟、追光、场控排列，每个岗位一张图。',items:[{key:'skillAudio'},{key:'skillLight'},{key:'skillDJ'},{key:'skillSpotlight'},{key:'skillStageControl'}]},
     {title:'04 · “一场演出，正在许多细节里发生”图片展',note:'第 1 张到第 6 张按手机端从左到右、从上到下排列，说明在对应照片旁修改。',items:[{key:'rolesGallery1',captionPath:'roles.gallery.captions.0'},{key:'rolesGallery2',captionPath:'roles.gallery.captions.1'},{key:'rolesGallery3',captionPath:'roles.gallery.captions.2'},{key:'rolesGallery4',captionPath:'roles.gallery.captions.3'},{key:'rolesGallery5',captionPath:'roles.gallery.captions.4'},{key:'rolesGallery6',captionPath:'roles.gallery.captions.5'}]},
@@ -93,7 +93,7 @@
     const suitable = arr('suitable.items');
     const qrLabels = arr('apply.qrLabels');
     let html = '';
-    html += `<div class="section"><h2>基础与首屏</h2><div class="grid">${field('网页标题', 'siteTitle', text('siteTitle'), true)}${field('顶部单位名称', 'hero.kicker', text('hero.kicker'))}${field('主标题', 'hero.titleMain', text('hero.titleMain'))}${field('强调标题', 'hero.titleAccent', text('hero.titleAccent'))}${field('副标题', 'hero.sub', text('hero.sub'))}</div></div>`;
+    html += `<div class="section"><h2>基础与首屏</h2><div class="grid">${field('网页标题', 'siteTitle', text('siteTitle'), true)}${field('顶部单位名称', 'hero.kicker', text('hero.kicker'))}${field('主标题', 'hero.titleMain', text('hero.titleMain'))}${field('强调标题', 'hero.titleAccent', text('hero.titleAccent'))}${field('副标题', 'hero.sub', text('hero.sub'))}${field('首屏滑动提示', 'heroGallery.hint', text('heroGallery.hint'), true)}</div></div>`;
     html += `<div class="section"><h2>零基础重点提示</h2><div class="grid">${field('醒目标题','barrier.title',text('barrier.title'))}${field('重点大字','barrier.body',text('barrier.body'),true,true)}${field('补充说明','barrier.note',text('barrier.note'),true,true)}</div></div>`;
     html += `<div class="section"><h2>开场</h2><div class="grid">${field('标题前半句', 'intro.titleBefore', text('intro.titleBefore'))}${field('标题高亮句', 'intro.titleMark', text('intro.titleMark'))}${field('开场引导文字', 'intro.lead', text('intro.lead'), true, true)}${field('开场相册标题', 'introPhotoWall.title', text('introPhotoWall.title'), true)}${field('开场相册滑动提示', 'introPhotoWall.hint', text('introPhotoWall.hint'), true)}</div></div>`;
     html += `<div class="section"><h2>五个技能岗位</h2><div class="grid">${field('板块标题前半句', 'roles.titleBefore', text('roles.titleBefore'), true)}${field('板块高亮句', 'roles.titleMark', text('roles.titleMark'), true)}${field('岗位总说明', 'roles.intro', text('roles.intro'), true, true)}</div>`;
