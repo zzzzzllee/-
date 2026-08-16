@@ -12,6 +12,7 @@
   let dirty = false;
   let unsubscribeCloud = () => {};
   const pending = {};
+  const visual = { selected: null, doc: null, drag: null };
   const $ = selector => document.querySelector(selector);
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
   const cloneValue = value => {
@@ -47,7 +48,7 @@
   const text = (path, fallback = '') => getPath(content, path) ?? fallback;
   const arr = (path, fallback = []) => Array.isArray(getPath(content, path)) ? getPath(content, path) : fallback;
   const imageNames = {
-    hero1: '首屏拼贴 · 左侧大图', hero2: '首屏拼贴 · 右侧大图', hero3: '首屏拼贴 · 中下小图', detail1: '岗位介绍 · 左侧细节图', detail2: '岗位介绍 · 右侧细节图',
+    hero1: '首屏拼贴 · 左侧大图', hero2: '首屏拼贴 · 右侧大图', hero3: '首屏拼贴 · 中下小图', skillAudio:'技能岗位 · 音控', skillLight:'技能岗位 · 灯控', skillDJ:'技能岗位 · 打碟', skillSpotlight:'技能岗位 · 追光', skillStageControl:'技能岗位 · 场控', detail1: '旧版岗位图 · 备用 1', detail2: '旧版岗位图 · 备用 2',
     moment1: '青春照片墙 · 左上', moment2: '青春照片墙 · 右上', moment3: '青春照片墙 · 左下', moment4: '青春照片墙 · 右下',
     qrWestGroup: '西区 · 咨询群二维码', qrWestSignup: '西区 · 报名表二维码', qrNorthGroup: '北区 · 咨询群二维码', qrNorthSignup: '北区 · 报名表二维码',
     introPhotoWall1: '开场幕后相册 · 第 1 张', introPhotoWall2: '开场幕后相册 · 第 2 张', introPhotoWall3: '开场幕后相册 · 第 3 张', introPhotoWall4: '开场幕后相册 · 第 4 张', introPhotoWall5: '开场幕后相册 · 第 5 张', introPhotoWall6: '开场幕后相册 · 第 6 张',
@@ -57,7 +58,7 @@
   const imageGroups = [
     {title:'01 · 首屏三张拼贴',note:'按页面位置排列：左侧大图、右侧大图、中下小图。',items:[{key:'hero1'},{key:'hero2'},{key:'hero3'}]},
     {title:'02 · 开场幕后翻页相册',note:'仅用于开场幕后板块。第 1 张到第 6 张就是手机左右滑动顺序，图片和说明均与结尾相册独立。',items:[{key:'introPhotoWall1',captionPath:'introPhotoWall.captions.0'},{key:'introPhotoWall2',captionPath:'introPhotoWall.captions.1'},{key:'introPhotoWall3',captionPath:'introPhotoWall.captions.2'},{key:'introPhotoWall4',captionPath:'introPhotoWall.captions.3'},{key:'introPhotoWall5',captionPath:'introPhotoWall.captions.4'},{key:'introPhotoWall6',captionPath:'introPhotoWall.captions.5'}]},
-    {title:'03 · “参与一场演出怎样发生”双图',note:'位于三个岗位介绍卡片下方，页面中从左到右显示。',items:[{key:'detail1'},{key:'detail2'}]},
+    {title:'03 · 五个技能岗位图片',note:'按音控、灯控、打碟、追光、场控排列，每个岗位一张图。',items:[{key:'skillAudio'},{key:'skillLight'},{key:'skillDJ'},{key:'skillSpotlight'},{key:'skillStageControl'}]},
     {title:'04 · “一场演出，正在许多细节里发生”图片展',note:'第 1 张到第 6 张按手机端从左到右、从上到下排列，说明在对应照片旁修改。',items:[{key:'rolesGallery1',captionPath:'roles.gallery.captions.0'},{key:'rolesGallery2',captionPath:'roles.gallery.captions.1'},{key:'rolesGallery3',captionPath:'roles.gallery.captions.2'},{key:'rolesGallery4',captionPath:'roles.gallery.captions.3'},{key:'rolesGallery5',captionPath:'roles.gallery.captions.4'},{key:'rolesGallery6',captionPath:'roles.gallery.captions.5'}]},
     {title:'05 · “青春不设限”四张照片',note:'按左上、右上、左下、右下排列，文字贴纸不会遮图。',items:[{key:'moment1'},{key:'moment2'},{key:'moment3'},{key:'moment4'}]},
     {title:'06 · 结尾团队翻页相册',note:'仅用于“下一张团队合照，也许就有你”板块。第 1 张到第 6 张按手机左右滑动顺序排列。',items:[{key:'photoWall1',captionPath:'photoWall.captions.0'},{key:'photoWall2',captionPath:'photoWall.captions.1'},{key:'photoWall3',captionPath:'photoWall.captions.2'},{key:'photoWall4',captionPath:'photoWall.captions.3'},{key:'photoWall5',captionPath:'photoWall.captions.4'},{key:'photoWall6',captionPath:'photoWall.captions.5'}]},
@@ -68,6 +69,14 @@
   const status = (message, error = false) => { const el = $('#status'); if (el) { el.textContent = message; el.className = 'status' + (error ? ' error' : ''); } };
   const cloud = () => window.WechatCloudSync || null;
   const cloudReady = () => Boolean(cloud()?.isConfigured?.() && cloud()?.hasShareKey?.());
+  const cloudErrorMessage = error => {
+    const code = String(error?.code || '');
+    const message = String(error?.message || error || '');
+    const lower = message.toLowerCase();
+    if (code === '57014' || lower.includes('statement timeout') || lower.includes('timeout')) return '云端响应超时，已保留本机草稿；请稍等几秒后再点“立即保存到云端”。';
+    if (lower.includes('row-level security') || lower.includes('shared editing key') || lower.includes('共享编辑密钥')) return '共享编辑密钥与云端内容不匹配，请使用原始共享编辑链接（地址中带 ?share=）。';
+    return message;
+  };
   const syncPhotoWallValue = value => {
     if (!value) return;
     ['introPhotoWall', 'photoWall'].forEach(wallKey => {
@@ -85,8 +94,9 @@
     const qrLabels = arr('apply.qrLabels');
     let html = '';
     html += `<div class="section"><h2>基础与首屏</h2><div class="grid">${field('网页标题', 'siteTitle', text('siteTitle'), true)}${field('顶部单位名称', 'hero.kicker', text('hero.kicker'))}${field('主标题', 'hero.titleMain', text('hero.titleMain'))}${field('强调标题', 'hero.titleAccent', text('hero.titleAccent'))}${field('副标题', 'hero.sub', text('hero.sub'))}</div></div>`;
+    html += `<div class="section"><h2>零基础重点提示</h2><div class="grid">${field('醒目标题','barrier.title',text('barrier.title'))}${field('重点大字','barrier.body',text('barrier.body'),true,true)}${field('补充说明','barrier.note',text('barrier.note'),true,true)}</div></div>`;
     html += `<div class="section"><h2>开场</h2><div class="grid">${field('标题前半句', 'intro.titleBefore', text('intro.titleBefore'))}${field('标题高亮句', 'intro.titleMark', text('intro.titleMark'))}${field('开场引导文字', 'intro.lead', text('intro.lead'), true, true)}${field('开场相册标题', 'introPhotoWall.title', text('introPhotoWall.title'), true)}${field('开场相册滑动提示', 'introPhotoWall.hint', text('introPhotoWall.hint'), true)}</div></div>`;
-    html += `<div class="section"><h2>我们做什么</h2><div class="grid">${field('板块标题前半句', 'roles.titleBefore', text('roles.titleBefore'), true)}${field('板块高亮句', 'roles.titleMark', text('roles.titleMark'), true)}</div>`;
+    html += `<div class="section"><h2>五个技能岗位</h2><div class="grid">${field('板块标题前半句', 'roles.titleBefore', text('roles.titleBefore'), true)}${field('板块高亮句', 'roles.titleMark', text('roles.titleMark'), true)}${field('岗位总说明', 'roles.intro', text('roles.intro'), true, true)}</div>`;
     roles.forEach((item, index) => { html += `<div class="card"><div class="card-title">岗位内容 ${index + 1}</div><div class="grid">${field('小标题', `roles.cards.${index}.title`, item.title)}${field('标签', `roles.cards.${index}.tag`, item.tag)}${field('正文', `roles.cards.${index}.body`, item.body, true, true)}</div></div>`; });
     html += '</div>';
     html += `<div class="card"><div class="card-title">幕后图片展</div><div class="grid">${field('图片展标题', 'roles.gallery.title', text('roles.gallery.title'), true)}${field('图片展提示', 'roles.gallery.hint', text('roles.gallery.hint'), true)}</div><p class="token-note">每张图片的说明已移动到下方对应照片旁，顺序更清楚。</p></div></div>`;
@@ -126,8 +136,57 @@
   const clearDraft = async () => { try { await deleteIndexedDraft(); } catch {} try { localStorage.removeItem(KEY); } catch {} };
   const buildSlimDraft = () => { const draft = cloneValue(content); const original = baseContent || {}; Object.keys(draft.images || {}).forEach(key => { if (isDataUrl(draft.images[key])) draft.images[key] = original.images?.[key] || ''; }); syncPhotoWallValue(draft); return draft; };
   const persistDraft = async () => { syncPhotoWall(); try { await writeIndexedDraft(content); return true; } catch { try { localStorage.setItem(KEY, JSON.stringify(buildSlimDraft())); return true; } catch { status('文字修改已保留在当前页面，但本机草稿保存失败。请配置云端或清理浏览器站点数据。', true); return false; } } };
-  const pushPreview = () => { const frame = $('#preview'); if (frame?.contentWindow) frame.contentWindow.postMessage({ type: 'wechat-recruitment-preview', content }, '*'); };
-  const refreshPreview = () => { const frame = $('#preview'); if (frame) { frame.onload = pushPreview; frame.src = 'index.html?preview=' + Date.now(); } };
+  const labelVisualSelection = message => { const el=$('#visualSelection'); if(el) el.textContent=message||'可视化编辑：点文字直接改，点图片后拖动'; };
+  const selectedLayout = () => visual.selected?.dataset?.layoutId || '';
+  const updateRichFromElement = element => { const id=element?.dataset?.richId; if(!id)return; content.richText=content.richText||{}; content.richText[id]=element.innerHTML; scheduleDraft(); };
+  const updateLayoutStyle = (element,value) => { element.style.setProperty('--layout-x',(Number(value.x)||0)+'px'); element.style.setProperty('--layout-y',(Number(value.y)||0)+'px'); if(Number(value.z)) element.style.zIndex=String(value.z); else element.style.removeProperty('z-index'); element.style.position=element.style.position||'relative'; };
+  const selectVisual = element => { visual.doc?.querySelectorAll('.editor-selected').forEach(el=>el.classList.remove('editor-selected')); visual.selected=element||null; if(element){element.classList.add('editor-selected');const kind=element.dataset.richId?'文字':'素材';labelVisualSelection('已选中'+kind+'：'+(element.innerText||element.alt||element.dataset.layoutId||'当前元素').trim().slice(0,24));}else labelVisualSelection(); };
+  const setupVisualEditor = () => {
+    const frame=$('#preview'); const doc=frame?.contentDocument;
+    if(!doc?.querySelector('.page'))return;
+    visual.doc=doc;
+    const win=frame.contentWindow;
+    if(win&&!win.__wechatVisualEditorListenerBound){win.__wechatVisualEditorListenerBound=true;win.addEventListener('wechat-content-rendered',()=>armVisualEditor());}
+    if(!doc.getElementById('editorVisualStyle')){
+      const style=doc.createElement('style'); style.id='editorVisualStyle';
+      style.textContent='[data-rich-id]{outline:1px dashed transparent;cursor:text}[data-rich-id]:hover{outline-color:#f39b8e}.editor-selected{outline:3px solid #ff5b4d!important;outline-offset:3px!important}[data-layout-id]{touch-action:none;pointer-events:auto!important;cursor:move}[data-layout-id]:hover{filter:drop-shadow(0 0 3px #ff5b4d)}';
+      doc.head.appendChild(style);
+    }
+    doc.querySelectorAll('[data-rich-id]').forEach(el=>{
+      el.contentEditable='true'; el.spellcheck=false;
+      if(el.dataset.richBound)return;
+      el.dataset.richBound='1';
+      el.addEventListener('focus',()=>selectVisual(el));
+      el.addEventListener('input',()=>updateRichFromElement(el));
+    });
+    doc.querySelectorAll('[data-layout-id]').forEach(el=>{
+      if(el.dataset.layoutBound)return;
+      el.dataset.layoutBound='1';
+      el.addEventListener('click',event=>{event.stopPropagation();selectVisual(el)});
+      el.addEventListener('pointerdown',event=>{
+        if(event.button!==undefined&&event.button!==0)return;
+        event.preventDefault(); event.stopPropagation(); selectVisual(el);
+        const id=el.dataset.layoutId; content.layout=content.layout||{}; const current=content.layout[id]||{};
+        visual.drag={el,id,startX:event.clientX,startY:event.clientY,x:Number(current.x)||0,y:Number(current.y)||0,z:Number(current.z)||0};
+        try { el.setPointerCapture?.(event.pointerId); } catch {}
+      });
+    });
+    if(!doc.documentElement.dataset.visualEditorBound){
+      doc.documentElement.dataset.visualEditorBound='1';
+      doc.addEventListener('pointermove',event=>{const d=visual.drag;if(!d)return;const value={x:Math.round(d.x+event.clientX-d.startX),y:Math.round(d.y+event.clientY-d.startY),z:d.z};content.layout[d.id]=value;updateLayoutStyle(d.el,value);});
+      const finishDrag=()=>{if(!visual.drag)return;visual.drag=null;scheduleDraft();};
+      doc.addEventListener('pointerup',finishDrag);
+      doc.addEventListener('pointercancel',finishDrag);
+      doc.addEventListener('click',event=>{if(!event.target.closest('[data-rich-id],[data-layout-id]'))selectVisual(null)});
+    }
+    labelVisualSelection(decodeURIComponent('%E5%8F%AF%E8%A7%86%E5%8C%96%E7%BC%96%E8%BE%91%E5%B7%B2%E5%BC%80%E5%90%AF%EF%BC%9A%E7%82%B9%E6%96%87%E5%AD%97%E7%9B%B4%E6%8E%A5%E6%94%B9%EF%BC%8C%E7%82%B9%E5%9B%BE%E7%89%87%E5%90%8E%E6%8B%96%E5%8A%A8'));
+  };
+  const armVisualEditor = () => [0,120,360,900].forEach(delay=>setTimeout(setupVisualEditor,delay));
+  const changeLayer = mode => { const id=selectedLayout(); if(!id){status('请先在右侧预览中点选一张图片或装饰素材。',true);return;} content.layout=content.layout||{};const value={x:0,y:0,z:0,...content.layout[id]};if(mode==='top')value.z=999;else if(mode==='up')value.z=Math.min(999,(Number(value.z)||0)+1);else if(mode==='down')value.z=Math.max(-99,(Number(value.z)||0)-1);else if(mode==='bottom')value.z=-99;else if(mode==='reset')Object.assign(value,{x:0,y:0,z:0});content.layout[id]=value;updateLayoutStyle(visual.selected,value);scheduleDraft(); };
+  const bindVisualTools = () => { $('#boldBtn').onclick=()=>{const doc=visual.doc;if(!doc)return;doc.execCommand('bold',false,null);const active=doc.activeElement?.closest?.('[data-rich-id]')||visual.selected;if(active?.dataset?.richId)updateRichFromElement(active);};$('#topBtn').onclick=()=>changeLayer('top');$('#upBtn').onclick=()=>changeLayer('up');$('#downBtn').onclick=()=>changeLayer('down');$('#bottomBtn').onclick=()=>changeLayer('bottom');$('#resetLayoutBtn').onclick=()=>changeLayer('reset'); };
+
+  const pushPreview = () => { const frame = $('#preview'); if (frame?.contentWindow) { frame.contentWindow.postMessage({ type: 'wechat-recruitment-preview', content }, '*'); armVisualEditor(); } };
+  const refreshPreview = () => { const frame = $('#preview'); if (frame) { frame.onload = () => pushPreview(); frame.src = 'index.html?editorPreview=1&preview=' + Date.now(); } };
   const uploadPendingAssets = async () => {
     if (!cloudReady()) return;
     for (const [key, src] of Object.entries(content.images || {})) {
@@ -153,7 +212,7 @@
     if (!cloudReady() || cloudSaving) return false;
     cloudSaving = true;
     try { await uploadPendingAssets(); syncPhotoWall(); content = (await cloud().saveContent(content)) || content; baseContent = cloneValue(content); dirty = false; await persistDraft(); status('已自动保存到云端，其他打开同一共享链接的人会收到更新。'); return true; }
-    catch (error) { status('本机草稿已保存，但云端同步失败：' + (error.message || error), true); return false; }
+    catch (error) { status('本机草稿已保存，但云端同步失败：' + cloudErrorMessage(error), true); return false; }
     finally { cloudSaving = false; }
   };
   const scheduleDraft = () => { dirty = true; clearTimeout(autosaveTimer); autosaveTimer = setTimeout(async () => { if (!await persistDraft()) return; if (cloudReady()) await saveCloud(); else status('修改已自动保存到本机；配置云端后即可多人同步。'); }, 600); };
@@ -165,8 +224,8 @@
   const copyShareLink = async () => { const value = cloud()?.getShareUrl?.() || window.location.href; try { await navigator.clipboard.writeText(value); status('共享编辑链接已复制：\n' + value); } catch { window.prompt('请复制这个共享编辑链接', value); } };
   const load = async () => {
     try {
-      if (cloud() && !cloud().hasShareKey()) { const generated = new URL(cloud().createShareLink()).searchParams.get('share'); cloud().setShareKey(generated, true); }
-      status('正在读取云端内容…');
+      const missingShareKey = Boolean(cloud()?.isConfigured?.() && !cloud()?.hasShareKey?.());
+      status(missingShareKey ? '当前链接缺少共享编辑密钥，云端内容可读取，但保存请使用带 ?share= 的共享编辑链接。' : '正在读取云端内容…');
       const response = await fetch('content.json?ts=' + Date.now(), { cache: 'no-store' }); if (!response.ok) throw new Error('HTTP ' + response.status);
       fallbackContent = await response.json(); const cloudContent = cloudReady() ? await cloud().loadContent() : null; const saved = cloudContent ? null : await readDraft();
       content = mergePublishedContent(fallbackContent, cloudContent || saved || {}); baseContent = cloneValue(content); syncPhotoWall(); renderForm(); refreshPreview();
@@ -174,8 +233,9 @@
       else status('云端服务尚未配置：当前使用本机 IndexedDB 草稿。配置后即可多人在线同步。');
     } catch (error) { status('读取推文内容失败：' + error.message, true); }
   };
+  bindVisualTools();
   $('#previewBtn').onclick = draft;
-  $('#cloudSaveBtn').onclick = async () => { await persistDraft(); if (cloudReady()) await saveCloud(); else status('本机草稿已保存；还没有配置云端服务。', true); };
+  $('#cloudSaveBtn').onclick = async () => { await persistDraft(); if (cloudReady()) await saveCloud(); else if (cloud()?.isConfigured?.()) status('本机草稿已保存，但当前链接缺少共享编辑密钥；请使用原始共享编辑链接。', true); else status('本机草稿已保存；还没有配置云端服务。', true); };
   $('#copyShareBtn').onclick = copyShareLink;
   $('#resetBtn').onclick = async () => { await clearDraft(); location.reload(); };
   load();

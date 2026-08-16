@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#ffd86b">
+<link rel="icon" href="data:,">
 <link rel="preconnect" href="https://lbaoqsxmpvqxpbogvpyj.supabase.co" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <script src="cloud-config.js"></script>
@@ -43,13 +44,9 @@ body{margin:0;color:var(--ink);font-family:"LXGW WenKai","霞鹜文楷","STKaiti
  radial-gradient(circle at 18px 18px,rgba(38,53,74,.1) 2px,transparent 2.5px) 0 0/36px 36px,
  linear-gradient(150deg,#ffe987 0%,#fff5c6 34%,#dff6fb 72%,#bdeaf4 100%);}
 button{font:inherit}
-.toolbar{position:relative;z-index:10;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;padding:13px 14px;background:rgba(38,53,74,.96);color:#fff;font-family:"Microsoft YaHei",sans-serif;font-size:12px;letter-spacing:.02em;border-top:3px solid var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.16)}
-.toolbar .toolbar-note{opacity:.86}
-.toolbar button{border:1.5px solid #fff;border-radius:999px;background:transparent;color:#fff;padding:5px 12px;cursor:pointer;transition:.2s ease}
-.toolbar button:hover{background:var(--yellow);border-color:var(--yellow);color:var(--ink);transform:translateY(-1px)}
 .page{position:relative;width:min(780px,calc(100% - 28px));margin:24px auto 48px;background:var(--cream);border:3px solid var(--ink);box-shadow:14px 14px 0 rgba(38,53,74,.92);overflow:hidden;isolation:isolate}
 .page:before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(90deg,rgba(178,214,248,.18) 1px,transparent 1px),linear-gradient(rgba(178,214,248,.18) 1px,transparent 1px);background-size:28px 28px}.page:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:url("assets/style-paper.jpg") center top/620px auto repeat;opacity:.10;mix-blend-mode:multiply}
-.editable{outline:none}.editable:focus{box-shadow:inset 0 0 0 3px rgba(73,184,214,.28)}
+
 .hero{position:relative;min-height:690px;padding:52px 34px 34px;overflow:hidden;background:var(--yellow)}
 .hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 25%,rgba(255,255,255,.6) 0 3px,transparent 4px) 0 0/28px 28px;opacity:.62}
 .hero-ribbon{position:absolute;top:23px;left:-36px;z-index:5;padding:7px 54px;background:var(--coral);border:2px solid var(--ink);font:800 12px/1.2 "Microsoft YaHei",sans-serif;letter-spacing:.18em;transform:rotate(-7deg);box-shadow:3px 3px 0 var(--ink)}
@@ -103,7 +100,7 @@ button{font:inherit}
 .detail-photo{display:grid;grid-template-columns:1.4fr .8fr;gap:12px;margin-top:34px}
 .detail-photo .frame{position:relative;border:2px solid var(--ink);background:#fff;padding:7px;box-shadow:var(--small-shadow);overflow:hidden}.detail-photo .frame:first-child{transform:rotate(-1deg)}.detail-photo .frame:last-child{transform:rotate(2deg)}
 .detail-photo img{display:block;width:100%;height:300px;object-fit:cover;cursor:pointer;transition:transform .5s ease}.detail-photo .frame:hover img{transform:scale(1.035)}
-.roles-gallery{margin-top:36px;padding:18px 16px 16px;background:var(--yellow-soft);border:2px solid var(--ink);box-shadow:var(--small-shadow);transform:rotate(.7deg)}.roles-gallery-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px}.roles-gallery-label{display:inline-block;padding:4px 8px;background:var(--coral);color:#fff;border:2px solid var(--ink);font:900 10px/1.2 Georgia,serif;letter-spacing:.12em;transform:rotate(-2deg)}.roles-gallery-title{margin:0;max-width:360px;font:1000 20px/1.35 "Microsoft YaHei",sans-serif;text-align:right}.roles-gallery-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px}.roles-gallery-card{position:relative;min-height:154px;padding:6px;background:#fff;border:2px solid var(--ink);box-shadow:4px 4px 0 rgba(38,53,74,.2);overflow:hidden}.roles-gallery-card:nth-child(1){grid-column:span 7;transform:rotate(-1.2deg)}.roles-gallery-card:nth-child(2){grid-column:span 5;transform:rotate(1.5deg)}.roles-gallery-card:nth-child(3){grid-column:span 4;transform:rotate(1deg)}.roles-gallery-card:nth-child(4){grid-column:span 8;transform:rotate(-.8deg)}.roles-gallery-card:nth-child(5),.roles-gallery-card:nth-child(6){grid-column:span 6;transform:rotate(-1.4deg)}.roles-gallery-card:nth-child(6){transform:rotate(1.3deg)}.roles-gallery-card img{display:block;width:100%;height:100%;min-height:142px;object-fit:cover;cursor:pointer;transition:transform .45s ease}.roles-gallery-card:hover img{transform:scale(1.05)}.roles-gallery-card figcaption{position:absolute;left:10px;right:10px;bottom:10px;padding:5px 7px;background:rgba(255,250,237,.9);border:1px solid var(--ink);font:800 11px/1.35 "Microsoft YaHei",sans-serif}.roles-gallery-hint{margin:15px 0 0;color:#53606a;font-size:12px;line-height:1.7}.roles-gallery-card.replaceable{cursor:pointer}
+.roles-gallery{margin-top:36px;padding:18px 16px 16px;background:var(--yellow-soft);border:2px solid var(--ink);box-shadow:var(--small-shadow);transform:rotate(.7deg)}.roles-gallery-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px}.roles-gallery-label{display:inline-block;padding:4px 8px;background:var(--coral);color:#fff;border:2px solid var(--ink);font:900 10px/1.2 Georgia,serif;letter-spacing:.12em;transform:rotate(-2deg)}.roles-gallery-title{margin:0;max-width:360px;font:1000 20px/1.35 "Microsoft YaHei",sans-serif;text-align:right}.roles-gallery-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px}.roles-gallery-card{position:relative;min-height:154px;padding:6px;background:#fff;border:2px solid var(--ink);box-shadow:4px 4px 0 rgba(38,53,74,.2);overflow:hidden}.roles-gallery-card:nth-child(1){grid-column:span 7;transform:rotate(-1.2deg)}.roles-gallery-card:nth-child(2){grid-column:span 5;transform:rotate(1.5deg)}.roles-gallery-card:nth-child(3){grid-column:span 4;transform:rotate(1deg)}.roles-gallery-card:nth-child(4){grid-column:span 8;transform:rotate(-.8deg)}.roles-gallery-card:nth-child(5),.roles-gallery-card:nth-child(6){grid-column:span 6;transform:rotate(-1.4deg)}.roles-gallery-card:nth-child(6){transform:rotate(1.3deg)}.roles-gallery-card img{display:block;width:100%;height:100%;min-height:142px;object-fit:cover;cursor:pointer;transition:transform .45s ease}.roles-gallery-card:hover img{transform:scale(1.05)}.roles-gallery-card figcaption{position:absolute;left:10px;right:10px;bottom:10px;padding:5px 7px;background:rgba(255,250,237,.9);border:1px solid var(--ink);font:800 11px/1.35 "Microsoft YaHei",sans-serif}.roles-gallery-hint{margin:15px 0 0;color:#53606a;font-size:12px;line-height:1.7}
 .ticket-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:6px}
 .ticket{position:relative;padding:20px 22px 20px 70px;border:2px solid var(--ink);background:#fff;box-shadow:var(--small-shadow);min-height:145px;overflow:hidden}
 .ticket:nth-child(2n){background:var(--blue-soft)}.ticket:nth-child(3n){background:var(--coral-soft)}.ticket:nth-child(4n){background:var(--yellow-soft)}
@@ -138,11 +135,9 @@ button{font:inherit}
 .photo-wall-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px;text-align:left}.photo-wall-label{display:inline-block;padding:4px 8px;background:var(--blue);border:2px solid var(--ink);font:900 10px/1.2 Georgia,serif;letter-spacing:.14em;transform:rotate(-2deg)}.photo-wall-title{margin:0;font:1000 18px/1.3 "Microsoft YaHei",sans-serif;text-align:right}
 .photo-wall-stage{position:relative;height:392px;min-height:250px;touch-action:pan-y;user-select:none;-webkit-user-select:none;perspective:1100px}.photo-card{position:absolute;inset:0;padding:10px 10px 35px;background:#fff;border:2px solid var(--ink);box-shadow:6px 6px 0 rgba(38,53,74,.25);opacity:0;pointer-events:none;transform:translate3d(34px,30px,0) rotate(7deg) scale(.9);transition:opacity .35s ease,transform .48s cubic-bezier(.2,.8,.2,1),filter .35s ease;will-change:transform,opacity}.photo-card.is-active{z-index:5;opacity:1;pointer-events:auto;transform:translate3d(0,0,20px) rotate(-1deg) scale(1)}.photo-card.is-prev{z-index:3;opacity:.68;filter:saturate(.72);transform:translate3d(-18px,15px,0) rotate(-5deg) scale(.95)}.photo-card.is-next{z-index:4;opacity:.78;filter:saturate(.82);transform:translate3d(19px,17px,0) rotate(4deg) scale(.96)}.photo-card.is-prev-2{z-index:2;opacity:.34;filter:saturate(.6);transform:translate3d(-31px,29px,0) rotate(-8deg) scale(.9)}.photo-card.is-next-2{z-index:2;opacity:.42;filter:saturate(.64);transform:translate3d(35px,30px,0) rotate(8deg) scale(.9)}.photo-card.is-prev-3{z-index:1;opacity:.16;filter:saturate(.48);transform:translate3d(-43px,43px,0) rotate(-11deg) scale(.85)}.photo-card.is-next-3{z-index:1;opacity:.2;filter:saturate(.5);transform:translate3d(48px,44px,0) rotate(11deg) scale(.85)}.photo-card img{display:block;width:100%;height:100%;object-fit:cover;background:#eef7fb;cursor:pointer}.photo-card>span:last-child{position:absolute;left:12px;right:12px;bottom:7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 12px/1.4 "Microsoft YaHei",sans-serif}.photo-wall-hint{margin:13px 0 0;color:#53606a;font-size:12px}.photo-wall-controls,.photo-wall-count,.photo-card-index{display:none!important}
 .closing-copy{position:relative;z-index:4;margin:40px auto 0;max-width:610px;padding:26px 25px;background:var(--cream);border:3px solid var(--ink);box-shadow:8px 8px 0 var(--blue);transform:rotate(1deg)}
-.closing-copy{position:relative;z-index:4;margin:40px auto 0;max-width:610px;padding:26px 25px;background:var(--cream);border:3px solid var(--ink);box-shadow:8px 8px 0 var(--blue);transform:rotate(1deg)}
 .closing-copy p{margin:0;font-size:16px;line-height:2}.closing-copy strong{color:var(--coral);font-weight:1000}
 .closing-title{position:relative;z-index:4;margin:40px 0 5px;font:1000 clamp(36px,8vw,62px)/1.05 "Microsoft YaHei",sans-serif;color:#fff;text-shadow:4px 4px 0 var(--ink);animation:pulse 3.2s ease-in-out infinite}.closing-sub{position:relative;z-index:4;margin:10px 0 0;font:900 15px/1.7 "Microsoft YaHei",sans-serif;color:var(--ink)}
-.footer{padding:23px 18px;background:var(--ink);color:#fff;text-align:center;font:700 12px/1.8 "Microsoft YaHei",sans-serif;letter-spacing:.08em}.toolbar a{display:inline-block;border:1.5px solid #fff;border-radius:999px;background:transparent;color:#fff;padding:5px 12px;text-decoration:none;cursor:pointer;transition:.2s ease}.toolbar a:hover,.toolbar a:focus-visible{background:var(--yellow);border-color:var(--yellow);color:var(--ink);transform:translateY(-1px)}
-.replace-hint{position:fixed;right:14px;bottom:14px;z-index:90;max-width:235px;padding:8px 11px;background:rgba(38,53,74,.92);color:#fff;border-radius:8px;font:12px/1.55 "Microsoft YaHei",sans-serif;opacity:0;pointer-events:none;transition:opacity .25s}.replace-hint.show{opacity:1}
+.footer{padding:23px 18px;background:var(--ink);color:#fff;text-align:center;font:700 12px/1.8 "Microsoft YaHei",sans-serif;letter-spacing:.08em}
 .reveal{opacity:0;transform:translateY(28px) rotate(.35deg);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.8,.2,1)}.reveal.is-visible{opacity:1;transform:none}
 .floaty{animation:floaty 4s ease-in-out infinite}
 @keyframes floaty{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -8px;rotate:1deg}}
@@ -150,7 +145,7 @@ button{font:inherit}
 @keyframes spark{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
 @media(max-width:640px){
- body{line-height:1.78}.toolbar{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap}.toolbar-note{display:none}.toolbar button{white-space:nowrap;flex:0 0 auto}
+ body{line-height:1.78}
  .page{width:100%;margin:0;border-width:0;box-shadow:none}.hero{min-height:650px;padding:45px 17px 24px}.hero-ribbon{top:18px}.hero-year{right:13px;top:20px}.hero-copy{width:92%;margin-top:66px}.hero h1{font-size:50px}.collage{height:266px}.polaroid.p1{left:1%;width:48%;height:205px}.polaroid.p2{right:1%;width:47%;height:192px}.polaroid.p3{left:31%;width:39%;height:145px}.hero-note{right:12px;bottom:17px}
  .section{padding:62px 20px}.section-no{left:8px;font-size:55px}.section-title{font-size:30px}.lead-card{padding:26px 20px 20px;font-size:16px}.intro-photo{margin-left:0;margin-right:0}.intro-photo img{height:235px}
  .role-grid,.ticket-grid{grid-template-columns:1fr}.role-card:nth-child(3){grid-column:auto}.detail-photo{grid-template-columns:1fr 1fr}.detail-photo img{height:220px}.roles-gallery{padding:15px 11px 14px}.roles-gallery-head{display:block}.roles-gallery-title{max-width:none;margin-top:10px;text-align:left;font-size:18px}.roles-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.roles-gallery-card,.roles-gallery-card:nth-child(n){grid-column:span 1;min-height:0;transform:none}.roles-gallery-card:nth-child(3n){transform:rotate(1deg)}.roles-gallery-card:nth-child(4n){transform:rotate(-1deg)}.roles-gallery-card img{height:auto;min-height:0;aspect-ratio:4/3}.roles-gallery-card figcaption{margin-top:6px;padding:5px 6px;font-size:10px;line-height:1.4}.memory-wall{grid-template-columns:1fr 1fr;gap:10px;padding:6px 1px 0}.memory-wall .memory{padding:6px 6px 8px}.memory-wall .memory span{margin-top:6px;font-size:10px}.memory-wall .wall-sticker{width:92%;padding:10px 12px;font-size:15px}.photo-wall-stage{height:258px}.photo-card{padding:7px 7px 30px}.photo-card>span:last-child{left:9px;right:9px;bottom:5px;font-size:11px}.photo-wall{overflow:hidden}
@@ -158,41 +153,49 @@ button{font:inherit}
 }
 @media(max-width:520px){.campus-decor img{width:78px}.campus-west{left:-6px;bottom:14px}.campus-north{right:-6px;top:46px}.campus-decor span{font-size:9px;padding:2px 6px}}@media(max-width:390px){.hero{min-height:625px}.hero h1{font-size:45px}.hero-sub{font-size:13px}.section{padding-left:16px;padding-right:16px}.section-title{font-size:28px}.memory-wall{height:auto}.qrgrid{gap:8px}.qrcard span{font-size:10px}.ticket{padding-left:62px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-spark,.tape,.hero-note,.wall-sticker,.closing-title,.floaty,.campus-decor{animation:none!important}.reveal{opacity:1;transform:none;transition:none}.polaroid,.role-card,.qrcard,.photo-card,.photo-wall-controls button{transition:none}}
-.cloud-pending .replaceable img,.cloud-pending .campus-decor img{visibility:hidden}.cloud-pending .photo-wall-stage img,.cloud-pending .roles-gallery-card img{visibility:hidden}.cloud-loading{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:rgba(255,254,251,.9);backdrop-filter:blur(7px);font:700 14px/1.6 "Microsoft YaHei",sans-serif;color:var(--ink);transition:opacity .25s ease}.cloud-loading.is-hidden{opacity:0;pointer-events:none}.cloud-loading-card{padding:16px 20px;background:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);text-align:center}.cloud-loading-dot{display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:var(--coral);animation:cloudPulse 1s ease-in-out infinite alternate}@keyframes cloudPulse{to{transform:scale(1.45);background:var(--blue)}}@media print{body{background:#fff}.toolbar,.replace-hint{display:none!important}.page{width:100%;margin:0;border:0;box-shadow:none}.reveal{opacity:1;transform:none}.section{break-inside:avoid}.hero{min-height:640px}}
+.cloud-pending .page img{visibility:hidden}.cloud-loading{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:#fffefb;backdrop-filter:blur(7px);font:700 14px/1.6 "Microsoft YaHei",sans-serif;color:var(--ink);transition:opacity .2s ease}.cloud-loading.is-hidden{opacity:0;pointer-events:none}.cloud-loading-card{padding:16px 20px;background:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);text-align:center}.cloud-loading-dot{display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:var(--coral);animation:cloudPulse 1s ease-in-out infinite alternate}@keyframes cloudPulse{to{transform:scale(1.45);background:var(--blue)}}@media print{body{background:#fff}.page{width:100%;margin:0;border:0;box-shadow:none}.reveal{opacity:1;transform:none}.section{break-inside:avoid}.hero{min-height:640px}}
+
+/* 2026 招新重构：公开页只读、岗位卡、零基础重点和可视化布局覆盖 */
+.hero-mascot{position:absolute;z-index:7;pointer-events:none}.hero-mascot img{display:block;width:clamp(82px,17vw,138px);height:auto;object-fit:contain;filter:drop-shadow(4px 5px 0 rgba(27,27,27,.18))}.hero-wolf{left:-10px;bottom:8px;transform:rotate(-9deg)}.hero-owl{right:-8px;top:94px;transform:rotate(8deg)}
+.zero-section{position:relative;margin:26px auto;padding:26px 22px;width:min(88%,650px);background:var(--ink);color:#fff;border:3px solid var(--ink);box-shadow:10px 10px 0 var(--coral);text-align:center;transform:rotate(-.6deg)}.zero-section:after{content:"!";position:absolute;right:14px;top:-34px;color:var(--yellow);font:1000 82px/1 Georgia,serif;text-shadow:3px 3px 0 var(--ink);transform:rotate(8deg)}.zero-badge{display:inline-block;padding:5px 10px;background:var(--yellow);color:var(--ink);border:2px solid #fff;font:900 10px/1.3 Arial,sans-serif;letter-spacing:.12em}.zero-section h2{margin:13px 0 8px;font:1000 clamp(27px,6vw,40px)/1.15 "Microsoft YaHei",sans-serif;color:var(--yellow)}.zero-main{margin:0;font:1000 clamp(19px,4.8vw,28px)/1.55 "Microsoft YaHei",sans-serif}.zero-note{margin:10px 0 0;color:#dceeff;font-size:14px;line-height:1.7}
+.roles-intro{margin:-8px 0 28px;padding:15px 17px;border-left:6px solid var(--blue);background:#fff;font-weight:800}.skill-grid{grid-template-columns:1fr}.skill-card{display:grid;grid-template-columns:minmax(150px,.9fr) minmax(0,1.1fr);gap:18px;align-items:stretch;padding:10px;min-height:230px}.skill-card:nth-child(n){grid-column:auto}.skill-card:nth-child(4){background:var(--yellow-soft)}.skill-card:nth-child(5){background:var(--blue-soft)}.skill-card img{display:block;width:100%;height:100%;min-height:205px;object-fit:cover;border:2px solid var(--ink);background:#eef7fb}.skill-copy{align-self:center;padding:13px 12px 12px 0}.skill-card h3{font-size:27px}.benefit-hot{background:var(--yellow)!important}.benefit-hot strong:after{content:"重点福利";display:inline-block;margin-left:8px;padding:2px 6px;background:var(--coral);color:#fff;border:1.5px solid var(--ink);font:900 9px/1.4 "Microsoft YaHei",sans-serif;transform:rotate(-3deg)}
+.photo-wall-hint{margin:30px auto 4px!important;width:max-content;max-width:100%;padding:8px 14px;background:var(--ink);color:#fff!important;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--yellow);font:900 13px/1.5 "Microsoft YaHei",sans-serif;text-align:center;transform:rotate(-1deg)}.photo-wall-hint:before{content:"↔ ";color:var(--yellow);font-size:16px}.encourage{font-size:20px!important;line-height:1.65!important;text-align:center;background:var(--yellow)!important;border:3px solid var(--ink)!important;border-left:3px solid var(--ink)!important;box-shadow:7px 7px 0 var(--coral);font-weight:1000!important}.page img{cursor:default}.roles-gallery-card img,.detail-photo img,.photo-card img,.qrcard img,.intro-photo img{cursor:default}
+[data-layout-id]{translate:var(--layout-x,0px) var(--layout-y,0px)}
+@media(max-width:640px){.hero-mascot img{width:88px}.hero-wolf{left:-16px;bottom:5px}.hero-owl{right:-17px;top:105px}.zero-section{width:calc(100% - 28px);margin:20px auto;padding:23px 16px;box-shadow:7px 7px 0 var(--coral)}.zero-section:after{right:7px;top:-26px;font-size:62px}.zero-main{font-size:20px}.skill-card{grid-template-columns:1fr;gap:0;padding:8px;min-height:0}.skill-card img{height:auto;min-height:0;aspect-ratio:16/10}.skill-copy{padding:14px 10px 13px}.skill-card h3{font-size:24px}.photo-wall-hint{margin-top:34px!important;font-size:13px;padding:9px 13px}.encourage{font-size:18px!important}.ticket-grid{grid-template-columns:1fr}.benefit-hot strong:after{font-size:9px}}
 </style>
 </head>
 <body>
 
 <div id="cloudLoading" class="cloud-loading" role="status" aria-live="polite"><div class="cloud-loading-card"><span class="cloud-loading-dot"></span>正在同步最新内容…</div></div>
 
-<input id="imagePicker" type="file" accept="image/*" hidden contenteditable="false">
-<div id="replaceHint" class="replace-hint" contenteditable="false">点击任意照片或二维码即可选择本机图片替换</div>
-<main class="page editable" contenteditable="true" spellcheck="false">
+<main class="page">
 <header class="hero">
-    <div class="hero-ribbon" contenteditable="false">WELCOME · JOIN US</div>
+    <div class="hero-ribbon">WELCOME · JOIN US</div>
     <div class="hero-year">2026</div>
-    <span class="hero-spark s1" contenteditable="false">✦</span><span class="hero-spark s2" contenteditable="false">✦</span><span class="hero-spark s3" contenteditable="false">✦</span>
+    <span class="hero-spark s1">✦</span><span class="hero-spark s2">✦</span><span class="hero-spark s3">✦</span>
     <div class="hero-copy reveal">
       <div class="hero-kicker">校团委艺术教育中心</div>
       <h1>新生入场<span class="outline">请就位</span></h1>
       <div class="hero-sub"><span>●</span> 2026级新生招新 <span>→</span></div>
     </div>
     <div class="collage reveal">
-      <div class="tape t1" contenteditable="false"></div><div class="tape t2" contenteditable="false"></div><div class="tape t3" contenteditable="false"></div>
-      <div class="polaroid p1 replaceable"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/group_01.jpg" alt="艺术教育中心活动合照"></div>
-      <div class="polaroid p2 replaceable"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/casual_03.jpg" alt="舞台活动现场"></div>
-      <div class="polaroid p3 replaceable"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_01.jpg" alt="舞台设备与工作现场"></div>
+      <div class="tape t1"></div><div class="tape t2"></div><div class="tape t3"></div>
+      <div class="polaroid p1"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/group_01.jpg" alt="艺术教育中心活动合照"></div>
+      <div class="polaroid p2"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/casual_03.jpg" alt="舞台活动现场"></div>
+      <div class="polaroid p3"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_01.jpg" alt="舞台设备与工作现场"></div>
     </div>
-    <div class="hero-note" contenteditable="false">从观众席<br>走向舞台幕后</div>
+    <div class="hero-note">从观众席<br>走向舞台幕后</div>
+    <div class="hero-mascot hero-wolf" aria-hidden="true"><img src="assets/qq-west.png" alt="白狼装饰"></div>
+    <div class="hero-mascot hero-owl" aria-hidden="true"><img src="assets/qq-north.png" alt="猫头鹰装饰"></div>
   </header>
 
   <section class="section intro">
-    <div class="section-no" contenteditable="false">00</div>
+    <div class="section-no">00</div>
     <div class="section-label">READY TO START</div>
     <h2 class="section-title reveal">一场演出，<span class="mark">从来不只发生在台前</span></h2>
     <div class="lead-card reveal">
       你可能在台下看过一场晚会，记住了舞台上的歌声、灯光和掌声。但一场演出从来不是按下播放键就会发生。<strong>校团委艺术教育中心</strong>，邀请2026级新生从观众席走到舞台幕后，把热爱变成真实发生的现场。
-      <span class="doodle-arrow" contenteditable="false">↘</span>
+      <span class="doodle-arrow">↘</span>
     </div>
     <div class="photo-wall intro-photo-wall reveal" data-photo-wall="intro">
       <div class="photo-wall-head"><div class="photo-wall-label">BACKSTAGE ALBUM</div><h3 class="photo-wall-title" data-photo-wall-title>幕后的一切，也值得被看见</h3></div>
@@ -201,56 +204,58 @@ button{font:inherit}
     </div>
   </section>
 
+  <section class="zero-section reveal" aria-label="零基础招新说明">
+    <div class="zero-badge">ZERO BASE · WELCOME</div>
+    <h2>零基础也能大胆来</h2>
+    <p class="zero-main">不用有基础！师兄师姐从 0 讲起，包教包会，不用有压力！</p>
+    <p class="zero-note">不懂设备、没做过活动都没关系。愿意学、愿意来，就是最好的开场。</p>
+  </section>
+
   <section class="section roles">
-    <div class="section-no" contenteditable="false">01</div>
-    <div class="section-label">WHAT WE DO</div>
-    <h2 class="section-title reveal">你会在这里，参与一场演出<span class="mark">怎样发生</span></h2>
-    <div class="role-grid">
-      <article class="role-card reveal"><span class="role-index">01</span><h3>让舞台准确亮起</h3><p>灯光、音响、场控，是一场活动顺利进行的重要环节。在这里，你会接触舞台现场的基础流程，了解设备与岗位之间如何配合，也会逐渐明白：好的现场效果，不只是“看起来很酷”，更需要认真、耐心和对细节的把控。</p><span class="mini">舞台保障 / 设备协作</span></article>
-      <article class="role-card reveal"><span class="role-index">02</span><h3>让节目顺利衔接</h3><p>从彩排到正式演出，中间有许多需要确认的细节：节目顺序、人员到场、道具位置、上下场节奏、现场记录……你会参与这些准备工作，看着一个个节目从最初的排练状态，慢慢变成完整、流畅的舞台呈现。</p><span class="mini">流程确认 / 现场执行</span></article>
-      <article class="role-card reveal"><span class="role-index">03</span><h3>让不同的人协作，让想法真正落地</h3><p>老师、演员、社团、工作人员，每个人都有自己的任务。你需要沟通信息、确认流程、回应变化，也需要和伙伴一起把分散的工作拼成一场完整的活动。从主题构思、流程梳理，到现场执行、复盘总结，这里会给你一个把想法变成现场的机会。</p><span class="mini">沟通协作 / 活动策划</span></article>
-    </div>
-    <div class="detail-photo reveal">
-      <div class="frame replaceable"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_02.jpg" alt="舞台设备工作细节"></div>
-      <div class="frame replaceable"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/work_02.jpg" alt="舞台设备工作细节"></div>
-    </div>
-    <div class="roles-gallery reveal" data-roles-gallery>
-      <div class="roles-gallery-head"><span class="roles-gallery-label">FROM THE BACKSTAGE</span><h3 class="roles-gallery-title" data-roles-gallery-title>一场演出，正在许多细节里发生</h3></div>
-      <div class="roles-gallery-grid" data-roles-gallery-grid></div>
-      <p class="roles-gallery-hint" data-roles-gallery-hint>从设备、排练到现场协作，每一张都是真实发生的准备</p>
+    <div class="section-no">01</div>
+    <div class="section-label">SKILLS YOU CAN LEARN</div>
+    <h2 class="section-title reveal">进到我们部门，<span class="mark">这些技能都能学</span></h2>
+    <p class="roles-intro reveal">五个岗位都可以从零开始。先跟着师兄师姐练，再到真实活动里上手，慢慢找到你最喜欢的位置。</p>
+    <div class="role-grid skill-grid">
+      <article class="role-card skill-card reveal"><span class="role-index">01</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_02.jpg" alt="音控岗位"><div class="skill-copy"><h3>音控</h3><p>把人声、音乐和现场音量调到舒服又清楚。你会从接线、调音台基础和话筒使用学起。</p><span class="mini">调音台 / 话筒 / 音频</span></div></article>
+      <article class="role-card skill-card reveal"><span class="role-index">02</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_04.jpg" alt="灯控岗位"><div class="skill-copy"><h3>灯控</h3><p>根据节目节奏切换灯光，让舞台该亮时亮、该炸时炸。先认灯位，再学基础编程和现场操作。</p><span class="mini">灯位 / 编程 / 氛围</span></div></article>
+      <article class="role-card skill-card reveal"><span class="role-index">03</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_07.jpg" alt="打碟岗位"><div class="skill-copy"><h3>打碟</h3><p>学会衔接音乐、抓节拍和控制现场气氛。不是专业 DJ 也能从最基础的按键与节奏开始。</p><span class="mini">节拍 / 串歌 / 氛围</span></div></article>
+      <article class="role-card skill-card reveal"><span class="role-index">04</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_09.jpg" alt="追光岗位"><div class="skill-copy"><h3>追光</h3><p>用一束光稳稳跟住舞台上的主角。要练眼力、反应和配合，成就感直接拉满。</p><span class="mini">跟光 / 预判 / 配合</span></div></article>
+      <article class="role-card skill-card reveal"><span class="role-index">05</span><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/work_02.jpg" alt="场控岗位"><div class="skill-copy"><h3>场控</h3><p>拿着流程、盯住时间、对接台前幕后。哪里需要人，哪里就有场控把现场接住。</p><span class="mini">流程 / 对接 / 应变</span></div></article>
     </div>
   </section>
 
   <section class="section gains">
-    <div class="section-no" contenteditable="false">02</div>
+    <div class="section-no">02</div>
     <div class="section-label">GROW WITH US</div>
-    <h2 class="section-title reveal">你会收获的，<span class="mark">不止是一段经历</span></h2>
+    <h2 class="section-title reveal">加入之后，<span class="mark">你能拿到这些</span></h2>
     <div class="ticket-grid">
-      <article class="ticket reveal"><span class="ticket-num">01</span><strong>实践能力</strong><p>在真实活动中练习沟通、协作、执行和临场处理。</p></article>
-      <article class="ticket reveal"><span class="ticket-num">02</span><strong>舞台经验</strong><p>在具体活动和日常训练中了解灯光、音响、舞台流程与活动组织。</p></article>
-      <article class="ticket reveal"><span class="ticket-num">03</span><strong>做事方法</strong><p>从会议记录、流程整理到现场复盘，建立处理复杂事情的步骤感。</p></article>
-      <article class="ticket reveal"><span class="ticket-num">04</span><strong>校园连接</strong><p>认识不同专业、不同社团的伙伴，在一次次配合里建立自己的校园人脉。</p></article>
-      <article class="ticket reveal"><span class="ticket-num">05</span><strong>大学记忆</strong><p>当灯光亮起、音乐响起、节目顺利完成，你会知道这场精彩里也有你的痕迹。</p></article>
+      <article class="ticket reveal"><span class="ticket-num">01</span><strong>真技能</strong><p>从音控、灯控到场控，学到能直接上手的舞台技能。</p></article>
+      <article class="ticket reveal"><span class="ticket-num">02</span><strong>一群搭子</strong><p>认识不同专业的新朋友，忙完一起聊天、拍照、吃饭。</p></article>
+      <article class="ticket reveal"><span class="ticket-num">03</span><strong>校园大场面</strong><p>迎新、晚会、音乐会等活动，都可能留下你的名字和身影。</p></article>
+      <article class="ticket reveal benefit-hot"><span class="ticket-num">04</span><strong>综测分</strong><p>参与符合学校认定要求的活动，可按实际规定申请相应综测分。</p></article>
+      <article class="ticket reveal benefit-hot"><span class="ticket-num">05</span><strong>饭票福利</strong><p>部分活动会按实际安排提供工作餐或饭票，干活也要记得好好吃饭。</p></article>
+      <article class="ticket reveal"><span class="ticket-num">06</span><strong>轻松日常</strong><p>不只有工作，也有聚餐、团建、合照和一堆好玩的幕后瞬间。</p></article>
     </div>
   </section>
 
   <section class="section moments">
-    <div class="section-no" contenteditable="false">03</div>
+    <div class="section-no">03</div>
     <div class="section-label">OUR MOMENTS</div>
-    <h2 class="section-title reveal">哪些时刻，<span class="mark">等你一起参与</span></h2>
-    <p class="reveal">迎新晚会的第一次亮相、元旦晚会的热闹现场、新年音乐会的旋律与灯光，以及校园里一场又一场文化艺术活动——你可能站在控台旁确认一束灯光，也可能在后台提醒下一个节目准备，还可能拿着流程表，在不同区域之间快速确认信息。</p>
-    <p class="reveal">舞台上的几分钟，背后往往是许多人共同完成的长时间准备。艺术教育中心希望和你一起，把每一次“看见”变成一次“参与”。</p>
+    <h2 class="section-title reveal">忙完正事，<span class="mark">我们也很会玩</span></h2>
+    <p class="reveal">这里不是只有对讲机和流程表。活动结束后一起拍照、聚餐、复盘吐槽，很多大学里的熟人和朋友，就是这样认识的。</p>
+    <p class="reveal">你可以认真学技能，也可以放心交朋友。忙的时候一起扛，轻松的时候一起笑，这才是我们的部门日常。</p>
     <div class="memory-wall reveal">
-      <div class="memory m1 replaceable"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/group_02.jpg" alt="团队协作活动照片"><span>一起准备</span></div>
-      <div class="memory m2 replaceable"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/work_01.jpg" alt="工作人员活动现场"><span>一起执行</span></div>
-      <div class="memory m3 replaceable"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/casual_01.jpg" alt="校园舞台精彩瞬间"><span>一起见证</span></div>
-      <div class="memory m4 replaceable"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_03.jpg" alt="舞台设备细节照片"><span>一起成长</span></div>
-      <div class="wall-sticker" contenteditable="false">青春<br>不设限<br>等你加入</div>
+      <div class="memory m1"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/group_02.jpg" alt="团队协作活动照片"><span>一起合照</span></div>
+      <div class="memory m2"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/work_01.jpg" alt="工作人员活动现场"><span>一起吃饭</span></div>
+      <div class="memory m3"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/casual_01.jpg" alt="校园舞台精彩瞬间"><span>一起出发</span></div>
+      <div class="memory m4"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/gear_03.jpg" alt="舞台设备细节照片"><span>一起快乐</span></div>
+      <div class="wall-sticker">青春<br>不设限<br>等你加入</div>
     </div>
   </section>
 
   <section class="section video-section">
-    <div class="section-no" contenteditable="false">04</div>
+    <div class="section-no">04</div>
     <div class="section-label">WATCH THE STORY</div>
     <h2 class="section-title reveal">宣传片，<span class="mark">先看见我们</span></h2>
     <div class="video-card reveal">
@@ -260,35 +265,35 @@ button{font:inherit}
     </div>
   </section>
   <section class="section suitable">
-    <div class="section-no" contenteditable="false">04</div>
+    <div class="section-no">05</div>
     <div class="section-label">IS THAT YOU?</div>
-    <h2 class="section-title reveal">如果你是这样的<span class="mark">2026级新生</span></h2>
+    <h2 class="section-title reveal">只要你愿意来，<span class="mark">就有位置给你</span></h2>
     <div class="check-paper reveal">
       <ul class="checklist">
-        <li>对校园文化活动感兴趣，想更靠近舞台现场；</li>
-        <li>愿意从基础工作开始，认真完成每一项任务；</li>
-        <li>喜欢和别人沟通协作，也愿意为团队多走一步；</li>
-        <li>想在大学里学到课堂之外的实践能力；</li>
-        <li>还没有确定方向，但愿意先来试一试。</li>
+        <li>对舞台、音乐、灯光或校园活动有一点点好奇；</li>
+        <li>愿意从零学，不会就问，不懂就练；</li>
+        <li>做事靠谱，答应的任务会认真完成；</li>
+        <li>愿意和大家沟通，一起把现场做好；</li>
+        <li>想让大学生活多点技能、多点朋友、多点故事。</li>
       </ul>
     </div>
-    <p class="encourage reveal">这里不要求你一开始就什么都会。重要的是，你愿意观察、愿意学习、愿意和伙伴一起把事情做好。</p>
+    <p class="encourage reveal">不用有基础！师兄师姐从 0 讲起，包教包会，不用有压力！</p>
   </section>
 
   <section class="section apply-section">
-    <div class="section-no" contenteditable="false">05</div>
+    <div class="section-no">06</div>
     <div class="section-label">YOUR TICKET</div>
     <h2 class="section-title reveal">现在，轮到你<span class="mark">入场了</span></h2>
     <div class="admission reveal">
-      <div class="campus-decor campus-west" contenteditable="false" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qq-west.png" alt="西区 QQ 人装饰"><span>西区</span></div>
-      <div class="campus-decor campus-north" contenteditable="false" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qq-north.png" alt="北区 QQ 人装饰"><span>北区</span></div>
+      <div class="campus-decor campus-west" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qq-west.png" alt="西区 QQ 人装饰"><span>西区</span></div>
+      <div class="campus-decor campus-north" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qq-north.png" alt="北区 QQ 人装饰"><span>北区</span></div>
       <h3>招新对象：2026级新生</h3>
       <p class="apply-meta">报名时间：<strong class="pending">【待补充】</strong><br>报名截止：<strong class="pending">【待补充】</strong><br>报名方式：长按识别对应二维码，进入咨询群或填写报名表。</p>
       <div class="qrgrid">
-        <div class="qrcard replaceable"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qr-west-group-placeholder.png" alt="西校区咨询群二维码占位图"><span>西校区 · 咨询群</span></div>
-        <div class="qrcard replaceable"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qr-west-signup-placeholder.png" alt="西校区报名表二维码占位图"><span>西校区 · 报名表</span></div>
-        <div class="qrcard replaceable"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qr-north-group-placeholder.png" alt="北校区咨询群二维码占位图"><span>北校区 · 咨询群</span></div>
-        <div class="qrcard replaceable"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qr-north-signup-placeholder.png" alt="北校区报名表二维码占位图"><span>北校区 · 报名表</span></div>
+        <div class="qrcard"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qr-west-group-placeholder.png" alt="西校区咨询群二维码占位图"><span>西校区 · 咨询群</span></div>
+        <div class="qrcard"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qr-west-signup-placeholder.png" alt="西校区报名表二维码占位图"><span>西校区 · 报名表</span></div>
+        <div class="qrcard"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qr-north-group-placeholder.png" alt="北校区咨询群二维码占位图"><span>北校区 · 咨询群</span></div>
+        <div class="qrcard"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qr-north-signup-placeholder.png" alt="北校区报名表二维码占位图"><span>北校区 · 报名表</span></div>
       </div>
     </div>
   </section>
@@ -297,7 +302,7 @@ button{font:inherit}
     <div class="photo-wall reveal" data-photo-wall>
       <div class="photo-wall-head"><div class="photo-wall-label">TEAM PHOTO WALL</div><h3 class="photo-wall-title" data-photo-wall-title>下一张团队合照，也许就有你</h3></div>
       <div class="photo-wall-stage" data-photo-wall-stage>
-        <article class="photo-card is-active replaceable" data-photo-card><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/group_03.jpg" alt="下一张团队合照，也许就有你"><span>下一张团队合照，也许就有你</span></article>
+        <article class="photo-card is-active" data-photo-card><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/group_03.jpg" alt="下一张团队合照，也许就有你"><span>下一张团队合照，也许就有你</span></article>
       </div>
       <p class="photo-wall-hint" data-photo-wall-hint>手指左右滑动，翻看属于我们的共同瞬间</p>
     </div>
@@ -305,66 +310,9 @@ button{font:inherit}
     <h2 class="closing-title">新生入场，请就位！</h2>
     <p class="closing-sub">校团委艺术教育中心<br>等你加入 · 等你发光</p>
   </section>
-  <footer class="footer">ART EDUCATION CENTER · 2026 RECRUITMENT<br><span>奶油手账版可编辑预览</span></footer>
-  <div class="toolbar" contenteditable="false">
-    <span class="toolbar-note">2026级招新推文 · 内容由 content.json 管理</span>
-    <a class="toolbar-editor-link" href="editor.html" aria-label="进入在线编辑器">编辑入口 · 在线编辑</a>
-    <button type="button" onclick="restartAnimations()">重新播放动效</button>
-    <button type="button" onclick="downloadEditedHtml()">保存修改版</button>
-  </div>
+  <footer class="footer">ART EDUCATION CENTER · 2026 RECRUITMENT<br><span>零基础友好 · 等你加入</span></footer>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="cloud-sync.js"></script><script>
-(() => {
-  const main = document.querySelector('.page');
-  const picker = document.getElementById('imagePicker');
-  const hint = document.getElementById('replaceHint');
-  let targetImage = null;
-
-  const showAll = () => document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'));
-  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-      if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); }
-    }), { threshold: .1, rootMargin: '0px 0px -30px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  } else showAll();
-
-  main.addEventListener('click', event => {
-    const box = event.target.closest('.replaceable');
-    if (!new URLSearchParams(location.search).has('localEdit') || !box || !main.contains(box) || event.detail === 0) return;
-    event.preventDefault(); event.stopPropagation();
-    targetImage = box.matches('img') ? box : box.querySelector('img');
-    picker.value = ''; picker.click();
-  });
-  document.querySelectorAll('.replaceable').forEach(box => box.setAttribute('title','点击替换图片'));
-  picker.addEventListener('change', () => {
-    const file = picker.files && picker.files[0];
-    if (!file || !targetImage) return;
-    const reader = new FileReader();
-    reader.onload = () => { targetImage.src = reader.result; targetImage = null; };
-    reader.readAsDataURL(file);
-  });
-  let hintTimer;
-  main.addEventListener('mouseover', event => {
-    if (!event.target.closest('.replaceable')) return;
-    hint.classList.add('show'); clearTimeout(hintTimer); hintTimer=setTimeout(()=>hint.classList.remove('show'),1800);
-  });
-
-  window.restartAnimations = () => {
-    document.querySelectorAll('.reveal').forEach(el => el.classList.remove('is-visible'));
-    document.body.offsetHeight;
-    document.querySelectorAll('.reveal').forEach((el,index) => setTimeout(()=>el.classList.add('is-visible'),Math.min(index*45,800)));
-  };
-  window.downloadEditedHtml = () => {
-    showAll();
-    const html='<!doctype html>\n'+document.documentElement.outerHTML;
-    const blob=new Blob([html],{type:'text/html;charset=utf-8'});
-    const url=URL.createObjectURL(blob); const a=document.createElement('a');
-    a.href=url; a.download='2026级招新推文-修改版.html'; document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),1000);
-  };
-})();
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="cloud-sync.js"></script>
 <script>
 (() => {
   const draftKey = 'wechatRecruitmentDraft2026';
@@ -425,8 +373,8 @@ button{font:inherit}
     const title = root.querySelector('[data-roles-gallery-title]'); if (title) title.textContent = gallery.title || '一场演出，正在许多细节里发生';
     const hintText = root.querySelector('[data-roles-gallery-hint]'); if (hintText) hintText.textContent = gallery.hint || '从设备、排练到现场协作，每一张都是真实发生的准备';
     const grid = root.querySelector('[data-roles-gallery-grid]'); const items = rolesGalleryItems(c);
-    if (grid) grid.innerHTML = items.map(item => '<figure class="roles-gallery-card replaceable"><img loading="lazy" decoding="async" src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><figcaption>'+escapeHtml(item.caption)+'</figcaption></figure>').join('');
-    grid?.querySelectorAll('.replaceable').forEach(box => box.setAttribute('title','点击替换图片'));
+    if (grid) grid.innerHTML = items.map(item => '<figure class="roles-gallery-card"><img loading="lazy" decoding="async" src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><figcaption>'+escapeHtml(item.caption)+'</figcaption></figure>').join('');
+
   };
   const renderPhotoWall = c => {
     document.querySelectorAll('[data-photo-wall]').forEach(root => {
@@ -437,8 +385,8 @@ button{font:inherit}
       const title = root.querySelector('[data-photo-wall-title]'); if (title) title.textContent = wall.title || fallbackTitle;
       const hintText = root.querySelector('[data-photo-wall-hint]'); if (hintText) hintText.textContent = wall.hint || fallbackHint;
       const stage = root.querySelector('[data-photo-wall-stage]'); const fallbackSrc = isIntro ? 'assets/group_04.jpg' : 'assets/group_03.jpg';
-      if (stage) stage.innerHTML = items.length ? items.map(item => '<article class="photo-card replaceable" data-photo-card><img loading="lazy" decoding="async" src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></article>').join('') : '<article class="photo-card is-active replaceable" data-photo-card><img src="'+fallbackSrc+'" alt="'+escapeHtml(fallbackTitle)+'"><span>'+escapeHtml(fallbackTitle)+'</span></article>';
-      stage?.querySelectorAll('.replaceable').forEach(box => box.setAttribute('title','点击替换图片')); updatePhotoWall(root);
+      if (stage) stage.innerHTML = items.length ? items.map(item => '<article class="photo-card" data-photo-card><img loading="lazy" decoding="async" src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></article>').join('') : '<article class="photo-card is-active" data-photo-card><img src="'+fallbackSrc+'" alt="'+escapeHtml(fallbackTitle)+'"><span>'+escapeHtml(fallbackTitle)+'</span></article>';
+      updatePhotoWall(root);
     });
   };
   document.querySelectorAll('[data-photo-wall]').forEach(root => {
@@ -448,19 +396,33 @@ button{font:inherit}
     stage?.addEventListener('touchend', event => { const touch = event.changedTouches[0]; if (!touch || !touchMoved) return; const delta = touch.clientX-touchStartX; if (Math.abs(delta)>34) stepPhotoWall(root, delta<0?1:-1); }, {passive:true});
     stage?.addEventListener('keydown', event => { if (event.key==='ArrowLeft') stepPhotoWall(root, -1); if (event.key==='ArrowRight') stepPhotoWall(root, 1); });
   });
+  const prepareEditableMap = () => {
+    const textSelector = '.page h1,.page h2,.page h3,.page p,.page li,.page .hero-kicker,.page .hero-sub,.page .section-label,.page .mini,.page .photo-wall-label,.page .photo-card>span:last-child,.page .roles-gallery-card figcaption,.page .memory span,.page .qrcard span,.page .footer,.page .hero-ribbon,.page .hero-note';
+    document.querySelectorAll(textSelector).forEach((el,index)=>el.dataset.richId='rich-'+index);
+    const assetSelector = '.page img,.page .hero-ribbon,.page .hero-year,.page .hero-note,.page .hero-spark,.page .wall-sticker,.page .campus-decor,.page .hero-mascot';
+    document.querySelectorAll(assetSelector).forEach((el,index)=>el.dataset.layoutId='asset-'+index);
+  };
+  const applyVisualOverrides = c => {
+    prepareEditableMap();
+    const rich=c.richText||{}; document.querySelectorAll('[data-rich-id]').forEach(el=>{const value=rich[el.dataset.richId];if(typeof value==='string')el.innerHTML=value;});
+    const layout=c.layout||{}; document.querySelectorAll('[data-layout-id]').forEach(el=>{const value=layout[el.dataset.layoutId]||{};const x=Number(value.x)||0,y=Number(value.y)||0,z=Number(value.z)||0;el.style.setProperty('--layout-x',x+'px');el.style.setProperty('--layout-y',y+'px');if(z)el.style.zIndex=String(z);else el.style.removeProperty('z-index');if(x||y||z)el.style.position=el.style.position||'relative';});
+    window.__wechatRenderedContent=c;
+    window.dispatchEvent(new CustomEvent('wechat-content-rendered',{detail:c}));
+  };
   const applyContent = (c) => {
     if (!c) return;
     document.title = c.siteTitle || document.title;
     setText('.hero-kicker', c.hero?.kicker); setText('.hero-sub', '●  ' + (c.hero?.sub || '') + '  →');
     const h1 = document.querySelector('.hero h1'); if (h1) { h1.firstChild.nodeValue = c.hero?.titleMain || ''; const o=h1.querySelector('.outline'); if(o)o.textContent=c.hero?.titleAccent||''; }
     setTitle('.intro .section-title', c.intro?.titleBefore, c.intro?.titleMark); setText('.intro .lead-card', c.intro?.lead); setText('.intro figcaption', c.intro?.caption);
-    setTitle('.roles .section-title', c.roles?.titleBefore, c.roles?.titleMark);
-    document.querySelectorAll('.role-card').forEach((card,i)=>{ const x=c.roles?.cards?.[i]; if(!x)return; setText('h3',x.title,card); setText('p',x.body,card); setText('.mini',x.tag,card); });
+    setTitle('.roles .section-title', c.roles?.titleBefore, c.roles?.titleMark); setText('.roles-intro',c.roles?.intro);
+    document.querySelectorAll('.role-card').forEach((card,i)=>{ const x=c.roles?.cards?.[i]; if(!x)return; setText('h3',x.title,card); setText('p',x.body,card); setText('.mini',x.tag,card); const image=card.querySelector('img'); if(image&&x.imageKey&&c.images?.[x.imageKey]) image.src=c.images[x.imageKey]; });
     setTitle('.gains .section-title', c.gains?.titleBefore, c.gains?.titleMark); document.querySelectorAll('.ticket').forEach((card,i)=>{const x=c.gains?.cards?.[i];if(!x)return;setText('strong',x.title,card);setText('p',x.body,card);});
     setTitle('.moments .section-title', c.moments?.titleBefore, c.moments?.titleMark); document.querySelectorAll('.moments>p').forEach((p,i)=>{if(c.moments?.paragraphs?.[i]!==undefined)p.textContent=c.moments.paragraphs[i];});
     setTitle('.suitable .section-title', c.suitable?.titleBefore, c.suitable?.titleMark); document.querySelectorAll('.checklist li').forEach((li,i)=>{if(c.suitable?.items?.[i]!==undefined)li.textContent=c.suitable.items[i];}); setText('.encourage',c.suitable?.encourage);
     setTitle('.apply-section .section-title', c.apply?.titleBefore, c.apply?.titleMark); setText('.admission h3',c.apply?.object); const meta=document.querySelector('.apply-meta'); if(meta)meta.innerHTML='报名时间：<strong class="pending">'+(c.apply?.signupTime||'【待补充】')+'</strong><br>报名截止：<strong class="pending">'+(c.apply?.deadline||'【待补充】')+'</strong><br>报名方式：'+(c.apply?.method||'') ;
     document.querySelectorAll('.qrcard span').forEach((span,i)=>{if(c.apply?.qrLabels?.[i])span.textContent=c.apply.qrLabels[i];});
+    setText('.zero-section h2',c.barrier?.title);setText('.zero-main',c.barrier?.body);setText('.zero-note',c.barrier?.note);
     const cp=document.querySelector('.closing-copy p'); if(cp)cp.innerHTML=(c.closing?.body||'')+'<strong>'+(c.closing?.emphasis||'一起开演')+'</strong>。'; setText('.closing-title',c.closing?.title); const cs=document.querySelector('.closing-sub'); if(cs)cs.innerHTML=(c.closing?.subLine1||'')+'<br>'+(c.closing?.subLine2||'');
     const v=c.video||{};
     setTitle('.video-section .section-title',v.titleBefore||'宣传片，',v.titleMark||'先看见我们'); setText('.video-intro',v.intro); setText('.video-note',v.note);
@@ -469,7 +431,9 @@ button{font:inherit}
     renderPhotoWall(c);
     renderRolesGallery(c);
     const qq=c.decorations?.qq||[];
-    document.querySelectorAll('.campus-decor img').forEach((img,index)=>{ if(qq[index]) img.src=qq[index]; }); [['.p1 img',imgs.hero1],['.p2 img',imgs.hero2],['.p3 img',imgs.hero3],['.intro-photo img',imgs.intro],['.detail-photo .frame:nth-child(1) img',imgs.detail1],['.detail-photo .frame:nth-child(2) img',imgs.detail2],['.m1 img',imgs.moment1],['.m2 img',imgs.moment2],['.m3 img',imgs.moment3],['.m4 img',imgs.moment4],['.qrcard:nth-child(1) img',imgs.qrWestGroup],['.qrcard:nth-child(2) img',imgs.qrWestSignup],['.qrcard:nth-child(3) img',imgs.qrNorthGroup],['.qrcard:nth-child(4) img',imgs.qrNorthSignup]].forEach(([s,v])=>setImg(s,v));
+    document.querySelectorAll('.campus-decor img').forEach((img,index)=>{ if(qq[index]) img.src=qq[index]; });
+    document.querySelectorAll('.hero-mascot img').forEach((img,index)=>{ const item=c.decorations?.mascots?.[index]; if(item?.src) img.src=item.src; }); [['.p1 img',imgs.hero1],['.p2 img',imgs.hero2],['.p3 img',imgs.hero3],['.intro-photo img',imgs.intro],['.detail-photo .frame:nth-child(1) img',imgs.detail1],['.detail-photo .frame:nth-child(2) img',imgs.detail2],['.m1 img',imgs.moment1],['.m2 img',imgs.moment2],['.m3 img',imgs.moment3],['.m4 img',imgs.moment4],['.skill-card:nth-child(1) img',imgs.skillAudio],['.skill-card:nth-child(2) img',imgs.skillLight],['.skill-card:nth-child(3) img',imgs.skillDJ],['.skill-card:nth-child(4) img',imgs.skillSpotlight],['.skill-card:nth-child(5) img',imgs.skillStageControl],['.qrcard:nth-child(1) img',imgs.qrWestGroup],['.qrcard:nth-child(2) img',imgs.qrWestSignup],['.qrcard:nth-child(3) img',imgs.qrNorthGroup],['.qrcard:nth-child(4) img',imgs.qrNorthSignup]].forEach(([s,v])=>setImg(s,v));
+    applyVisualOverrides(c);
   };
   let fallbackContent = {};
   let lastAppliedUpdatedAt = '';
@@ -485,14 +449,14 @@ button{font:inherit}
     else {
       let cloudContent = null;
       try { cloudContent = await window.WechatCloudSync?.loadContent?.(); } catch (error) { console.warn('云端内容读取失败，回退静态内容', error); }
-      applySnapshot(cloudContent || readDraft() || fallbackContent, cloudContent ? window.WechatCloudSync?.getLastUpdatedAt?.() : '');
+      applySnapshot(cloudContent || fallbackContent, cloudContent ? window.WechatCloudSync?.getLastUpdatedAt?.() : '');
     }
     const sync = window.WechatCloudSync;
     if (sync?.isConfigured?.()) sync.subscribe((content, updatedAt) => { if (updatedAt && lastAppliedUpdatedAt && updatedAt <= lastAppliedUpdatedAt) return; applySnapshot(content, updatedAt); });
   };
   loadPublishedContent();
-  window.addEventListener('storage', e => { if(e.key===draftKey) { try { applySnapshot(JSON.parse(e.newValue)); } catch {} } });
-  window.addEventListener('message', event => { if (event.data?.type === 'wechat-recruitment-preview' && event.data.content) applySnapshot(event.data.content); });
+  const isEditorPreview = new URLSearchParams(location.search).get('editorPreview') === '1';
+  if (isEditorPreview) window.addEventListener('message', event => { if (event.data?.type === 'wechat-recruitment-preview' && event.data.content) applySnapshot(event.data.content); });
 })();
 </script>
 </body>
