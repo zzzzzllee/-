@@ -138,7 +138,7 @@ button{font:inherit}
 .closing-copy p{margin:0;font-size:16px;line-height:2}.closing-copy strong{color:var(--coral);font-weight:1000}
 .closing-title{position:relative;z-index:4;margin:40px 0 5px;font:1000 clamp(36px,8vw,62px)/1.05 "Microsoft YaHei",sans-serif;color:#fff;text-shadow:4px 4px 0 var(--ink);animation:pulse 3.2s ease-in-out infinite}.closing-sub{position:relative;z-index:4;margin:10px 0 0;font:900 15px/1.7 "Microsoft YaHei",sans-serif;color:var(--ink)}
 .footer{padding:23px 18px;background:var(--ink);color:#fff;text-align:center;font:700 12px/1.8 "Microsoft YaHei",sans-serif;letter-spacing:.08em}
-.reveal{opacity:0;transform:translateY(28px) rotate(.35deg);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.8,.2,1)}.reveal.is-visible{opacity:1;transform:none}
+.reveal{opacity:1;transform:none;transition:opacity .75s ease,transform .75s cubic-bezier(.2,.8,.2,1)}.reveal-motion .reveal{opacity:0;transform:translateY(28px) rotate(.35deg)}.reveal-motion .reveal.is-visible{opacity:1;transform:none}
 .floaty{animation:floaty 4s ease-in-out infinite}
 @keyframes floaty{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -8px;rotate:1deg}}
 @keyframes wiggle{0%,100%{rotate:-2deg}50%{rotate:3deg}}
@@ -312,7 +312,34 @@ button{font:inherit}
   </section>
   <footer class="footer">ART EDUCATION CENTER · 2026 RECRUITMENT<br><span>零基础友好 · 等你加入</span></footer>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="cloud-sync.js"></script>
+<script>
+(() => {
+  const items = [...document.querySelectorAll('.reveal')];
+  const showAll = () => {
+    document.documentElement.classList.remove('reveal-motion');
+    items.forEach(item => item.classList.add('is-visible'));
+  };
+  if (!items.length || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    showAll();
+    return;
+  }
+  document.documentElement.classList.add('reveal-motion');
+  const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    }
+  }), { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
+  items.forEach(item => observer.observe(item));
+  requestAnimationFrame(() => items.forEach(item => {
+    const rect = item.getBoundingClientRect();
+    if (rect.top < innerHeight && rect.bottom > 0) item.classList.add('is-visible');
+  }));
+  setTimeout(() => {
+    if (!items.some(item => item.classList.contains('is-visible'))) showAll();
+  }, 1200);
+})();
+</script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="cloud-sync.js"></script>
 <script>
 (() => {
   const draftKey = 'wechatRecruitmentDraft2026';
