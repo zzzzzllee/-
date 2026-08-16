@@ -101,7 +101,7 @@ button{font:inherit}
 .detail-photo{display:grid;grid-template-columns:1.4fr .8fr;gap:12px;margin-top:34px}
 .detail-photo .frame{position:relative;border:2px solid var(--ink);background:#fff;padding:7px;box-shadow:var(--small-shadow);overflow:hidden}.detail-photo .frame:first-child{transform:rotate(-1deg)}.detail-photo .frame:last-child{transform:rotate(2deg)}
 .detail-photo img{display:block;width:100%;height:300px;object-fit:cover;cursor:pointer;transition:transform .5s ease}.detail-photo .frame:hover img{transform:scale(1.035)}
-.roles-gallery{margin-top:36px;padding:18px 16px 16px;background:var(--yellow-soft);border:2px solid var(--ink);box-shadow:var(--small-shadow);transform:rotate(.7deg)}.roles-gallery-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px}.roles-gallery-label{display:inline-block;padding:4px 8px;background:var(--coral);color:#fff;border:2px solid var(--ink);font:900 10px/1.2 Georgia,serif;letter-spacing:.12em;transform:rotate(-2deg)}.roles-gallery-title{margin:0;max-width:360px;font:1000 20px/1.35 "Microsoft YaHei",sans-serif;text-align:right}.roles-gallery-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px}.roles-gallery-card{position:relative;min-height:154px;padding:6px;background:#fff;border:2px solid var(--ink);box-shadow:4px 4px 0 rgba(38,53,74,.2);overflow:hidden}.roles-gallery-card:nth-child(1){grid-column:span 7;transform:rotate(-1.2deg)}.roles-gallery-card:nth-child(2){grid-column:span 5;transform:rotate(1.5deg)}.roles-gallery-card:nth-child(3){grid-column:span 4;transform:rotate(1deg)}.roles-gallery-card:nth-child(4){grid-column:span 8;transform:rotate(-.8deg)}.roles-gallery-card:nth-child(5),.roles-gallery-card:nth-child(6){grid-column:span 6;transform:rotate(-1.4deg)}.roles-gallery-card:nth-child(6){transform:rotate(1.3deg)}.roles-gallery-card img{display:block;width:100%;height:100%;min-height:142px;object-fit:cover;cursor:pointer;transition:transform .45s ease}.roles-gallery-card:hover img{transform:scale(1.05)}.roles-gallery-card figcaption{position:absolute;left:10px;right:10px;bottom:10px;padding:5px 7px;background:rgba(255,250,237,.9);border:1px solid var(--ink);font:800 11px/1.35 "Microsoft YaHei",sans-serif}.roles-gallery-hint{margin:15px 0 0;color:#53606a;font-size:12px;line-height:1.7}
+.roles-gallery{margin-top:36px;padding:18px 16px 16px;background:var(--yellow-soft);border:2px solid var(--ink);box-shadow:var(--small-shadow);transform:rotate(.7deg)}.roles-gallery-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px}.roles-gallery-label{display:inline-block;padding:4px 8px;background:var(--coral);color:#fff;border:2px solid var(--ink);font:900 10px/1.2 Georgia,serif;letter-spacing:.12em;transform:rotate(-2deg)}.roles-gallery-title{margin:0;max-width:360px;font:1000 20px/1.35 "Microsoft YaHei",sans-serif;text-align:right}.roles-gallery-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px}.roles-gallery-card{position:relative;min-height:154px;padding:6px;background:#fff;border:2px solid var(--ink);box-shadow:4px 4px 0 rgba(38,53,74,.2);overflow:hidden}.roles-gallery-card:nth-child(1){grid-column:span 7;transform:rotate(-1.2deg)}.roles-gallery-card:nth-child(2){grid-column:span 5;transform:rotate(1.5deg)}.roles-gallery-card:nth-child(3){grid-column:span 4;transform:rotate(1deg)}.roles-gallery-card:nth-child(4){grid-column:span 8;transform:rotate(-.8deg)}.roles-gallery-card:nth-child(5),.roles-gallery-card:nth-child(6){grid-column:span 6;transform:rotate(-1.4deg)}.roles-gallery-card:nth-child(6){transform:rotate(1.3deg)}.roles-gallery-card img{display:block;width:100%;height:100%;min-height:142px;object-fit:cover;cursor:pointer;transition:transform .45s ease}.roles-gallery-card:hover img{transform:scale(1.05)}.roles-gallery-card figcaption{position:absolute;left:10px;right:10px;bottom:10px;padding:5px 7px;background:rgba(255,250,237,.9);border:1px solid var(--ink);font:800 11px/1.35 "Microsoft YaHei",sans-serif}.roles-gallery-hint{margin:15px 0 0;color:#53606a;font-size:12px;line-height:1.7}.roles-details .roles-gallery{margin-top:18px}.roles-details .roles-gallery-hint{margin-top:18px;padding:9px 12px;background:var(--blue-soft);border-left:5px solid var(--coral);color:var(--ink);font-weight:800}
 .ticket-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:6px}
 .ticket{position:relative;padding:20px 22px 20px 70px;border:2px solid var(--ink);background:#fff;box-shadow:var(--small-shadow);min-height:145px;overflow:hidden}
 .ticket:nth-child(2n){background:var(--blue-soft)}.ticket:nth-child(3n){background:var(--coral-soft)}.ticket:nth-child(4n){background:var(--yellow-soft)}
@@ -260,8 +260,18 @@ button{font:inherit}
       <p class="roles-more-note reveal">更多幕后岗位等待你来发现</p>
   </section>
 
-  <section class="section gains">
+
+  <section class="section roles-details" data-roles-gallery>
     <div class="section-no">02</div>
+    <div class="section-label">DETAILS MAKE THE SHOW</div>
+    <h2 class="section-title reveal" data-roles-gallery-title>一场演出，<span class="mark">正在许多细节里发生</span></h2>
+    <div class="roles-gallery reveal">
+      <div class="roles-gallery-grid" data-roles-gallery-grid></div>
+      <p class="roles-gallery-hint" data-roles-gallery-hint>从设备、排练到现场协作，每一张都是真实发生的准备</p>
+    </div>
+  </section>
+  <section class="section gains">
+    <div class="section-no">03</div>
     <div class="section-label">GROW WITH US</div>
     <h2 class="section-title reveal">加入之后，<span class="mark">你能拿到这些</span></h2>
     <div class="ticket-grid">
@@ -275,7 +285,7 @@ button{font:inherit}
   </section>
 
   <section class="section moments">
-    <div class="section-no">03</div>
+    <div class="section-no">04</div>
     <div class="section-label">OUR MOMENTS</div>
     <h2 class="section-title reveal">忙完正事，<span class="mark">我们也很会玩</span></h2>
     <p class="reveal">这里不是只有对讲机和流程表。活动结束后一起拍照、聚餐、复盘吐槽，很多大学里的熟人和朋友，就是这样认识的。</p>
@@ -290,7 +300,7 @@ button{font:inherit}
   </section>
 
   <section class="section video-section">
-    <div class="section-no">04</div>
+    <div class="section-no">05</div>
     <div class="section-label">WATCH THE STORY</div>
     <h2 class="section-title reveal">宣传片，<span class="mark">先看见我们</span></h2>
     <div class="video-card reveal">
@@ -300,7 +310,7 @@ button{font:inherit}
     </div>
   </section>
   <section class="section suitable">
-    <div class="section-no">05</div>
+    <div class="section-no">06</div>
     <div class="section-label">IS THAT YOU?</div>
     <h2 class="section-title reveal">只要你愿意来，<span class="mark">就有位置给你</span></h2>
     <div class="check-paper reveal">
@@ -316,7 +326,7 @@ button{font:inherit}
   </section>
 
   <section class="section apply-section">
-    <div class="section-no">06</div>
+    <div class="section-no">07</div>
     <div class="section-label">YOUR TICKET</div>
     <h2 class="section-title reveal">现在，轮到你<span class="mark">入场了</span></h2>
     <div class="admission reveal">
@@ -457,7 +467,7 @@ button{font:inherit}
   const rolesGalleryItems = c => { const gallery = c.roles?.gallery || {}; const images = c.images || {}; const keys = Array.isArray(gallery.imageKeys) ? gallery.imageKeys : []; const captions = Array.isArray(gallery.captions) ? gallery.captions : []; return keys.map((key,index) => ({src:images[key],caption:captions[index] || ''})).filter(item => item.src); };
   const renderRolesGallery = c => {
     const root = document.querySelector('[data-roles-gallery]'); if (!root) return; const gallery = c.roles?.gallery || {};
-    const title = root.querySelector('[data-roles-gallery-title]'); if (title) title.textContent = gallery.title || '一场演出，正在许多细节里发生';
+    const title = root.querySelector('[data-roles-gallery-title]'); if (title) { const fullTitle = gallery.title || '一场演出，正在许多细节里发生'; const splitAt = fullTitle.indexOf('，'); title.textContent = splitAt >= 0 ? fullTitle.slice(0, splitAt + 1) : fullTitle; if (splitAt >= 0) { const mark = document.createElement('span'); mark.className = 'mark'; mark.textContent = fullTitle.slice(splitAt + 1); title.appendChild(mark); } }
     const hintText = root.querySelector('[data-roles-gallery-hint]'); if (hintText) hintText.textContent = gallery.hint || '从设备、排练到现场协作，每一张都是真实发生的准备';
     const grid = root.querySelector('[data-roles-gallery-grid]'); const items = rolesGalleryItems(c);
     if (grid) grid.innerHTML = items.map(item => '<figure class="roles-gallery-card"><img loading="lazy" decoding="async" src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><figcaption>'+escapeHtml(item.caption)+'</figcaption></figure>').join('');
