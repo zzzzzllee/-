@@ -9,9 +9,12 @@
   let draftDbPromise = null;
   let pendingVideo = null;
   let cloudSaving = false;
+  let cloudSaveQueued = false;
+  let contentRevision = 0;
   let dirty = false;
   let unsubscribeCloud = () => {};
   const pending = {};
+  const RECOVERY_KEY = 'wechatRecruitmentPendingCloudImages2026';
   const visual = { selected: null, doc: null, drag: null, pendingDrag: null, suppressClickUntil: 0 };
   const $ = selector => document.querySelector(selector);
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
@@ -37,6 +40,11 @@
     return result;
   };
   const isDataUrl = value => /^data:image\//i.test(String(value || ''));
+  const isPlaceholderAsset = value => { const src = String(value || ''); return !src || /photo-placeholder|qr-(west|north)-(group|signup)-placeholder/i.test(src); };
+  const readCloudImageRecovery = () => { try { return JSON.parse(localStorage.getItem(RECOVERY_KEY) || '{}'); } catch { return {}; } };
+  const writeCloudImageRecovery = value => { try { localStorage.setItem(RECOVERY_KEY, JSON.stringify(value || {})); } catch {} };
+  const rememberCloudImageRecovery = (key, url) => { const recovery = readCloudImageRecovery(); recovery[key] = url; writeCloudImageRecovery(recovery); };
+  const clearCloudImageRecovery = contentValue => { const recovery = readCloudImageRecovery(); let changed = false; Object.keys(recovery).forEach(key => { if (contentValue?.images?.[key] && recovery[key] === contentValue.images[key]) { delete recovery[key]; changed = true; } }); if (changed) writeCloudImageRecovery(recovery); };
   const getPath = (object, path) => path.split('.').reduce((value, key) => value?.[key], object);
   const setPath = (object, path, value) => {
     const parts = path.split('.');
@@ -78,13 +86,33 @@
     if (lower.includes('row-level security') || lower.includes('shared editing key') || lower.includes('共享编辑密钥')) return '共享编辑密钥与云端内容不匹配，请使用原始共享编辑链接（地址中带 ?share=）。';
     return message;
   };
+  const isRetryableSaveError = error => {
+    const code = String(error?.code || '');
+    const message = String(error?.message || error || '').toLowerCase();
+    return code === '57014' || code === '08P01' || /statement timeout|timeout|temporar|network|fetch failed|failed to fetch|connection/i.test(message);
+  };
+  const mergePendingDraftImages = (cloudContent, localDraft) => {
+    if (!cloudContent || !localDraft) return cloudContent || localDraft || {};
+    const recovery = readCloudImageRecovery();
+    const pendingImages = Object.entries(localDraft.images || {}).filter(([,src]) => isDataUrl(src));
+    const recoverableImages = Object.entries(recovery).filter(([key,src]) => isPlaceholderAsset(cloudContent.images?.[key]) && localDraft.images?.[key] === src);
+    if (!pendingImages.length && !recoverableImages.length) return cloudContent;
+    const merged = cloneValue(cloudContent);
+    merged.images = Object.assign({}, merged.images || {});
+    pendingImages.forEach(([key,src]) => { merged.images[key] = src; });
+    recoverableImages.forEach(([key,src]) => { merged.images[key] = src; });
+    syncPhotoWallValue(merged);
+    return merged;
+  };
   const syncPhotoWallValue = value => {
     if (!value) return;
     ['introPhotoWall', 'photoWall'].forEach(wallKey => {
       const wall = value[wallKey];
       if (!wall) return;
       const keys = Array.isArray(wall.imageKeys) ? wall.imageKeys : [];
-      wall.images = keys.map(key => value.images?.[key]).filter(Boolean);
+      const previous = Array.isArray(wall.images) ? wall.images : [];
+      const hasKeyedImages = keys.some(key => Boolean(value.images?.[key]));
+      wall.images = keys.map((key, index) => value.images?.[key] || (!hasKeyedImages ? previous[index] : 'assets/photo-placeholder.svg'));
     });
   };
   const syncPhotoWall = () => syncPhotoWallValue(content);
@@ -92,7 +120,7 @@
     const roles = arr('roles.cards');
     const gains = arr('gains.cards');
     const suitable = arr('suitable.items');
-    const qrLabels = arr('apply.qrLabels');
+    const qrLabels = arr('apply.qrLabels'); const qrScanLabels = arr('apply.qrScanLabels', qrLabels.map(label => String(label).replace(/[\s\u00b7\u2022]/g, '')));
     let html = '';
     html += `<div class="section"><h2>基础与首屏</h2><div class="grid">${field('网页标题', 'siteTitle', text('siteTitle'), true)}${field('顶部单位名称', 'hero.kicker', text('hero.kicker'))}${field('主标题', 'hero.titleMain', text('hero.titleMain'))}${field('强调标题', 'hero.titleAccent', text('hero.titleAccent'))}${field('副标题', 'hero.sub', text('hero.sub'))}${field('首屏滑动提示', 'heroGallery.hint', text('heroGallery.hint'), true)}</div></div>`;
     html += `<div class="section"><h2>零基础重点提示</h2><div class="grid">${field('醒目标题','barrier.title',text('barrier.title'))}${field('重点大字','barrier.body',text('barrier.body'),true,true)}${field('补充说明','barrier.note',text('barrier.note'),true,true)}</div></div>`;
@@ -110,7 +138,7 @@
     suitable.forEach((item, index) => { html += field(`招新期待 ${index + 1}`, `suitable.items.${index}`, item, true); });
     html += `${field('结尾鼓励语', 'suitable.encourage', text('suitable.encourage'), true, true)}</div></div>`;
     html += `<div class="section"><h2>报名信息</h2><div class="grid">${field('板块标题前半句', 'apply.titleBefore', text('apply.titleBefore'))}${field('板块高亮句', 'apply.titleMark', text('apply.titleMark'))}${field('招新对象', 'apply.object', text('apply.object'), true)}${field('报名时间', 'apply.signupTime', text('apply.signupTime'))}${field('报名截止', 'apply.deadline', text('apply.deadline'))}${field('报名方式说明', 'apply.method', text('apply.method'), true, true)}`;
-    qrLabels.forEach((item, index) => { html += field(`二维码标签 ${index + 1}`, `apply.qrLabels.${index}`, item); });
+    qrLabels.forEach((item, index) => { html += field(`二维码标签 ${index + 1}`, `apply.qrLabels.${index}`, item); html += field(`右上角 SCAN 备注 ${index + 1}`, `apply.qrScanLabels.${index}`, qrScanLabels[index] || item); });
     html += '</div></div>';
     html += `<div class="section"><h2>结尾</h2><div class="grid">${field('合照说明', 'closing.photoCaption', text('closing.photoCaption'), true)}${field('结尾正文', 'closing.body', text('closing.body'), true, true)}${field('强调短句', 'closing.emphasis', text('closing.emphasis'))}${field('结尾标题', 'closing.title', text('closing.title'))}${field('落款第一行', 'closing.subLine1', text('closing.subLine1'))}${field('落款第二行', 'closing.subLine2', text('closing.subLine2'))}</div></div>`;
     html += `<div class="section"><h2>结尾翻页相册文字</h2><div class="grid">${field('结尾相册标题', 'photoWall.title', text('photoWall.title'), true)}${field('结尾相册滑动提示', 'photoWall.hint', text('photoWall.hint'), true)}</div><p class="token-note">结尾相册的每张照片说明在下方对应图片旁修改。</p></div>`;
@@ -221,29 +249,77 @@ doc.addEventListener('pointermove',event=>{
       if (!isDataUrl(src) || pending[key]?.file) continue;
       const blob = await fetch(src).then(response => response.blob());
       const extension = (blob.type.split('/')[1] || 'png').replace('jpeg', 'jpg');
-      pending[key] = { file: new File([blob], `${key}.${extension}`, { type: blob.type || 'image/png' }) };
+      pending[key] = { file: new File([blob], key + '.' + extension, { type: blob.type || 'image/png' }) };
     }
-    for (const [key, item] of Object.entries(pending)) {
-      if (!item?.file) continue;
-      status(`正在上传图片：${key}`);
-      content.images[key] = await cloud().uploadAsset(item.file, `image-${key}`);
-      delete pending[key];
+    const uploads = Object.entries(pending).filter(([, item]) => item?.file);
+    for (const [key, item] of uploads) {
+      status('???????' + key);
+      const url = await cloud().uploadAsset(item.file, 'image-' + key);
+      if (pending[key] === item) {
+        content.images[key] = url;
+        rememberCloudImageRecovery(key, url);
+        delete pending[key];
+      }
     }
     if (pendingVideo?.file) {
-      status('正在上传宣传片…');
+      const videoUpload = pendingVideo;
+      status('????????');
       content.video = content.video || {};
-      content.video.url = await cloud().uploadAsset(pendingVideo.file, 'promo-video');
-      pendingVideo = null;
+      const url = await cloud().uploadAsset(videoUpload.file, 'promo-video');
+      if (pendingVideo === videoUpload) {
+        content.video.url = url;
+        pendingVideo = null;
+      }
     }
   };
   const saveCloud = async () => {
-    if (!cloudReady() || cloudSaving) return false;
+    if (!cloudReady()) return false;
+    if (cloudSaving) { cloudSaveQueued = true; return false; }
     cloudSaving = true;
-    try { await uploadPendingAssets(); syncPhotoWall(); content = (await cloud().saveContent(content)) || content; baseContent = cloneValue(content); dirty = false; await persistDraft(); status('已自动保存到云端，其他打开同一共享链接的人会收到更新。'); return true; }
-    catch (error) { status('本机草稿已保存，但云端同步失败：' + cloudErrorMessage(error), true); return false; }
-    finally { cloudSaving = false; }
+    cloudSaveQueued = false;
+    const startedRevision = contentRevision;
+    let saved = false;
+    try {
+      await uploadPendingAssets();
+      syncPhotoWall();
+      const payload = cloneValue(content);
+      const savedContent = (await cloud().saveContent(payload, cloud().getLastUpdatedAt?.())) || payload;
+      baseContent = cloneValue(savedContent);
+      clearCloudImageRecovery(savedContent);
+      if (contentRevision === startedRevision) {
+        content = savedContent;
+        dirty = false;
+        saved = true;
+        await persistDraft();
+        status('?????????????????????????????????????');
+      } else {
+        dirty = true;
+        await persistDraft();
+        status('??????????????????????????????');
+        cloudSaveQueued = true;
+      }
+    } catch (error) {
+      if (isRetryableSaveError(error)) {
+        // ????????????????? data URL/?? URL??????????????????????
+        cloudSaveQueued = true;
+        status('??????????????????????', true);
+      } else {
+        status('????????????????' + cloudErrorMessage(error), true);
+      }
+    } finally {
+      cloudSaving = false;
+      if (cloudSaveQueued) {
+        cloudSaveQueued = false;
+        clearTimeout(autosaveTimer);
+        autosaveTimer = setTimeout(async () => {
+          if (!await persistDraft()) return;
+          await saveCloud();
+        }, 260);
+      }
+    }
+    return saved;
   };
-  const scheduleDraft = () => { dirty = true; clearTimeout(autosaveTimer); autosaveTimer = setTimeout(async () => { if (!await persistDraft()) return; if (cloudReady()) await saveCloud(); else status('修改已自动保存到本机；配置云端后即可多人同步。'); }, 600); };
+  const scheduleDraft = () => { contentRevision += 1; dirty = true; clearTimeout(autosaveTimer); autosaveTimer = setTimeout(async () => { if (!await persistDraft()) return; if (cloudReady()) { if (cloudSaving) cloudSaveQueued = true; else await saveCloud(); } else status('\u4fee\u6539\u5df2\u81ea\u52a8\u4fdd\u5b58\u5230\u672c\u673a\uff1b\u914d\u7f6e\u4e91\u7aef\u540e\u5373\u53ef\u591a\u4eba\u540c\u6b65\u3002'); }, 600); };
   const bindFields = () => document.querySelectorAll('[data-path]').forEach(element => element.addEventListener('input', event => { setPath(content, event.target.dataset.path, event.target.value); scheduleDraft(); }));
   const bindImages = () => document.querySelectorAll('[data-image]').forEach(element => element.addEventListener('change', event => { const file = event.target.files?.[0]; if (!file) return; const reader = new FileReader(); reader.onload = () => { pending[event.target.dataset.image] = { file, dataUrl: reader.result }; content.images[event.target.dataset.image] = reader.result; const image = $('#img-' + event.target.dataset.image); if (image) image.src = reader.result; const urlInput = document.querySelector(`[data-image-url="${event.target.dataset.image}"]`); if (urlInput) urlInput.value = reader.result; pushPreview(); scheduleDraft(); }; reader.readAsDataURL(file); }));
   const bindImageUrls = () => document.querySelectorAll('[data-image-url]').forEach(element => element.addEventListener('input', event => { const key = event.target.dataset.imageUrl; content.images[key] = event.target.value.trim(); delete pending[key]; const image = $('#img-' + key); if (image) image.src = content.images[key]; pushPreview(); scheduleDraft(); }));
@@ -255,8 +331,9 @@ doc.addEventListener('pointermove',event=>{
       const missingShareKey = Boolean(cloud()?.isConfigured?.() && !cloud()?.hasShareKey?.());
       status(missingShareKey ? '当前链接缺少共享编辑密钥，云端内容可读取，但保存请使用带 ?share= 的共享编辑链接。' : '正在读取云端内容…');
       const response = await fetch('content.json?ts=' + Date.now(), { cache: 'no-store' }); if (!response.ok) throw new Error('HTTP ' + response.status);
-      fallbackContent = await response.json(); const cloudContent = cloudReady() ? await cloud().loadContent() : null; const saved = cloudContent ? null : await readDraft();
-      content = mergePublishedContent(fallbackContent, cloudContent || saved || {}); baseContent = cloneValue(content); syncPhotoWall(); renderForm(); refreshPreview();
+      fallbackContent = await response.json(); const cloudContent = cloudReady() ? await cloud().loadContent() : null; const saved = await readDraft();
+      const sourceContent = mergePendingDraftImages(cloudContent, saved);
+      content = mergePublishedContent(fallbackContent, sourceContent || {}); baseContent = cloneValue(content); syncPhotoWall(); renderForm(); refreshPreview();
       if (cloudReady()) { unsubscribeCloud = cloud().subscribe(incoming => { if (!incoming || cloudSaving) return; if (dirty) { status('检测到其他编辑者的新内容。当前还有未保存修改，请先保存后再接收云端更新。', true); return; } content = mergePublishedContent(fallbackContent || {}, incoming); baseContent = cloneValue(content); syncPhotoWall(); renderForm(); refreshPreview(); status('已收到其他编辑者的最新修改。'); }); status(cloudContent ? '已读取云端最新内容，修改会自动同步。共享链接可复制给其他编辑者。' : '云端暂无内容，第一次保存时会创建并同步。'); }
       else status('云端服务尚未配置：当前使用本机 IndexedDB 草稿。配置后即可多人在线同步。');
     } catch (error) { status('读取推文内容失败：' + error.message, true); }

@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   const defaults = { contentId: 'wechat-recruitment-2026', bucket: 'wechat-recruitment-assets' };
   const config = Object.assign({}, defaults, window.WECHAT_CLOUD_CONFIG || {});
   let shareKey = new URL(window.location.href).searchParams.get('share') || config.shareKey || '';
@@ -27,7 +27,9 @@
     const message = String(error?.message || error || '').toLowerCase();
     return code === '57014' || code === '08P01' || /statement timeout|timeout|temporar|network|fetch failed|failed to fetch|connection/i.test(message);
   };
+  const isConflict = error => Boolean(error?.conflict) || String(error?.code || '') === '409';
   const publicAssetUrl = path => client.storage.from(config.bucket).getPublicUrl(path).data.publicUrl;
+
   const loadContent = async () => {
     if (!client) return null;
     const { data, error } = await client.from('wechat_contents').select('content_json,updated_at').eq('content_id', config.contentId).maybeSingle();
@@ -35,17 +37,27 @@
     lastUpdatedAt = data?.updated_at || '';
     return data?.content_json || null;
   };
-  const saveContentOnce = async content => {
+
+  const saveContentOnce = async (content, expectedUpdatedAt = lastUpdatedAt) => {
     const values = { content_json: content, published: true, updated_at: new Date().toISOString() };
-    const { data: updated, error: updateError } = await client
+    let updateQuery = client
       .from('wechat_contents')
       .update(values)
       .eq('content_id', config.contentId)
-      .eq('share_key', shareKey)
-      .select('content_json,updated_at')
-      .maybeSingle();
+      .eq('share_key', shareKey);
+    if (expectedUpdatedAt) updateQuery = updateQuery.eq('updated_at', expectedUpdatedAt);
+    const { data: updated, error: updateError } = await updateQuery.select('content_json,updated_at').maybeSingle();
     if (updateError) throw updateError;
-    if (updated) { lastUpdatedAt = updated.updated_at || values.updated_at; return updated.content_json || content; }
+    if (updated) {
+      lastUpdatedAt = updated.updated_at || values.updated_at;
+      return updated.content_json || content;
+    }
+    if (expectedUpdatedAt) {
+      const conflict = new Error('云端内容已被其他编辑者更新，为避免新图片被旧内容覆盖，本次保存已停止。请先重新加载最新内容。');
+      conflict.code = '409';
+      conflict.conflict = true;
+      throw conflict;
+    }
 
     const { data: inserted, error: insertError } = await client
       .from('wechat_contents')
@@ -54,27 +66,32 @@
       .maybeSingle();
     if (insertError) {
       if (String(insertError.code || '') === '23505') {
-        throw new Error('共享编辑密钥与云端内容不匹配，请使用原始共享编辑链接。');
+        const conflict = new Error('云端内容已被其他编辑者创建，为避免覆盖新图片，本次保存已停止。请先重新加载最新内容。');
+        conflict.code = '409';
+        conflict.conflict = true;
+        throw conflict;
       }
       throw insertError;
     }
     lastUpdatedAt = inserted?.updated_at || values.updated_at;
     return inserted?.content_json || content;
   };
-  const saveContent = async content => {
+
+  const saveContent = async (content, expectedUpdatedAt = lastUpdatedAt) => {
     if (!client) throw new Error('云端服务尚未配置，请先填写 cloud-config.js');
     if (!shareKey) throw new Error('当前编辑器缺少共享编辑密钥，请使用带 ?share= 的共享编辑链接。');
     let lastError = null;
     for (let attempt = 0; attempt < 3; attempt += 1) {
-      try { return await saveContentOnce(content); }
+      try { return await saveContentOnce(content, expectedUpdatedAt); }
       catch (error) {
         lastError = error;
-        if (!isRetryable(error) || attempt === 2) break;
+        if (isConflict(error) || !isRetryable(error) || attempt === 2) break;
         await sleep(500 * (attempt + 1));
       }
     }
     throw lastError;
   };
+
   const uploadAsset = async (file, kind = 'image') => {
     if (!client) throw new Error('云端服务尚未配置');
     if (!shareKey) throw new Error('当前编辑器缺少共享编辑密钥');
@@ -90,14 +107,20 @@
     }
     throw lastError;
   };
+
   const subscribe = callback => {
     if (!client) return () => {};
     realtimeChannel = client.channel(`wechat-content-${config.contentId}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'wechat_contents', filter: `content_id=eq.${config.contentId}` }, payload => {
-        if (payload.eventType !== 'DELETE' && payload.new?.content_json) callback(payload.new.content_json, payload.new.updated_at);
+        if (payload.eventType === 'DELETE' || !payload.new?.content_json) return;
+        const updatedAt = payload.new.updated_at || '';
+        if (updatedAt && lastUpdatedAt && updatedAt <= lastUpdatedAt) return;
+        lastUpdatedAt = updatedAt || lastUpdatedAt;
+        callback(payload.new.content_json, updatedAt);
       }).subscribe();
     return () => { if (realtimeChannel) client.removeChannel(realtimeChannel); realtimeChannel = null; };
   };
+
   const setShareKey = (next, replaceUrl = false) => {
     shareKey = String(next || '');
     if (replaceUrl) {
