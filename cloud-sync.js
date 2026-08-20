@@ -29,7 +29,27 @@
   };
   const isConflict = error => Boolean(error?.conflict) || String(error?.code || '') === '409';
   const publicAssetUrl = path => client.storage.from(config.bucket).getPublicUrl(path).data.publicUrl;
-
+  const stableSerialize = value => {
+    if (Array.isArray(value)) return '[' + value.map(stableSerialize).join(',') + ']';
+    if (value && typeof value === 'object') return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + stableSerialize(value[key])).join(',') + '}';
+    return JSON.stringify(value);
+  };
+  const sameContent = (left, right) => stableSerialize(left) === stableSerialize(right);
+  const makeConflict = message => { const conflict = new Error(message); conflict.code = '409'; conflict.conflict = true; return conflict; };
+  const readCurrentRow = async () => {
+    const { data, error } = await client.from('wechat_contents').select('content_json,updated_at').eq('content_id', config.contentId).maybeSingle();
+    if (error) throw error;
+    return data || null;
+  };
+  const reconcileSave = async (content, expectedUpdatedAt) => {
+    const current = await readCurrentRow();
+    if (current && sameContent(current.content_json, content)) {
+      lastUpdatedAt = current.updated_at || lastUpdatedAt;
+      return current.content_json || content;
+    }
+    if (expectedUpdatedAt && current) throw makeConflict('云端内容已被其他编辑者更新，为避免新图片被旧内容覆盖，本次保存已停止。请先重新加载最新内容。');
+    return null;
+  };
   const loadContent = async () => {
     if (!client) return null;
     const { data, error } = await client.from('wechat_contents').select('content_json,updated_at').eq('content_id', config.contentId).maybeSingle();
@@ -52,12 +72,8 @@
       lastUpdatedAt = updated.updated_at || values.updated_at;
       return updated.content_json || content;
     }
-    if (expectedUpdatedAt) {
-      const conflict = new Error('云端内容已被其他编辑者更新，为避免新图片被旧内容覆盖，本次保存已停止。请先重新加载最新内容。');
-      conflict.code = '409';
-      conflict.conflict = true;
-      throw conflict;
-    }
+    const reconciled = await reconcileSave(content, expectedUpdatedAt);
+    if (reconciled) return reconciled;
 
     const { data: inserted, error: insertError } = await client
       .from('wechat_contents')
@@ -66,10 +82,9 @@
       .maybeSingle();
     if (insertError) {
       if (String(insertError.code || '') === '23505') {
-        const conflict = new Error('云端内容已被其他编辑者创建，为避免覆盖新图片，本次保存已停止。请先重新加载最新内容。');
-        conflict.code = '409';
-        conflict.conflict = true;
-        throw conflict;
+        const reconciled = await reconcileSave(content, 'insert');
+        if (reconciled) return reconciled;
+        throw makeConflict('云端内容已被其他编辑者创建，为避免覆盖新图片，本次保存已停止。请先重新加载最新内容。');
       }
       throw insertError;
     }
