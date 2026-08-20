@@ -9,7 +9,8 @@
   let draftDbPromise = null;
   let pendingVideo = null;
   let cloudSaving = false;
-  let cloudSaveQueued = false;
+  let cloudSavePromise = null;
+  let cloudSaveRequested = false;
   let contentRevision = 0;
   let dirty = false;
   let unsubscribeCloud = () => {};
@@ -242,7 +243,7 @@ doc.addEventListener('pointermove',event=>{
          const d=visual.drag; if(!d)return;
          if(event.pointerId!==undefined&&d.pointerId!==undefined&&event.pointerId!==d.pointerId)return;
          if(event.cancelable)event.preventDefault();
-         const value={x:Math.round(d.x+event.clientX-d.startX),y:Math.round(d.y+event.clientY-d.startY),z:d.z};content.layout[d.id]=value;updateLayoutStyle(d.el,value);
+         const value={x:Math.round(d.x+event.clientX-d.startX),y:Math.round(d.y+event.clientY-d.startY),z:d.z};content.layout[d.id]=value;updateLayoutStyle(d.el,value);scheduleDraft();
        });
        const finishDrag=event=>{visual.pendingDrag=null;if(!visual.drag)return;const d=visual.drag;visual.drag=null;visual.suppressClickUntil=Date.now()+450;try { d.el.releasePointerCapture?.(event?.pointerId); } catch {}scheduleDraft();};
        doc.addEventListener('pointerup',finishDrag);
@@ -286,11 +287,9 @@ doc.addEventListener('pointermove',event=>{
       }
     }
   };
-  const saveCloud = async () => {
+  const performCloudSave = async () => {
     if (!cloudReady()) return false;
-    if (cloudSaving) { cloudSaveQueued = true; return false; }
     cloudSaving = true;
-    cloudSaveQueued = false;
     const startedRevision = contentRevision;
     let saved = false;
     try {
@@ -308,32 +307,37 @@ doc.addEventListener('pointermove',event=>{
         status('已保存到云端，其他打开同一共享链接的人会收到更新。');
       } else {
         dirty = true;
+        cloudSaveRequested = true;
         await persistDraft();
         status('保存期间又产生了新的修改，已保留并准备再次同步。');
-        cloudSaveQueued = true;
       }
     } catch (error) {
       if (isRetryableSaveError(error)) {
-        // 上传过程可能把 data URL 替换成云端 URL；如果期间又有修改，下一轮会继续同步。
-        cloudSaveQueued = true;
         status('云端暂时未响应，已保留本机草稿，稍后会自动重试。', true);
       } else {
         status('本机草稿已保存，但云端同步失败：' + cloudErrorMessage(error), true);
       }
     } finally {
       cloudSaving = false;
-      if (cloudSaveQueued) {
-        cloudSaveQueued = false;
-        clearTimeout(autosaveTimer);
-        autosaveTimer = setTimeout(async () => {
-          if (!await persistDraft()) return;
-          await saveCloud();
-        }, 260);
-      }
     }
     return saved;
   };
-  const scheduleDraft = () => { contentRevision += 1; dirty = true; clearTimeout(autosaveTimer); autosaveTimer = setTimeout(async () => { if (!await persistDraft()) return; if (cloudReady()) { if (cloudSaving) cloudSaveQueued = true; else await saveCloud(); } else status('\u4fee\u6539\u5df2\u81ea\u52a8\u4fdd\u5b58\u5230\u672c\u673a\uff1b\u914d\u7f6e\u4e91\u7aef\u540e\u5373\u53ef\u591a\u4eba\u540c\u6b65\u3002'); }, 600); };
+  const saveCloud = () => {
+    if (!cloudReady()) return Promise.resolve(false);
+    cloudSaveRequested = true;
+    if (!cloudSavePromise) {
+      cloudSavePromise = (async () => {
+        let saved = false;
+        while (cloudSaveRequested) {
+          cloudSaveRequested = false;
+          saved = await performCloudSave();
+        }
+        return saved;
+      })().finally(() => { cloudSavePromise = null; });
+    }
+    return cloudSavePromise;
+  };
+  const scheduleDraft = () => { contentRevision += 1; dirty = true; clearTimeout(autosaveTimer); autosaveTimer = setTimeout(async () => { if (!await persistDraft()) return; if (cloudReady()) await saveCloud(); else status('修改已自动保存到本机；配置云端后即可多人同步。'); }, 600); };
   const bindFields = () => document.querySelectorAll('[data-path]').forEach(element => element.addEventListener('input', event => { setPath(content, event.target.dataset.path, event.target.value); scheduleDraft(); }));
   const bindImages = () => document.querySelectorAll('[data-image]').forEach(element => element.addEventListener('change', event => { const file = event.target.files?.[0]; if (!file) return; const reader = new FileReader(); reader.onload = () => { pending[event.target.dataset.image] = { file, dataUrl: reader.result }; content.images[event.target.dataset.image] = reader.result; const image = $('#img-' + event.target.dataset.image); if (image) image.src = reader.result; const urlInput = document.querySelector(`[data-image-url="${event.target.dataset.image}"]`); if (urlInput) urlInput.value = reader.result; pushPreview(); scheduleDraft(); }; reader.readAsDataURL(file); }));
   const bindImageUrls = () => document.querySelectorAll('[data-image-url]').forEach(element => element.addEventListener('input', event => { const key = event.target.dataset.imageUrl; content.images[key] = event.target.value.trim(); delete pending[key]; const image = $('#img-' + key); if (image) image.src = content.images[key]; pushPreview(); scheduleDraft(); }));
@@ -354,7 +358,7 @@ doc.addEventListener('pointermove',event=>{
   };
   bindVisualTools();
   $('#previewBtn').onclick = draft;
-  $('#cloudSaveBtn').onclick = async () => { await persistDraft(); if (cloudReady()) await saveCloud(); else if (cloud()?.isConfigured?.()) status('本机草稿已保存，但当前链接缺少共享编辑密钥；请使用原始共享编辑链接。', true); else status('本机草稿已保存；还没有配置云端服务。', true); };
+  $('#cloudSaveBtn').onclick = async () => { clearTimeout(autosaveTimer); if (!await persistDraft()) return; if (cloudReady()) await saveCloud(); else if (cloud()?.isConfigured?.()) status('本机草稿已保存，但当前链接缺少共享编辑密钥；请使用原始共享编辑链接。', true); else status('本机草稿已保存；还没有配置云端服务。', true); };
   $('#copyShareBtn').onclick = copyShareLink;
   $('#resetBtn').onclick = async () => { await clearDraft(); location.reload(); };
   load();
