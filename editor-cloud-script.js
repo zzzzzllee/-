@@ -183,12 +183,17 @@
     visual.doc=doc;
     const win=frame.contentWindow;
     if(win&&!win.__wechatVisualEditorListenerBound){win.__wechatVisualEditorListenerBound=true;win.addEventListener('wechat-content-rendered',()=>armVisualEditor());}
-    if(!doc.getElementById('editorVisualStyle')){
-      const style=doc.createElement('style'); style.id='editorVisualStyle';
-       style.textContent='html,body{overscroll-behavior-y:contain}html .reveal{transition:none!important}[data-rich-id]{outline:1px dashed transparent;cursor:text}[data-rich-id]:hover{outline-color:#f39b8e}.editor-selected{outline:3px solid #ff5b4d!important;outline-offset:3px!important}[data-layout-id]{touch-action:pan-y;pointer-events:auto!important;cursor:move}[data-rich-id][data-layout-id]{cursor:grab}[data-rich-id][data-layout-id]:active{cursor:grabbing}[data-layout-id]:hover{filter:drop-shadow(0 0 3px #ff5b4d)}.hero-mascot,.hero-mascot *{pointer-events:auto!important}.hero-mascot{z-index:20!important;cursor:move!important}.hero-owl,.hero-owl *{display:block!important;visibility:visible!important;pointer-events:auto!important}@media(max-width:640px){.hero-mascot img{width:76px!important;max-width:76px!important;max-height:76px!important}}';
-      doc.head.appendChild(style);
-    }
-doc.querySelectorAll('[data-rich-id]').forEach(el=>{
+    const visualStyle = doc.getElementById('editorVisualStyle') || doc.head.appendChild(Object.assign(doc.createElement('style'), { id: 'editorVisualStyle' }));
+     visualStyle.textContent='html,body{overscroll-behavior-y:contain}html .reveal{transition:none!important}[data-rich-id]{outline:1px dashed transparent;cursor:text}[data-rich-id]:hover{outline-color:#f39b8e}.editor-selected{outline:3px solid #ff5b4d!important;outline-offset:3px!important}[data-layout-id]{touch-action:pan-y;pointer-events:auto!important;cursor:move}[data-rich-id][data-layout-id]{cursor:grab}[data-rich-id][data-layout-id]:active{cursor:grabbing}[data-layout-id]:hover{filter:drop-shadow(0 0 3px #ff5b4d)}.hero-mascot,.hero-mascot *,.campus-decor,.campus-decor *{pointer-events:auto!important}.hero-mascot,.campus-decor{position:absolute!important;z-index:1200!important;cursor:move!important;touch-action:none!important;user-select:none!important;-webkit-user-select:none!important}.hero-mascot img,.campus-decor img{pointer-events:auto!important;cursor:move!important}.hero-owl,.hero-owl *{display:block!important;visibility:visible!important;pointer-events:auto!important}@media(max-width:640px){.hero-mascot img{width:76px!important;max-width:76px!important;max-height:76px!important}}';
+     doc.querySelectorAll('.hero-mascot[data-layout-key],.campus-decor[data-layout-key]').forEach(el=>{if(!el.dataset.layoutId)el.dataset.layoutId=el.dataset.layoutKey;});     doc.querySelectorAll('.hero-mascot[data-layout-key],.campus-decor[data-layout-key]').forEach(el=>{
+       if(!el.dataset.layoutId)el.dataset.layoutId=el.dataset.layoutKey;
+       el.style.setProperty('display','block','important');
+       el.style.setProperty('visibility','visible','important');
+       el.style.setProperty('pointer-events','auto','important');
+       el.style.setProperty('z-index','1200','important');
+       el.querySelectorAll('img').forEach(img=>{img.style.setProperty('pointer-events','auto','important');img.style.cursor='move';});
+     });
+     doc.querySelectorAll('[data-rich-id]').forEach(el=>{
        el.contentEditable='true'; el.spellcheck=false;
        if(el.dataset.richBound)return;
        el.dataset.richBound='1';
@@ -202,7 +207,7 @@ doc.querySelectorAll('[data-rich-id]').forEach(el=>{
          visual.pendingDrag={el,id,startX:event.clientX,startY:event.clientY,x:Number(current.x)||0,y:Number(current.y)||0,z:Number(current.z)||0,pointerId:event.pointerId,pointerType:event.pointerType||'mouse'};
        });
      });
-    doc.querySelectorAll('[data-layout-id]').forEach(el=>{
+    doc.querySelectorAll('[data-layout-id],.hero-mascot[data-layout-key],.campus-decor[data-layout-key]').forEach(el=>{
       if(el.dataset.layoutBound)return;
       el.dataset.layoutBound='1';
       el.addEventListener('click',event=>{if(Date.now()<visual.suppressClickUntil){event.preventDefault();event.stopPropagation();return;}if(event.target.closest('[data-rich-id]'))return;event.stopPropagation();selectVisual(el)});
