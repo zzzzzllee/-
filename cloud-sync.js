@@ -37,12 +37,18 @@
   const sameContent = (left, right) => stableSerialize(left) === stableSerialize(right);
   const makeConflict = message => { const conflict = new Error(message); conflict.code = '409'; conflict.conflict = true; return conflict; };
   const readCurrentRow = async () => {
-    const { data, error } = await client.from('wechat_contents').select('content_json,updated_at').eq('content_id', config.contentId).maybeSingle();
+    const { data, error } = await client.from('wechat_contents').select('content_json,updated_at,share_key').eq('content_id', config.contentId).maybeSingle();
     if (error) throw error;
     return data || null;
   };
   const reconcileSave = async (content, expectedUpdatedAt) => {
     const current = await readCurrentRow();
+    if (current?.share_key && current.share_key !== shareKey) {
+      const error = new Error('当前编辑器链接的共享密钥不正确，请使用最新的共享编辑链接。');
+      error.code = 'SHARE_KEY_MISMATCH';
+      error.shareKeyMismatch = true;
+      throw error;
+    }
     if (current && sameContent(current.content_json, content)) {
       lastUpdatedAt = current.updated_at || lastUpdatedAt;
       return current.content_json || content;

@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   const KEY = 'wechatRecruitmentDraft2026';
   const DRAFT_DB = 'wechatRecruitmentDrafts2026';
   const DRAFT_STORE = 'drafts';
@@ -90,6 +90,7 @@
     const message = String(error?.message || error || '');
     const lower = message.toLowerCase();
     if (code === '57014' || lower.includes('statement timeout') || lower.includes('timeout')) return '云端响应超时，已保留本机草稿；请稍等几秒后再点“立即保存到云端”。';
+    if (code === 'SHARE_KEY_MISMATCH') return '当前编辑链接已失效或不正确，请改用最新的共享编辑链接后再保存。';
     if (lower.includes('row-level security') || lower.includes('shared editing key') || lower.includes('共享编辑密钥')) return '共享编辑密钥与云端内容不匹配，请使用原始共享编辑链接（地址中带 ?share=）。';
     return message;
   };
@@ -266,7 +267,7 @@ doc.addEventListener('pointermove',event=>{
     }
     const uploads = Object.entries(pending).filter(([, item]) => item?.file);
     for (const [key, item] of uploads) {
-      status('???????' + key);
+      status('正在上传图片：' + key);
       const url = await cloud().uploadAsset(item.file, 'image-' + key);
       if (pending[key] === item) {
         content.images[key] = url;
@@ -276,7 +277,7 @@ doc.addEventListener('pointermove',event=>{
     }
     if (pendingVideo?.file) {
       const videoUpload = pendingVideo;
-      status('????????');
+      status('正在上传宣传片…');
       content.video = content.video || {};
       const url = await cloud().uploadAsset(videoUpload.file, 'promo-video');
       if (pendingVideo === videoUpload) {
@@ -304,20 +305,20 @@ doc.addEventListener('pointermove',event=>{
         dirty = false;
         saved = true;
         await persistDraft();
-        status('?????????????????????????????????????');
+        status('已保存到云端，其他打开同一共享链接的人会收到更新。');
       } else {
         dirty = true;
         await persistDraft();
-        status('??????????????????????????????');
+        status('保存期间又产生了新的修改，已保留并准备再次同步。');
         cloudSaveQueued = true;
       }
     } catch (error) {
       if (isRetryableSaveError(error)) {
-        // ????????????????? data URL/?? URL??????????????????????
+        // 上传过程可能把 data URL 替换成云端 URL；如果期间又有修改，下一轮会继续同步。
         cloudSaveQueued = true;
-        status('??????????????????????', true);
+        status('云端暂时未响应，已保留本机草稿，稍后会自动重试。', true);
       } else {
-        status('????????????????' + cloudErrorMessage(error), true);
+        status('本机草稿已保存，但云端同步失败：' + cloudErrorMessage(error), true);
       }
     } finally {
       cloudSaving = false;
