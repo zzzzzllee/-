@@ -30,6 +30,13 @@
     Object.keys(override).forEach(key => { result[key] = mergeContent(result[key], override[key]); });
     return result;
   };
+  const prioritizeGainCards = content => {
+    if (!content?.gains || !Array.isArray(content.gains.cards)) return content;
+    const priority = ["综测分", "饭票福利", "志愿时长"];
+    const rank = title => { const index = priority.indexOf(String(title || "").trim()); return index < 0 ? priority.length : index; };
+    content.gains.cards = content.gains.cards.map((card, index) => ({ card, index })).sort((a, b) => rank(a.card?.title) - rank(b.card?.title) || a.index - b.index).map(item => item.card);
+    return content;
+  };
   const mergePublishedContent = (base, override) => {
     const result = mergeContent(base, override || {});
     if (override && !override.introPhotoWall && base?.photoWall && result.photoWall) {
@@ -37,7 +44,7 @@
       result.photoWall.hint = base.photoWall.hint;
       result.photoWall.captions = [...(base.photoWall.captions || [])];
     }
-    return result;
+    return prioritizeGainCards(result);
   };
   const isDataUrl = value => /^data:image\//i.test(String(value || ''));
   const isPlaceholderAsset = value => { const src = String(value || ''); return !src || /photo-placeholder|qr-(west|north)-(group|signup)-placeholder/i.test(src); };
