@@ -282,8 +282,8 @@ button{font:inherit}
   .photo-card.is-prev-3,.photo-card.is-next-3{z-index:996!important}
   .photo-card img{position:relative;z-index:2}
   .photo-card>span:last-child{z-index:3}
-/* 固定相框尺寸不变：上传照片等比铺满相框，不拉伸、不留白边。 */
-.polaroid img,.intro-photo img,.detail-photo img,.roles-gallery-card img,.memory img,.memory-wall .memory img,.photo-card img,.skill-card img,.hero-gallery-card img{object-fit:cover!important;object-position:center!important;transform:none!important}
+/* 固定相框尺寸不变：上传照片完整拉伸适配相框，不裁剪、不留白边。 */
+.polaroid img,.intro-photo img,.detail-photo img,.roles-gallery-card img,.memory img,.memory-wall .memory img,.photo-card img,.skill-card img,.hero-gallery-card img{object-fit:fill!important;object-position:center!important;transform:none!important}
 .qrcard img{object-fit:contain!important;background-color:#fff!important;transform:none!important}
 .detail-photo .frame:hover img,.roles-gallery-card:hover img{transform:none!important}
 </style>
