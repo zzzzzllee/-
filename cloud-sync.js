@@ -41,7 +41,7 @@
     if (error) throw error;
     return data || null;
   };
-  const reconcileSave = async (content, expectedUpdatedAt) => {
+  const reconcileSave = async content => {
     const current = await readCurrentRow();
     if (current?.share_key && current.share_key !== shareKey) {
       const error = new Error('当前编辑器链接的共享密钥不正确，请使用最新的共享编辑链接。');
@@ -53,7 +53,6 @@
       lastUpdatedAt = current.updated_at || lastUpdatedAt;
       return current.content_json || content;
     }
-    if (expectedUpdatedAt && current) throw makeConflict('云端内容已被其他编辑者更新，为避免新图片被旧内容覆盖，本次保存已停止。请先重新加载最新内容。');
     return null;
   };
   const loadContent = async () => {
@@ -64,22 +63,31 @@
     return data?.content_json || null;
   };
 
-  const saveContentOnce = async (content, expectedUpdatedAt = lastUpdatedAt) => {
+  const saveContentOnce = async content => {
     const values = { content_json: content, published: true, updated_at: new Date().toISOString() };
-    let updateQuery = client
+    const { data: updatedRows, error: updateError } = await client
       .from('wechat_contents')
       .update(values)
       .eq('content_id', config.contentId)
-      .eq('share_key', shareKey);
-    if (expectedUpdatedAt) updateQuery = updateQuery.eq('updated_at', expectedUpdatedAt);
-    const { data: updated, error: updateError } = await updateQuery.select('content_json,updated_at').maybeSingle();
+      .eq('share_key', shareKey)
+      .select('content_json,updated_at');
     if (updateError) throw updateError;
+    const updated = Array.isArray(updatedRows) ? updatedRows[0] : updatedRows;
     if (updated) {
       lastUpdatedAt = updated.updated_at || values.updated_at;
-      return updated.content_json || content;
+      const verified = await reconcileSave(content);
+      if (verified) return verified;
+      throw makeConflict('云端保存后校验未通过，正在重试。');
     }
-    const reconciled = await reconcileSave(content, expectedUpdatedAt);
-    if (reconciled) return reconciled;
+
+    const current = await readCurrentRow();
+    if (current?.share_key && current.share_key !== shareKey) {
+      const error = new Error('当前编辑器链接的共享密钥不正确，请使用最新的共享编辑链接。');
+      error.code = 'SHARE_KEY_MISMATCH';
+      error.shareKeyMismatch = true;
+      throw error;
+    }
+    if (current) throw new Error('云端没有接受本次更新，请检查共享编辑权限。');
 
     const { data: inserted, error: insertError } = await client
       .from('wechat_contents')
@@ -88,14 +96,15 @@
       .maybeSingle();
     if (insertError) {
       if (String(insertError.code || '') === '23505') {
-        const reconciled = await reconcileSave(content, 'insert');
+        const reconciled = await reconcileSave(content);
         if (reconciled) return reconciled;
-        throw makeConflict('云端内容已被其他编辑者创建，为避免覆盖新图片，本次保存已停止。请先重新加载最新内容。');
       }
       throw insertError;
     }
     lastUpdatedAt = inserted?.updated_at || values.updated_at;
-    return inserted?.content_json || content;
+    const verified = await reconcileSave(content);
+    if (verified) return verified;
+    throw makeConflict('云端创建后校验未通过，正在重试。');
   };
 
   const saveContent = async (content, expectedUpdatedAt = lastUpdatedAt) => {
@@ -103,7 +112,7 @@
     if (!shareKey) throw new Error('当前编辑器缺少共享编辑密钥，请使用带 ?share= 的共享编辑链接。');
     let lastError = null;
     for (let attempt = 0; attempt < 3; attempt += 1) {
-      try { return await saveContentOnce(content, expectedUpdatedAt); }
+      try { return await saveContentOnce(content); }
       catch (error) {
         lastError = error;
         if (isConflict(error) || !isRetryable(error) || attempt === 2) break;

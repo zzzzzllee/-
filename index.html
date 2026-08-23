@@ -282,6 +282,9 @@ button{font:inherit}
   .photo-card.is-prev-3,.photo-card.is-next-3{z-index:996!important}
   .photo-card img{position:relative;z-index:2}
   .photo-card>span:last-child{z-index:3}
+/* 用户上传照片始终完整显示：不放大、不裁边，也不在悬停时自动缩放。 */
+.polaroid img,.intro-photo img,.detail-photo img,.roles-gallery-card img,.memory img,.memory-wall .memory img,.qrcard img,.photo-card img,.skill-card img,.hero-gallery-card img{object-fit:contain!important;background-color:#fff!important;transform:none!important}
+.detail-photo .frame:hover img,.roles-gallery-card:hover img{transform:none!important}
 </style>
 </head>
 <body>
@@ -473,7 +476,7 @@ button{font:inherit}
     if (!items.some(item => item.classList.contains('is-visible'))) showAll();
   }, 1200);
 })();
-</script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="cloud-sync.js"></script>
+</script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="cloud-sync.js?v=20260823-photo-cloud-sync"></script>
 <script>
 (() => {
   const draftKey = 'wechatRecruitmentDraft2026';

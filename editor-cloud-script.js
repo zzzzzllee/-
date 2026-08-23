@@ -316,8 +316,8 @@ doc.addEventListener('pointermove',event=>{
         content = savedContent;
         dirty = false;
         saved = true;
-        await persistDraft();
-        status('已保存到云端，其他打开同一共享链接的人会收到更新。');
+        await clearDraft();
+        status('已保存并校验云端同步，另一台设备重新打开即可看到最新内容。');
       } else {
         dirty = true;
         cloudSaveRequested = true;
@@ -350,7 +350,7 @@ doc.addEventListener('pointermove',event=>{
     }
     return cloudSavePromise;
   };
-  const scheduleDraft = () => { contentRevision += 1; dirty = true; clearTimeout(autosaveTimer); autosaveTimer = setTimeout(async () => { if (!await persistDraft()) return; if (cloudReady()) await saveCloud(); else status('修改已自动保存到本机；配置云端后即可多人同步。'); }, 600); };
+  const scheduleDraft = () => { contentRevision += 1; dirty = true; clearTimeout(autosaveTimer); autosaveTimer = setTimeout(async () => { const localSaved = await persistDraft(); if (cloudReady()) await saveCloud(); else status(localSaved ? '修改已自动保存到本机；配置云端后即可多人同步。' : '本机空间不足，当前修改只保留在页面中；请尽快配置云端。', !localSaved); }, 600); };
   const bindFields = () => document.querySelectorAll('[data-path]').forEach(element => element.addEventListener('input', event => { setPath(content, event.target.dataset.path, event.target.value); scheduleDraft(); }));
   const bindImages = () => document.querySelectorAll('[data-image]').forEach(element => element.addEventListener('change', event => { const file = event.target.files?.[0]; if (!file) return; const reader = new FileReader(); reader.onload = () => { pending[event.target.dataset.image] = { file, dataUrl: reader.result }; content.images[event.target.dataset.image] = reader.result; const image = $('#img-' + event.target.dataset.image); if (image) image.src = reader.result; const urlInput = document.querySelector(`[data-image-url="${event.target.dataset.image}"]`); if (urlInput) urlInput.value = reader.result; pushPreview(); scheduleDraft(); }; reader.readAsDataURL(file); }));
   const bindImageUrls = () => document.querySelectorAll('[data-image-url]').forEach(element => element.addEventListener('input', event => { const key = event.target.dataset.imageUrl; content.images[key] = event.target.value.trim(); delete pending[key]; const image = $('#img-' + key); if (image) image.src = content.images[key]; pushPreview(); scheduleDraft(); }));
@@ -371,7 +371,7 @@ doc.addEventListener('pointermove',event=>{
   };
   bindVisualTools();
   $('#previewBtn').onclick = draft;
-  $('#cloudSaveBtn').onclick = async () => { clearTimeout(autosaveTimer); if (!await persistDraft()) return; if (cloudReady()) await saveCloud(); else if (cloud()?.isConfigured?.()) status('本机草稿已保存，但当前链接缺少共享编辑密钥；请使用原始共享编辑链接。', true); else status('本机草稿已保存；还没有配置云端服务。', true); };
+  $('#cloudSaveBtn').onclick = async () => { clearTimeout(autosaveTimer); const localSaved = await persistDraft(); if (cloudReady()) await saveCloud(); else if (cloud()?.isConfigured?.()) status((localSaved ? '本机草稿已保存，但' : '本机草稿保存失败，并且') + '当前链接缺少共享编辑密钥；请使用原始共享编辑链接。', true); else status(localSaved ? '本机草稿已保存；还没有配置云端服务。' : '本机草稿保存失败；还没有配置云端服务。', true); };
   $('#copyShareBtn').onclick = copyShareLink;
   $('#resetBtn').onclick = async () => { await clearDraft(); location.reload(); };
   load();
