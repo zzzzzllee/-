@@ -50,7 +50,7 @@
       }
     ],
     "gallery": {
-      "title": "一场演出，正在许多细节里发生",
+      "title": "一场精彩演出有许多细节组成",
       "hint": "从调音台、灯光控台到舞台、后台与观众席，熟悉每一件设备、每一处场地，才能让演出稳稳发生。",
       "imageKeys": [
         "rolesGallery1",
@@ -75,24 +75,20 @@
     "titleMark": "你能拿到这些",
     "cards": [
       {
-        "title": "综测分",
-        "body": "参与符合学校认定要求的活动，可按实际规定申请相应综测分。"
+        "title": "真技能",
+        "body": "从音控、灯控到场控，学到能直接上手的舞台技能。"
       },
       {
         "title": "饭票福利",
         "body": "部分活动会按实际安排提供工作餐或饭票，干活也要记得好好吃饭。"
       },
       {
-        "title": "志愿时长",
-        "body": "参与符合认定要求的校内活动，可按学校实际规定登记相应志愿服务时长。"
-      },
-      {
-        "title": "真技能",
-        "body": "从音控、灯控到场控，学到能直接上手的舞台技能。"
+        "title": "综测分",
+        "body": "参与符合学校认定要求的活动，可按实际规定申请相应综测分。"
       },
       {
         "title": "一群搭子",
-        "body": "认识不同专业的新朋友，忙完一起聊天、拍照、吃饭。"
+        "body": "认识不同专业的新朋友，忙完艺起聊天、拍照、吃饭。"
       },
       {
         "title": "校园大场面",
@@ -102,10 +98,10 @@
   },
   "moments": {
     "titleBefore": "忙完正事，",
-    "titleMark": "我们也很会玩",
+    "titleMark": "艺起很会玩",
     "paragraphs": [
-      "这里不是只有对讲机和流程表。活动结束后一起拍照、聚餐、复盘吐槽，很多大学里的熟人和朋友，就是这样认识的。",
-      "你可以认真学技能，也可以放心交朋友。忙的时候一起扛，轻松的时候一起笑，这才是我们的部门日常。"
+      "这里不是只有对讲机和流程表。活动结束后艺起拍照、聚餐、复盘吐槽，很多大学里的熟人和朋友，就是这样认识的。",
+      "你可以认真学技能，也可以放心交朋友。忙的时候艺起扛，轻松的时候艺起笑，这才是我们的部门日常。"
     ]
   },
   "suitable": {
@@ -118,7 +114,7 @@
       "愿意和大家沟通，一起把现场做好；",
       "想让大学生活多点技能、多点朋友、多点故事。"
     ],
-    "encourage": "不用有基础！师兄师姐从 0 讲起，包教包会，不用有压力！"
+    "encourage": "我们的宗旨是，态度要好，立场要坚定！"
   },
   "apply": {
     "titleBefore": "现在，轮到你",
@@ -177,47 +173,47 @@
     ]
   },
   "images": {
-    "hero1": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-hero1-1786913349402-ziqanx-1.jpg",
-    "hero2": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-hero2-1786913470754-vl4jpt-1eb0a20d0f618a71e9fff13f222f50fb.jpg",
-    "hero3": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-hero3-1786913880527-bvla3d-caf8124c13f8c5937e012a6173fc0d8c.jpg",
+    "hero1": "assets/cloud-optimized/hero1.jpg",
+    "hero2": "assets/cloud-optimized/hero2.jpg",
+    "hero3": "assets/cloud-optimized/hero3.jpg",
     "intro": "assets/photo-placeholder.svg",
     "detail1": "assets/photo-placeholder.svg",
     "detail2": "assets/photo-placeholder.svg",
-    "moment1": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-moment1-1786914066648-b8ilyz-1.jpg",
-    "moment2": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-moment2-1786914104610-a391ol-10.jpg",
-    "moment3": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-moment3-1786914124603-e39j3p-9.jpg",
-    "moment4": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-moment4-1786914504166-d9lqxl-3667ff8a1cb2d8b1a1faa1c1018c6eda.jpg",
+    "moment1": "assets/cloud-optimized/moment1.jpg",
+    "moment2": "assets/cloud-optimized/moment2.jpg",
+    "moment3": "assets/cloud-optimized/moment3.jpg",
+    "moment4": "assets/cloud-optimized/moment4.jpg",
     "closing": "assets/photo-placeholder.svg",
     "qrWestGroup": "assets/qr-west-group-placeholder.png",
     "qrWestSignup": "assets/qr-west-signup-placeholder.png",
     "qrNorthGroup": "assets/qr-north-group-placeholder.png",
     "qrNorthSignup": "assets/qr-north-signup-placeholder.png",
-    "photoWall1": "assets/photo-placeholder.svg",
-    "photoWall2": "assets/photo-placeholder.svg",
-    "photoWall3": "assets/photo-placeholder.svg",
-    "photoWall4": "assets/photo-placeholder.svg",
-    "photoWall5": "assets/photo-placeholder.svg",
-    "photoWall6": "assets/photo-placeholder.svg",
-    "rolesGallery1": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-rolesGallery1-1786916801222-vd5kfk-15.jpg",
-    "rolesGallery2": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-rolesGallery2-1786916811923-f9uvww-5.jpg",
-    "rolesGallery3": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-rolesGallery3-1786916821528-mpe8dk-4.jpg",
-    "rolesGallery4": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-rolesGallery4-1786916852984-xwwjdu-3.jpg",
-    "rolesGallery5": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-rolesGallery5-1786916830145-4jatqd-17.jpg",
-    "rolesGallery6": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-rolesGallery6-1786916865550-p1e4rx-12.jpg",
-    "introPhotoWall1": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall1-1786913546006-8jmjuz-d71a6edbb53e64b4597839e482d48f60.jpg",
-    "introPhotoWall2": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall2-1786913569793-tswp1a-09d9acc7ebae4f231a14153e6fb7b5da.jpg",
-    "introPhotoWall3": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall3-1786913654796-fn9x59-6.jpg",
-    "introPhotoWall4": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall4-1786914459654-va36ty-01f5c2c16cea032c31f08d758d0e861e.jpg",
-    "introPhotoWall5": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall5-1786913600738-wf3i65-1a48a8bcac3afba2c346c49400b61b37.jpg",
-    "introPhotoWall6": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall6-1786913618228-es9fed-8.jpg",
-    "skillAudio": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-skillAudio-1786913980949-zy7p71-27f27e5c4e9a71c929e3b08be9bb56e1.jpg",
-    "skillLight": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-skillLight-1786913777174-s9wxl4-9c3a09b4e87cf97c1b397d80d3cac309.jpg",
-    "skillDJ": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-skillDJ-1786913789770-ahyx87-d221129be2627a6c8aa06d5fe2266030.jpg",
-    "skillSpotlight": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-skillSpotlight-1786913807856-pgooi4-33ef11682ec662708019300a5f599eb2.jpg",
-    "skillStageControl": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-skillStageControl-1786913817144-3w982l-0b354ea5d8a867a663b26a719e3813f5.jpg",
-    "hero4": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-hero4-1786912485529-589ycw-0d444b3e28f414caf9a3629049095cf7.jpg",
-    "hero5": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-hero5-1786912500817-4azchl-3.jpg",
-    "hero6": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-hero6-1786913446429-drxcs3-5661ee2be7e1f6d33253bba0c7d098bd.jpg"
+    "photoWall1": "assets/cloud-optimized/photoWall1.jpg",
+    "photoWall2": "assets/cloud-optimized/photoWall2.jpg",
+    "photoWall3": "assets/cloud-optimized/photoWall3.jpg",
+    "photoWall4": "assets/cloud-optimized/photoWall4.jpg",
+    "photoWall5": "assets/cloud-optimized/photoWall5.jpg",
+    "photoWall6": "assets/cloud-optimized/photoWall6.jpg",
+    "rolesGallery1": "assets/cloud-optimized/rolesGallery1.jpg",
+    "rolesGallery2": "assets/cloud-optimized/rolesGallery2.jpg",
+    "rolesGallery3": "assets/cloud-optimized/rolesGallery3.jpg",
+    "rolesGallery4": "assets/cloud-optimized/rolesGallery4.jpg",
+    "rolesGallery5": "assets/cloud-optimized/rolesGallery5.jpg",
+    "rolesGallery6": "assets/cloud-optimized/rolesGallery6.jpg",
+    "introPhotoWall1": "assets/cloud-optimized/introPhotoWall1.jpg",
+    "introPhotoWall2": "assets/cloud-optimized/introPhotoWall2.jpg",
+    "introPhotoWall3": "assets/cloud-optimized/introPhotoWall3.jpg",
+    "introPhotoWall4": "assets/cloud-optimized/introPhotoWall4.jpg",
+    "introPhotoWall5": "assets/cloud-optimized/introPhotoWall5.jpg",
+    "introPhotoWall6": "assets/cloud-optimized/introPhotoWall6.jpg",
+    "skillAudio": "assets/cloud-optimized/skillAudio.jpg",
+    "skillLight": "assets/cloud-optimized/skillLight.jpg",
+    "skillDJ": "assets/cloud-optimized/skillDJ.jpg",
+    "skillSpotlight": "assets/cloud-optimized/skillSpotlight.jpg",
+    "skillStageControl": "assets/cloud-optimized/skillStageControl.jpg",
+    "hero4": "assets/cloud-optimized/hero4.jpg",
+    "hero5": "assets/cloud-optimized/hero5.jpg",
+    "hero6": "assets/cloud-optimized/hero6.jpg"
   },
   "photoWall": {
     "title": "下一张团队合照，也许就有你",

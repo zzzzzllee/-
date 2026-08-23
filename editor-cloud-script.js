@@ -1,4 +1,4 @@
-﻿(() => {
+(() => {
   const KEY = 'wechatRecruitmentDraft2026';
   const DRAFT_DB = 'wechatRecruitmentDrafts2026';
   const DRAFT_STORE = 'drafts';
@@ -32,10 +32,23 @@
     return result;
   };
   const prioritizeGainCards = content => {
-    if (!content?.gains || !Array.isArray(content.gains.cards)) return content;
-    const priority = ["综测分", "饭票福利", "志愿时长"];
-    const rank = title => { const index = priority.indexOf(String(title || "").trim()); return index < 0 ? priority.length : index; };
-    content.gains.cards = content.gains.cards.map((card, index) => ({ card, index })).sort((a, b) => rank(a.card?.title) - rank(b.card?.title) || a.index - b.index).map(item => item.card);
+    if (!content) return content;
+    if (content.roles?.gallery) content.roles.gallery.title = '一场精彩演出有许多细节组成';
+    if (content.gains && Array.isArray(content.gains.cards)) {
+      const priority = ['真技能', '饭票福利', '综测分', '一群搭子', '校园大场面'];
+      const rank = title => { const index = priority.indexOf(String(title || '').trim()); return index < 0 ? priority.length : index; };
+      content.gains.cards = content.gains.cards
+        .filter(card => String(card?.title || '').trim() !== '志愿时长')
+        .map(card => ({ ...card, body: String(card?.body || '').replaceAll('一起', '艺起') }))
+        .map((card, index) => ({ card, index }))
+        .sort((a, b) => rank(a.card?.title) - rank(b.card?.title) || a.index - b.index)
+        .map(item => item.card);
+    }
+    if (content.moments) {
+      content.moments.titleMark = String(content.moments.titleMark || '').replaceAll('一起', '艺起').replace('我们也很会玩', '艺起很会玩');
+      if (Array.isArray(content.moments.paragraphs)) content.moments.paragraphs = content.moments.paragraphs.map(text => String(text).replaceAll('一起', '艺起'));
+    }
+    if (content.suitable) content.suitable.encourage = '我们的宗旨是，态度要好，立场要坚定！';
     return content;
   };
   const mergePublishedContent = (base, override) => {

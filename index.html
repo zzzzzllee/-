@@ -11,20 +11,35 @@
 <script>
 (() => {
   const cfg = window.WECHAT_CLOUD_CONFIG || {};
-  const key = 'wechatRecruitmentCloudSnapshot2026';
+  const key = 'wechatRecruitmentCloudSnapshot2026-v2';
   const readCached = () => { try { return JSON.parse(sessionStorage.getItem(key) || 'null'); } catch { return null; } };
   const saveCached = value => { try { sessionStorage.setItem(key, JSON.stringify(value)); } catch {} };
-  const preload = content => {
-    const urls = Object.values(content?.images || {}).filter(src => /^https?:/i.test(String(src || '')));
-    urls.forEach(src => { const image = new Image(); image.decoding = 'async'; image.fetchPriority = 'high'; image.src = src; });
+  const optimizeImageUrl = (src, width = 1000) => {
+    const raw = String(src || '');
+    if (!/^https?:/i.test(raw) || !raw.includes('/storage/v1/') || raw.includes('/optimized-v1/')) return raw;
+    let url;
+    try { url = new URL(raw); } catch { return raw; }
+    if (url.pathname.includes('/storage/v1/object/public/')) url.pathname = url.pathname.replace('/storage/v1/object/public/', '/storage/v1/render/image/public/');
+    if (!url.pathname.includes('/storage/v1/render/image/public/')) return raw;
+    url.searchParams.set('width', String(width));
+    url.searchParams.set('quality', '78');
+    return url.toString();
   };
+  const preload = content => {
+    const src = optimizeImageUrl(content?.images?.hero1, 1000);
+    if (!src) return;
+    const image = new Image(); image.decoding = 'async'; image.fetchPriority = 'high'; image.src = src;
+  };
+  window.__optimizeWechatImageUrl = optimizeImageUrl;
+  window.__wechatCachedSnapshot = readCached();
+  preload(window.__wechatCachedSnapshot?.content_json);
   window.__wechatCloudBootstrap = (async () => {
     if (!cfg.url || !cfg.anonKey || !cfg.contentId) return null;
     try {
       const endpoint = cfg.url.replace(/\/$/, '') + '/rest/v1/wechat_contents?content_id=eq.' + encodeURIComponent(cfg.contentId) + '&select=content_json,updated_at';
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 8000);
-      const response = await fetch(endpoint + '&ts=' + Date.now(), { cache: 'no-store', signal: controller.signal, headers: { apikey: cfg.anonKey, Authorization: 'Bearer ' + cfg.anonKey } });
+      const response = await fetch(endpoint, { cache: 'no-store', signal: controller.signal, headers: { apikey: cfg.anonKey, Authorization: 'Bearer ' + cfg.anonKey } });
       clearTimeout(timeout);
       if (!response.ok) throw new Error('cloud bootstrap ' + response.status);
       const rows = await response.json();
@@ -333,7 +348,7 @@ button{font:inherit}
   <section class="section roles-details" data-roles-gallery>
     <div class="section-no">02</div>
     <div class="section-label">DETAILS MAKE THE SHOW</div>
-    <h2 class="section-title reveal" data-roles-gallery-title>一场演出，<span class="mark">正在许多细节里发生</span></h2>
+    <h2 class="section-title reveal" data-roles-gallery-title>一场精彩演出有许多细节组成</h2>
     <div class="roles-gallery reveal">
       <div class="roles-gallery-grid" data-roles-gallery-grid></div>
       <p class="roles-gallery-hint" data-roles-gallery-hint>从调音台、灯光控台到舞台、后台与观众席，熟悉每一件设备、每一处场地，才能让演出稳稳发生。</p>
@@ -344,26 +359,26 @@ button{font:inherit}
     <div class="section-label">GROW WITH US</div>
     <h2 class="section-title reveal">加入之后，<span class="mark">你能拿到这些</span></h2>
     <div class="ticket-grid">
-      <article class="ticket reveal benefit-hot"><span class="ticket-num">01</span><strong>综测分</strong><p>参与符合学校认定要求的活动，可按实际规定申请相应综测分。</p></article>
+      <article class="ticket reveal benefit-hot"><span class="ticket-num">01</span><strong>真技能</strong><p>从音控、灯控到场控，学到能直接上手的舞台技能。</p></article>
       <article class="ticket reveal benefit-hot"><span class="ticket-num">02</span><strong>饭票福利</strong><p>部分活动会按实际安排提供工作餐或饭票，干活也要记得好好吃饭。</p></article>
-      <article class="ticket reveal benefit-hot"><span class="ticket-num">03</span><strong>志愿时长</strong><p>参与符合认定要求的校内活动，可按学校实际规定登记相应志愿服务时长。</p></article>
-      <article class="ticket reveal"><span class="ticket-num">04</span><strong>真技能</strong><p>从音控、灯控到场控，学到能直接上手的舞台技能。</p></article>
-      <article class="ticket reveal"><span class="ticket-num">05</span><strong>一群搭子</strong><p>认识不同专业的新朋友，忙完一起聊天、拍照、吃饭。</p></article>
-      <article class="ticket reveal"><span class="ticket-num">06</span><strong>校园大场面</strong><p>迎新、晚会、音乐会等活动，都可能留下你的名字和身影。</p></article>
+      <article class="ticket reveal"><span class="ticket-num">03</span><strong>综测分</strong><p>参与符合学校认定要求的活动，可按实际规定申请相应综测分。</p></article>
+      <article class="ticket reveal"><span class="ticket-num">04</span><strong>一群搭子</strong><p>认识不同专业的新朋友，忙完艺起聊天、拍照、吃饭。</p></article>
+      <article class="ticket reveal"><span class="ticket-num">05</span><strong>校园大场面</strong><p>迎新、晚会、音乐会等活动，都可能留下你的名字和身影。</p></article>
+      <article class="ticket benefit-placeholder" hidden aria-hidden="true"><p></p></article>
     </div>
   </section>
 
   <section class="section moments">
     <div class="section-no">04</div>
     <div class="section-label">OUR MOMENTS</div>
-    <h2 class="section-title reveal">忙完正事，<span class="mark">我们也很会玩</span></h2>
-    <p class="reveal">这里不是只有对讲机和流程表。活动结束后一起拍照、聚餐、复盘吐槽，很多大学里的熟人和朋友，就是这样认识的。</p>
-    <p class="reveal">你可以认真学技能，也可以放心交朋友。忙的时候一起扛，轻松的时候一起笑，这才是我们的部门日常。</p>
+    <h2 class="section-title reveal">忙完正事，<span class="mark">艺起很会玩</span></h2>
+    <p class="reveal">这里不是只有对讲机和流程表。活动结束后艺起拍照、聚餐、复盘吐槽，很多大学里的熟人和朋友，就是这样认识的。</p>
+    <p class="reveal">你可以认真学技能，也可以放心交朋友。忙的时候艺起扛，轻松的时候艺起笑，这才是我们的部门日常。</p>
     <div class="memory-wall reveal">
-      <div class="memory m1" data-layout-key="memory-1"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="团队协作活动照片"><span>一起合照</span></div>
-      <div class="memory m2" data-layout-key="memory-2"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="工作人员活动现场"><span>一起吃饭</span></div>
-      <div class="memory m3" data-layout-key="memory-3"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="校园舞台精彩瞬间"><span>一起出发</span></div>
-      <div class="memory m4" data-layout-key="memory-4"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="舞台设备细节照片"><span>一起快乐</span></div>
+      <div class="memory m1" data-layout-key="memory-1"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="团队协作活动照片"><span>艺起合照</span></div>
+      <div class="memory m2" data-layout-key="memory-2"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="工作人员活动现场"><span>艺起吃饭</span></div>
+      <div class="memory m3" data-layout-key="memory-3"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="校园舞台精彩瞬间"><span>艺起出发</span></div>
+      <div class="memory m4" data-layout-key="memory-4"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/photo-placeholder.svg" alt="舞台设备细节照片"><span>艺起快乐</span></div>
       <div class="wall-sticker">青春<br>不设限<br>等你加入</div>
     </div>
   </section>
@@ -403,7 +418,7 @@ button{font:inherit}
         <li>想让大学生活多点技能、多点朋友、多点故事。</li>
       </ul>
     </div>
-    <p class="encourage reveal">不用有基础！师兄师姐从 0 讲起，包教包会，不用有压力！</p>
+    <p class="encourage reveal">我们的宗旨是，态度要好，立场要坚定！</p>
   </section>
 
   <section class="section apply-section">
@@ -465,7 +480,24 @@ button{font:inherit}
   const readDraft = () => { try { return JSON.parse(localStorage.getItem(draftKey) || 'null'); } catch { return null; } };
   const setText = (selector, value, root = document) => { const el = root.querySelector(selector); if (el && value !== undefined) el.textContent = value; };
   const setTitle = (selector, before, mark) => { const el = document.querySelector(selector); if (!el) return; el.firstChild && (el.firstChild.nodeValue = before || ''); const span = el.querySelector('.mark'); if (span) span.textContent = mark || ''; };
-  const setImg = (selector, src) => { const el = document.querySelector(selector); if (el && src) { const critical = selector.includes('hero-gallery'); el.loading = critical ? 'eager' : 'lazy'; el.decoding = 'async'; if (critical) el.fetchPriority = 'high'; el.src = src; } };
+  const optimizeImageUrl = window.__optimizeWechatImageUrl || ((src) => String(src || ''));
+  const transparentPixel = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+  const setImg = (selector, src, width = 1000) => {
+    const el = document.querySelector(selector);
+    if (!el || !src) return;
+    const isQr = selector.includes('.qrcard');
+    const nextSrc = isQr ? String(src) : optimizeImageUrl(src, width);
+    el.loading = 'lazy';
+    el.decoding = 'async';
+    if (!isQr) el.fetchPriority = 'low';
+    if (el.getAttribute('src') !== nextSrc) el.src = nextSrc;
+  };
+  const loadDeferredCardImage = card => {
+    const image = card?.querySelector('img[data-src]');
+    if (!image?.dataset.src) return;
+    image.src = image.dataset.src;
+    image.removeAttribute('data-src');
+  };
   const photoWallStates = new WeakMap();
   const getPhotoWallState = root => {
     let state = photoWallStates.get(root);
@@ -481,10 +513,23 @@ button{font:inherit}
     return result;
   };
   const prioritizeGainCards = content => {
-    if (!content?.gains || !Array.isArray(content.gains.cards)) return content;
-    const priority = ["综测分", "饭票福利", "志愿时长"];
-    const rank = title => { const index = priority.indexOf(String(title || "").trim()); return index < 0 ? priority.length : index; };
-    content.gains.cards = content.gains.cards.map((card, index) => ({ card, index })).sort((a, b) => rank(a.card?.title) - rank(b.card?.title) || a.index - b.index).map(item => item.card);
+    if (!content) return content;
+    if (content.roles?.gallery) content.roles.gallery.title = '一场精彩演出有许多细节组成';
+    if (content.gains && Array.isArray(content.gains.cards)) {
+      const priority = ['真技能', '饭票福利', '综测分', '一群搭子', '校园大场面'];
+      const rank = title => { const index = priority.indexOf(String(title || '').trim()); return index < 0 ? priority.length : index; };
+      content.gains.cards = content.gains.cards
+        .filter(card => String(card?.title || '').trim() !== '志愿时长')
+        .map(card => ({ ...card, body: String(card?.body || '').replaceAll('一起', '艺起') }))
+        .map((card, index) => ({ card, index }))
+        .sort((a, b) => rank(a.card?.title) - rank(b.card?.title) || a.index - b.index)
+        .map(item => item.card);
+    }
+    if (content.moments) {
+      content.moments.titleMark = String(content.moments.titleMark || '').replaceAll('一起', '艺起').replace('我们也很会玩', '艺起很会玩');
+      if (Array.isArray(content.moments.paragraphs)) content.moments.paragraphs = content.moments.paragraphs.map(text => String(text).replaceAll('一起', '艺起'));
+    }
+    if (content.suitable) content.suitable.encourage = '我们的宗旨是，态度要好，立场要坚定！';
     return content;
   };
   const mergePublishedContent = (base, override) => {
@@ -498,7 +543,6 @@ button{font:inherit}
   };
   let stopHeroGalleryLoop = () => {};
   const renderHeroGallery = c => {
-    stopHeroGalleryLoop();
     const root = document.querySelector('[data-hero-gallery]'); if (!root) return;
     const gallery = c.heroGallery || {}; const images = c.images || {};
     const keys = (Array.isArray(gallery.imageKeys) && gallery.imageKeys.length ? gallery.imageKeys : ['hero1','hero2','hero3','hero4','hero5','hero6']).slice(0,6);
@@ -507,9 +551,13 @@ button{font:inherit}
     const track = root.querySelector('[data-hero-gallery-track]');
     if (track) {
       const items = keys.map((key,index) => { const rawCaption=String(captions[index] || '').trim(); const caption=!rawCaption || /^\u7b49\u5f85\u4e0a\u4f20\s*\d+$/i.test(rawCaption) ? defaultCaptions[index] : rawCaption; return {src:images[key] || 'assets/photo-placeholder.svg',caption}; });
-      track.innerHTML = items.map((item,index) => '<figure class="hero-gallery-card" data-hero-card data-layout-key="hero-gallery-'+(index+1)+'"><img loading="eager"'+(index<2?' fetchpriority="high"':'')+' decoding="async" src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></figure>').join('');
+      const signature = JSON.stringify([gallery.hint || '', ...items.map(item => [optimizeImageUrl(item.src, 1000), item.caption])]);
+      if (track.dataset.renderSignature === signature) return;
+      stopHeroGalleryLoop();
+      track.dataset.renderSignature = signature;
+      track.innerHTML = items.map((item,index) => { const src=optimizeImageUrl(item.src,1000); const initiallyVisible=index===0||index===1||index===items.length-1; return '<figure class="hero-gallery-card" data-hero-card data-layout-key="hero-gallery-'+(index+1)+'"><img loading="'+(initiallyVisible?'eager':'lazy')+'"'+(index===0?' fetchpriority="high"':' fetchpriority="low"')+' decoding="async" src="'+(initiallyVisible?escapeHtml(src):transparentPixel)+'"'+(initiallyVisible?'':' data-src="'+escapeHtml(src)+'"')+' alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></figure>'; }).join('');
       const cards = [...track.querySelectorAll('[data-hero-card]')]; let activeIndex = 0; let startX = 0; let startY = 0; let pointerId = null;
-      const update = () => { const total=cards.length; cards.forEach((card,index)=>{ const offset=(index-activeIndex+total)%total; const previous=(activeIndex-index+total)%total; card.classList.remove('is-active','is-next','is-next-2','is-prev'); const stateClass=offset===0?'is-active':offset===1?'is-next':previous===1?'is-prev':offset===2?'is-next-2':''; if(stateClass)card.classList.add(stateClass); card.setAttribute('aria-hidden',offset===0?'false':'true'); card.setAttribute('tabindex',offset===0?'0':'-1'); }); track.dataset.activeIndex=String(activeIndex); };
+      const update = () => { const total=cards.length; cards.forEach((card,index)=>{ const offset=(index-activeIndex+total)%total; const previous=(activeIndex-index+total)%total; card.classList.remove('is-active','is-next','is-next-2','is-prev'); const stateClass=offset===0?'is-active':offset===1?'is-next':previous===1?'is-prev':offset===2?'is-next-2':''; if(stateClass){card.classList.add(stateClass); if(stateClass!=='is-next-2')loadDeferredCardImage(card);} card.setAttribute('aria-hidden',offset===0?'false':'true'); card.setAttribute('tabindex',offset===0?'0':'-1'); }); track.dataset.activeIndex=String(activeIndex); };
       const step = direction => { if(cards.length<2)return; activeIndex=(activeIndex+direction+cards.length)%cards.length; update(); };
       const onPointerDown = event => { if(!event.isPrimary)return; pointerId=event.pointerId; startX=event.clientX; startY=event.clientY; try{track.setPointerCapture?.(event.pointerId)}catch{} };
       const onPointerUp = event => { if(pointerId!==event.pointerId)return; const deltaX=event.clientX-startX,deltaY=event.clientY-startY; pointerId=null; if(Math.abs(deltaX)>38&&Math.abs(deltaX)>Math.abs(deltaY)*1.15)step(deltaX<0?1:-1); };
@@ -539,36 +587,52 @@ button{font:inherit}
       const previous = (state.index - index + total) % total;
       card.classList.remove('is-active','is-prev','is-next','is-prev-2','is-next-2','is-prev-3','is-next-3');
       const stateClass = offset === 0 ? 'is-active' : previous === 1 ? 'is-prev' : offset === 1 ? 'is-next' : previous === 2 ? 'is-prev-2' : offset === 2 ? 'is-next-2' : previous === 3 ? 'is-prev-3' : offset === 3 ? 'is-next-3' : '';
-      if (stateClass) card.classList.add(stateClass);
+      if (stateClass) { card.classList.add(stateClass); if (root.dataset.imagesEnabled === '1' && (offset === 0 || offset === 1 || previous === 1)) loadDeferredCardImage(card); }
       card.setAttribute('aria-hidden', offset === 0 ? 'false' : 'true'); card.setAttribute('tabindex', offset === 0 ? '0' : '-1');
     });
   };
-  const stepPhotoWall = (root, direction) => { const state = getPhotoWallState(root); if (state.items.length < 2) return; state.index = (state.index + direction + state.items.length) % state.items.length; updatePhotoWall(root); };
+  const enablePhotoWallImages = root => { if (root.dataset.imagesEnabled !== '1') root.dataset.imagesEnabled = '1'; updatePhotoWall(root); };
+  const photoWallObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => entries.forEach(entry => { if (!entry.isIntersecting) return; enablePhotoWallImages(entry.target); photoWallObserver.unobserve(entry.target); }), { rootMargin: '60px 0px' }) : null;
+  const stepPhotoWall = (root, direction) => { const state = getPhotoWallState(root); if (state.items.length < 2) return; enablePhotoWallImages(root); state.index = (state.index + direction + state.items.length) % state.items.length; updatePhotoWall(root); };
   const rolesGalleryItems = c => { const gallery = c.roles?.gallery || {}; const images = c.images || {}; const keys = Array.isArray(gallery.imageKeys) && gallery.imageKeys.length ? gallery.imageKeys : ['rolesGallery1','rolesGallery2','rolesGallery3','rolesGallery4','rolesGallery5','rolesGallery6']; const placeholder = 'assets/photo-placeholder.svg'; return keys.map(key => ({src:images[key] || placeholder})); };
   const renderRolesGallery = c => {
     const root = document.querySelector('[data-roles-gallery]'); if (!root) return; const gallery = c.roles?.gallery || {};
-    const title = root.querySelector('[data-roles-gallery-title]'); if (title) { const fullTitle = gallery.title || '一场演出，正在许多细节里发生'; const splitAt = fullTitle.indexOf('，'); title.textContent = splitAt >= 0 ? fullTitle.slice(0, splitAt + 1) : fullTitle; if (splitAt >= 0) { const mark = document.createElement('span'); mark.className = 'mark'; mark.textContent = fullTitle.slice(splitAt + 1); title.appendChild(mark); } }
+    const title = root.querySelector('[data-roles-gallery-title]'); if (title) { const fullTitle = gallery.title || '一场精彩演出有许多细节组成'; const splitAt = fullTitle.indexOf('，'); title.textContent = splitAt >= 0 ? fullTitle.slice(0, splitAt + 1) : fullTitle; if (splitAt >= 0) { const mark = document.createElement('span'); mark.className = 'mark'; mark.textContent = fullTitle.slice(splitAt + 1); title.appendChild(mark); } }
     const hintText = root.querySelector('[data-roles-gallery-hint]'); if (hintText) { const rawHint = String(gallery.hint || '').trim(); const defaultHint = '从调音台、灯光控台到舞台、后台与观众席，熟悉每一件设备、每一处场地，才能让演出稳稳发生。'; hintText.textContent = !rawHint || rawHint === '从设备、排练到现场协作，每一张都是真实发生的准备' ? defaultHint : rawHint; }
     const grid = root.querySelector('[data-roles-gallery-grid]'); const items = rolesGalleryItems(c);
-    if (grid) grid.innerHTML = items.map((item,index) => '<figure class="roles-gallery-card" data-layout-key="roles-gallery-'+(index+1)+'"><img loading="eager" decoding="async" src="'+escapeHtml(item.src)+'" alt="设备与场地展示第 '+(index + 1)+' 张"></figure>').join('');
+    if (grid) {
+      const signature = JSON.stringify(items.map(item => optimizeImageUrl(item.src, 900)));
+      if (grid.dataset.renderSignature !== signature) {
+        grid.dataset.renderSignature = signature;
+        grid.innerHTML = items.map((item,index) => '<figure class="roles-gallery-card" data-layout-key="roles-gallery-'+(index+1)+'"><img loading="lazy" fetchpriority="low" decoding="async" src="'+escapeHtml(optimizeImageUrl(item.src,900))+'" alt="设备与场地展示第 '+(index + 1)+' 张"></figure>').join('');
+      }
+    }
 
   };
   const renderPhotoWall = c => {
     document.querySelectorAll('[data-photo-wall]').forEach(root => {
       const isIntro = root.dataset.photoWall === 'intro'; const wallKey = isIntro ? 'introPhotoWall' : 'photoWall'; const wall = c[wallKey] || {}; const items = photoWallItems(c, wallKey);
-      const state = getPhotoWallState(root); state.items = items; state.index = 0;
+      const state = getPhotoWallState(root); state.items = items;
       const fallbackTitle = isIntro ? '幕后的一切，也值得被看见' : (c.closing?.photoCaption || '下一张团队合照，也许就有你');
       const fallbackHint = isIntro ? '手指左右滑动，看看舞台亮起之前' : '手指左右滑动，翻看属于我们的共同瞬间';
       const title = root.querySelector('[data-photo-wall-title]'); if (title) title.textContent = wall.title || fallbackTitle;
       const hintText = root.querySelector('[data-photo-wall-hint]'); if (hintText) hintText.textContent = wall.hint || fallbackHint;
       const stage = root.querySelector('[data-photo-wall-stage]'); const fallbackSrc = 'assets/photo-placeholder.svg';
-      if (stage) stage.innerHTML = items.length ? items.map((item,index) => '<article class="photo-card" data-photo-card data-layout-key="'+(isIntro?'intro-photo-wall':'photo-wall')+'-'+(index+1)+'"><img loading="eager" decoding="async" src="'+escapeHtml(item.src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></article>').join('') : '<article class="photo-card is-active" data-photo-card data-layout-key="'+(isIntro?'intro-photo-wall':'photo-wall')+'-1"><img loading="eager" src="'+fallbackSrc+'" alt="'+escapeHtml(fallbackTitle)+'"><span>'+escapeHtml(fallbackTitle)+'</span></article>';
+      if (stage) {
+        const signature = JSON.stringify(items.map(item => [optimizeImageUrl(item.src, 900), item.caption]));
+        if (stage.dataset.renderSignature !== signature) {
+          stage.dataset.renderSignature = signature;
+          state.index = 0;
+          stage.innerHTML = items.length ? items.map((item,index) => { const src=optimizeImageUrl(item.src,900); return '<article class="photo-card" data-photo-card data-layout-key="'+(isIntro?'intro-photo-wall':'photo-wall')+'-'+(index+1)+'"><img loading="lazy" fetchpriority="low" decoding="async" src="'+transparentPixel+'" data-src="'+escapeHtml(src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></article>'; }).join('') : '<article class="photo-card is-active" data-photo-card data-layout-key="'+(isIntro?'intro-photo-wall':'photo-wall')+'-1"><img loading="lazy" src="'+fallbackSrc+'" alt="'+escapeHtml(fallbackTitle)+'"><span>'+escapeHtml(fallbackTitle)+'</span></article>';
+        }
+      }
       updatePhotoWall(root);
+      if (photoWallObserver) photoWallObserver.observe(root); else enablePhotoWallImages(root);
     });
   };
   document.querySelectorAll('[data-photo-wall]').forEach(root => {
     let touchStartX = 0; let touchStartY = 0; let touchMoved = false; const stage = root.querySelector('[data-photo-wall-stage]');
-    stage?.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0]?.clientX || 0; touchStartY = event.changedTouches[0]?.clientY || 0; touchMoved = false; }, {passive:true});
+    stage?.addEventListener('touchstart', event => { enablePhotoWallImages(root); touchStartX = event.changedTouches[0]?.clientX || 0; touchStartY = event.changedTouches[0]?.clientY || 0; touchMoved = false; }, {passive:true});
     stage?.addEventListener('touchmove', event => { const touch = event.changedTouches[0]; if (touch) touchMoved = Math.abs(touch.clientX-touchStartX) > Math.abs(touch.clientY-touchStartY); }, {passive:true});
     stage?.addEventListener('touchend', event => { const touch = event.changedTouches[0]; if (!touch || !touchMoved) return; const delta = touch.clientX-touchStartX; if (Math.abs(delta)>34) stepPhotoWall(root, delta<0?1:-1); }, {passive:true});
     stage?.addEventListener('keydown', event => { if (event.key==='ArrowLeft') stepPhotoWall(root, -1); if (event.key==='ArrowRight') stepPhotoWall(root, 1); });
@@ -621,7 +685,7 @@ button{font:inherit}
     const h1 = document.querySelector('.hero h1'); if (h1) { const mainTitle=c.hero?.titleMain === '新生入场' ? '等你加入' : (c.hero?.titleMain || '等你加入'); const accentTitle=c.hero?.titleAccent === '请就位' ? '等你发光' : (c.hero?.titleAccent || '等你发光'); h1.firstChild.nodeValue = mainTitle; const o=h1.querySelector('.outline'); if(o)o.textContent=accentTitle; }
     setTitle('.intro .section-title', c.intro?.titleBefore, c.intro?.titleMark); setText('.intro .lead-card', c.intro?.lead); setText('.intro figcaption', c.intro?.caption);
     setTitle('.roles .section-title', c.roles?.titleBefore, c.roles?.titleMark); setText('.roles-intro',c.roles?.intro); setText('.roles-more-note', c.roles?.more);
-    document.querySelectorAll('.role-card').forEach((card,i)=>{ const x=c.roles?.cards?.[i]; if(!x)return; setText('h3',x.title,card); setText('p',x.body,card); setText('.mini',x.tag,card); const image=card.querySelector('img'); if(image&&x.imageKey&&c.images?.[x.imageKey]) image.src=c.images[x.imageKey]; });
+    document.querySelectorAll('.role-card').forEach((card,i)=>{ const x=c.roles?.cards?.[i]; if(!x)return; setText('h3',x.title,card); setText('p',x.body,card); setText('.mini',x.tag,card); const image=card.querySelector('img'); if(image&&x.imageKey&&c.images?.[x.imageKey]) { image.loading='lazy'; image.decoding='async'; image.fetchPriority='low'; const nextSrc=optimizeImageUrl(c.images[x.imageKey],1000); if(image.getAttribute('src')!==nextSrc)image.src=nextSrc; } });
     setTitle('.gains .section-title', c.gains?.titleBefore, c.gains?.titleMark); document.querySelectorAll('.ticket').forEach((card,i)=>{const x=c.gains?.cards?.[i];if(!x)return;setText('strong',x.title,card);setText('p',x.body,card);});
     setTitle('.moments .section-title', c.moments?.titleBefore, c.moments?.titleMark); document.querySelectorAll('.moments>p').forEach((p,i)=>{if(c.moments?.paragraphs?.[i]!==undefined)p.textContent=c.moments.paragraphs[i];});
     setTitle('.suitable .section-title', c.suitable?.titleBefore, c.suitable?.titleMark); document.querySelectorAll('.checklist li').forEach((li,i)=>{if(c.suitable?.items?.[i]!==undefined)li.textContent=c.suitable.items[i];}); setText('.encourage',c.suitable?.encourage);
@@ -637,8 +701,8 @@ button{font:inherit}
     renderPhotoWall(c);
     renderRolesGallery(c);
     const qq=c.decorations?.qq||[];
-    document.querySelectorAll('.campus-decor img').forEach((img,index)=>{ if(qq[index]) img.src=qq[index]; });
-    document.querySelectorAll('.hero-mascot img').forEach((img,index)=>{ const item=c.decorations?.mascots?.[index]; if(item?.src) img.src=item.src; }); [['.intro-photo img',imgs.intro],['.detail-photo .frame:nth-child(1) img',imgs.detail1],['.detail-photo .frame:nth-child(2) img',imgs.detail2],['.m1 img',imgs.moment1],['.m2 img',imgs.moment2],['.m3 img',imgs.moment3],['.m4 img',imgs.moment4],['.skill-card:nth-child(1) img',imgs.skillAudio],['.skill-card:nth-child(2) img',imgs.skillLight],['.skill-card:nth-child(3) img',imgs.skillDJ],['.skill-card:nth-child(4) img',imgs.skillSpotlight],['.skill-card:nth-child(5) img',imgs.skillStageControl],['.qrcard:nth-child(1) img',imgs.qrWestGroup],['.qrcard:nth-child(2) img',imgs.qrWestSignup],['.qrcard:nth-child(3) img',imgs.qrNorthGroup],['.qrcard:nth-child(4) img',imgs.qrNorthSignup]].forEach(([s,v])=>setImg(s,v));
+    document.querySelectorAll('.campus-decor img').forEach((img,index)=>{ if(qq[index]) { const nextSrc=optimizeImageUrl(qq[index],500); if(img.getAttribute('src')!==nextSrc)img.src=nextSrc; } });
+    document.querySelectorAll('.hero-mascot img').forEach((img,index)=>{ const item=c.decorations?.mascots?.[index]; if(item?.src) { const nextSrc=optimizeImageUrl(item.src,600); if(img.getAttribute('src')!==nextSrc)img.src=nextSrc; } }); [['.intro-photo img',imgs.intro],['.detail-photo .frame:nth-child(1) img',imgs.detail1],['.detail-photo .frame:nth-child(2) img',imgs.detail2],['.m1 img',imgs.moment1],['.m2 img',imgs.moment2],['.m3 img',imgs.moment3],['.m4 img',imgs.moment4],['.skill-card:nth-child(1) img',imgs.skillAudio],['.skill-card:nth-child(2) img',imgs.skillLight],['.skill-card:nth-child(3) img',imgs.skillDJ],['.skill-card:nth-child(4) img',imgs.skillSpotlight],['.skill-card:nth-child(5) img',imgs.skillStageControl],['.qrcard:nth-child(1) img',imgs.qrWestGroup],['.qrcard:nth-child(2) img',imgs.qrWestSignup],['.qrcard:nth-child(3) img',imgs.qrNorthGroup],['.qrcard:nth-child(4) img',imgs.qrNorthSignup]].forEach(([s,v])=>setImg(s,v));
     applyVisualOverrides(c);
   };
   let fallbackContent = {};
@@ -654,15 +718,16 @@ button{font:inherit}
     applySnapshot(event.data.content);
   });
   const loadPublishedContent = async () => {
-    const fallbackPromise = fetch('content.json?ts=' + Date.now(), { cache: 'no-store' }).then(response => response.json()).catch(() => ({}));
+    const fallbackPromise = fetch('content.json', { cache: 'default' }).then(response => response.json()).catch(() => ({}));
     if (isEditorPreview) {
       fallbackContent = await fallbackPromise || {};
       if (!previewContentReceived) applySnapshot(fallbackContent);
       return;
     }
+    const cachedSnapshot = window.__wechatCachedSnapshot;
+    if (cachedSnapshot?.content_json) applySnapshot(cachedSnapshot.content_json, cachedSnapshot.updated_at);
     fallbackContent = await fallbackPromise || {};
-    // ??????????????????????????????????????????
-    applySnapshot(fallbackContent);
+    if (!cachedSnapshot?.content_json) applySnapshot(fallbackContent);
     const cloudPromise = window.__wechatCloudBootstrap || Promise.resolve(null);
     const snapshot = await cloudPromise;
     if (snapshot?.content_json) applySnapshot(snapshot.content_json, snapshot.updated_at);
