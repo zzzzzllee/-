@@ -295,7 +295,7 @@ button{font:inherit}
 .hero-gallery-card img{
   object-fit:contain!important;
   object-position:center!important;
-  transform:translate(var(--image-x,0px),var(--image-y,0px)) scale(var(--image-scale,1))!important;
+  transform:translate(var(--image-x,0px),var(--image-y,0px)) scale(var(--image-scale-x,var(--image-scale,1)),var(--image-scale-y,var(--image-scale,1)))!important;
   transform-origin:center center!important
 }
 .qrcard img{object-fit:contain!important;object-position:center!important;background-color:#fff!important;transform:none!important}
@@ -761,7 +761,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
   };
   const applyImageAdjustments = c => {
     const adjustments=c.imageAdjustments||{};
-    document.querySelectorAll('img[data-image-key]').forEach(img=>{const value=adjustments[img.dataset.imageKey]||{};const x=Number(value.x)||0,y=Number(value.y)||0,scale=Math.max(.5,Math.min(6,Number(value.scale)||1));img.style.setProperty('--image-x',x+'px');img.style.setProperty('--image-y',y+'px');img.style.setProperty('--image-scale',String(scale));});
+    document.querySelectorAll('img[data-image-key]').forEach(img=>{const value=adjustments[img.dataset.imageKey]||{};const x=Number(value.x)||0,y=Number(value.y)||0,legacy=Math.max(.3,Math.min(6,Number(value.scale)||1)),scaleX=Math.max(.3,Math.min(6,Number(value.scaleX??legacy)||legacy)),scaleY=Math.max(.3,Math.min(6,Number(value.scaleY??legacy)||legacy));img.style.setProperty('--image-x',x+'px');img.style.setProperty('--image-y',y+'px');img.style.setProperty('--image-scale-x',String(scaleX));img.style.setProperty('--image-scale-y',String(scaleY));img.style.setProperty('--image-scale',String((scaleX+scaleY)/2));});
   };
   const applyVisualOverrides = c => {
     prepareEditableMap();
