@@ -295,11 +295,11 @@ button{font:inherit}
 .hero-gallery-card img{
   object-fit:contain!important;
   object-position:center!important;
-  transform:translate(var(--image-x,0px),var(--image-y,0px)) scale(var(--image-scale-x,var(--image-scale,1)),var(--image-scale-y,var(--image-scale,1)))!important;
+  transform:translate(var(--image-x,0px),var(--image-y,0px)) translate(var(--image-crop-x,0%),var(--image-crop-y,0%)) scale(var(--image-scale-x,var(--image-scale,1)),var(--image-scale-y,var(--image-scale,1))) scale(var(--image-crop-scale-x,1),var(--image-crop-scale-y,1))!important;
   transform-origin:center center!important
 }
 .qrcard img{object-fit:contain!important;object-position:center!important;background-color:#fff!important;transform:none!important}
-.detail-photo .frame:hover img,.roles-gallery-card:hover img{transform:translate(var(--image-x,0px),var(--image-y,0px)) scale(var(--image-scale,1))!important}
+.detail-photo .frame:hover img,.roles-gallery-card:hover img{transform:translate(var(--image-x,0px),var(--image-y,0px)) translate(var(--image-crop-x,0%),var(--image-crop-y,0%)) scale(var(--image-scale-x,var(--image-scale,1)),var(--image-scale-y,var(--image-scale,1))) scale(var(--image-crop-scale-x,1),var(--image-crop-scale-y,1))!important}
 .qrcard img{touch-action:manipulation;-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
 .qr-image-viewer{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;padding:max(54px,env(safe-area-inset-top)) 18px max(42px,env(safe-area-inset-bottom));background:rgba(14,24,34,.9);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .qr-image-viewer.is-open{display:flex}
@@ -761,7 +761,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
   };
   const applyImageAdjustments = c => {
     const adjustments=c.imageAdjustments||{};
-    document.querySelectorAll('img[data-image-key]').forEach(img=>{const value=adjustments[img.dataset.imageKey]||{};const x=Number(value.x)||0,y=Number(value.y)||0,legacy=Math.max(.3,Math.min(6,Number(value.scale)||1)),scaleX=Math.max(.3,Math.min(6,Number(value.scaleX??legacy)||legacy)),scaleY=Math.max(.3,Math.min(6,Number(value.scaleY??legacy)||legacy));img.style.setProperty('--image-x',x+'px');img.style.setProperty('--image-y',y+'px');img.style.setProperty('--image-scale-x',String(scaleX));img.style.setProperty('--image-scale-y',String(scaleY));img.style.setProperty('--image-scale',String((scaleX+scaleY)/2));});
+    document.querySelectorAll('img[data-image-key]').forEach(img=>{const value=adjustments[img.dataset.imageKey]||{};const x=Number(value.x)||0,y=Number(value.y)||0,legacy=Math.max(.3,Math.min(6,Number(value.scale)||1)),scaleX=Math.max(.3,Math.min(6,Number(value.scaleX??legacy)||legacy)),scaleY=Math.max(.3,Math.min(6,Number(value.scaleY??legacy)||legacy));['width','height','max-width','max-height','left','top','position','object-fit','object-position'].forEach(name=>img.style.removeProperty(name));img.style.setProperty('--image-crop-x','0%');img.style.setProperty('--image-crop-y','0%');img.style.setProperty('--image-crop-scale-x','1');img.style.setProperty('--image-crop-scale-y','1');const crop=value.crop;if(crop&&Number(crop.width)>0&&Number(crop.height)>0){const left=Math.max(0,Math.min(.92,Number(crop.left)||0)),top=Math.max(0,Math.min(.92,Number(crop.top)||0)),width=Math.max(.08,Math.min(1-left,Number(crop.width)||1)),height=Math.max(.08,Math.min(1-top,Number(crop.height)||1));img.style.setProperty('--image-crop-x',(-left*100/width)+'%');img.style.setProperty('--image-crop-y',(-top*100/height)+'%');img.style.setProperty('--image-crop-scale-x',String(1/width));img.style.setProperty('--image-crop-scale-y',String(1/height));img.style.setProperty('object-fit','fill','important');img.style.setProperty('object-position','center','important');}img.style.setProperty('--image-x',x+'px');img.style.setProperty('--image-y',y+'px');img.style.setProperty('--image-scale-x',String(scaleX));img.style.setProperty('--image-scale-y',String(scaleY));img.style.setProperty('--image-scale',String((scaleX+scaleY)/2));});
   };
   const applyVisualOverrides = c => {
     prepareEditableMap();
