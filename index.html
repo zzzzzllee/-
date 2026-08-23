@@ -563,7 +563,27 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
   prepareQrImages();
   new MutationObserver(prepareQrImages).observe(document.querySelector('.qrgrid') || document.body, { childList: true, subtree: true });
 })();
-</script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="cloud-sync.js?v=20260823-photo-cloud-sync"></script>
+</script><script>
+(() => {
+  // 公开页先渲染内容，再在首屏稳定后加载云端 SDK，避免 CDN 慢时阻塞整页图片。
+  let loadPromise = null;
+  const loadScript = src => new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error('加载云端脚本失败'));
+    document.head.appendChild(script);
+  });
+  window.__loadWechatCloudSync = () => {
+    if (loadPromise) return loadPromise;
+    loadPromise = loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2')
+      .then(() => loadScript('cloud-sync.js?v=20260823-photo-cloud-sync'))
+      .then(() => window.__wechatCloudSyncReady?.())
+      .catch(error => console.warn('公开页云端实时同步未启用：', error));
+    return loadPromise;
+  };
+})();
+</script>
 <script>
 (() => {
   const draftKey = 'wechatRecruitmentDraft2026';
@@ -866,8 +886,17 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
       try { cloudContent = await window.WechatCloudSync?.loadContent?.(); } catch (error) { console.warn('?????????????????', error); }
       if (cloudContent) applySnapshot(cloudContent, window.WechatCloudSync?.getLastUpdatedAt?.() || '');
     }
-    const sync = window.WechatCloudSync;
-    if (sync?.isConfigured?.()) sync.subscribe((content, updatedAt) => { if (updatedAt && lastAppliedUpdatedAt && updatedAt <= lastAppliedUpdatedAt) return; applySnapshot(content, updatedAt); });
+    const subscribeRealtime = () => {
+      if (subscribeRealtime.unsubscribe) return;
+      const sync = window.WechatCloudSync;
+      if (!sync?.isConfigured?.()) return;
+      subscribeRealtime.unsubscribe = sync.subscribe((content, updatedAt) => { if (updatedAt && lastAppliedUpdatedAt && updatedAt <= lastAppliedUpdatedAt) return; applySnapshot(content, updatedAt); });
+    };
+    subscribeRealtime();
+    window.__wechatCloudSyncReady = subscribeRealtime;
+    const loadRealtime = () => window.__loadWechatCloudSync?.();
+    if ('requestIdleCallback' in window) window.requestIdleCallback(loadRealtime, { timeout: 2500 });
+    else window.addEventListener('load', () => setTimeout(loadRealtime, 1500), { once: true });
   };
   loadPublishedContent();
 })();
