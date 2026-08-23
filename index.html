@@ -282,10 +282,32 @@ button{font:inherit}
   .photo-card.is-prev-3,.photo-card.is-next-3{z-index:996!important}
   .photo-card img{position:relative;z-index:2}
   .photo-card>span:last-child{z-index:3}
-/* 固定相框尺寸不变：上传照片完整拉伸适配相框，不裁剪、不留白边。 */
-.polaroid img,.intro-photo img,.detail-photo img,.roles-gallery-card img,.memory img,.memory-wall .memory img,.photo-card img,.skill-card img,.hero-gallery-card img{object-fit:fill!important;object-position:center!important;transform:none!important}
-.qrcard img{object-fit:contain!important;background-color:#fff!important;transform:none!important}
+/* 固定相框尺寸不变：所有上传照片完整拉伸适配相框，不裁剪、不放大局部、不留白边。 */
+.polaroid img,
+.intro-photo img,
+.detail-photo img,
+.role-card>img,
+.roles-gallery-card img,
+.memory img,
+.memory-wall .memory img,
+.photo-card img,
+.skill-card img,
+.hero-gallery-card img{
+  object-fit:fill!important;
+  object-position:center!important;
+  transform:none!important
+}
+.qrcard img{object-fit:contain!important;object-position:center!important;background-color:#fff!important;transform:none!important}
 .detail-photo .frame:hover img,.roles-gallery-card:hover img{transform:none!important}
+.qrcard img{touch-action:manipulation;-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
+.qr-image-viewer{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;padding:max(54px,env(safe-area-inset-top)) 18px max(42px,env(safe-area-inset-bottom));background:rgba(14,24,34,.9);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.qr-image-viewer.is-open{display:flex}
+.qr-image-viewer__panel{position:relative;width:min(92vw,560px);max-height:calc(100dvh - 96px);padding:18px 14px 15px;background:#fff;border:3px solid var(--ink);box-shadow:8px 8px 0 var(--yellow);overflow:auto;-webkit-overflow-scrolling:touch}
+.qr-image-viewer__image{display:block;width:100%;height:auto;max-height:calc(100dvh - 190px);margin:auto;object-fit:contain!important;background:#fff;pointer-events:auto!important;-webkit-touch-callout:default!important;-webkit-user-select:auto!important;user-select:auto!important;-webkit-user-drag:auto}
+.qr-image-viewer__hint{margin:12px 0 0;text-align:center;color:#26354a;font:900 14px/1.6 "Microsoft YaHei",sans-serif}
+.qr-image-viewer__close{position:fixed;right:max(14px,env(safe-area-inset-right));top:max(12px,env(safe-area-inset-top));z-index:2;width:46px;height:46px;padding:0;border:2px solid #fff;border-radius:50%;background:var(--coral);color:#fff;box-shadow:3px 3px 0 var(--ink);font:900 28px/1 "Microsoft YaHei",sans-serif;cursor:pointer}
+body.qr-viewer-open{overflow:hidden;touch-action:none}
+@media(max-width:520px){.qr-image-viewer{padding-left:12px;padding-right:12px}.qr-image-viewer__panel{width:100%;padding:14px 10px 12px}.qr-image-viewer__hint{font-size:13px}}
 </style>
 </head>
 <body>
@@ -450,6 +472,13 @@ button{font:inherit}
   </section>
   <footer class="footer">ART EDUCATION CENTER · 2026 RECRUITMENT<br><span>零基础友好 · 等你加入</span></footer>
 </main>
+<div class="qr-image-viewer" id="qrImageViewer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="二维码大图">
+  <button class="qr-image-viewer__close" type="button" data-qr-viewer-close aria-label="关闭二维码大图">×</button>
+  <div class="qr-image-viewer__panel" data-qr-viewer-panel>
+    <img class="qr-image-viewer__image" data-qr-viewer-image alt="二维码大图，长按可保存到手机">
+    <p class="qr-image-viewer__hint">长按二维码图片可保存到手机</p>
+  </div>
+</div>
 <script>
 (() => {
   const items = [...document.querySelectorAll('.reveal')];
@@ -476,6 +505,54 @@ button{font:inherit}
   setTimeout(() => {
     if (!items.some(item => item.classList.contains('is-visible'))) showAll();
   }, 1200);
+})();
+</script>
+<script>
+(() => {
+  if (new URLSearchParams(location.search).get('editorPreview') === '1') return;
+  const viewer = document.getElementById('qrImageViewer');
+  const fullImage = viewer?.querySelector('[data-qr-viewer-image]');
+  const closeButton = viewer?.querySelector('[data-qr-viewer-close]');
+  const panel = viewer?.querySelector('[data-qr-viewer-panel]');
+  if (!viewer || !fullImage || !closeButton) return;
+  let returnFocus = null;
+  const openViewer = image => {
+    const src = image.currentSrc || image.src;
+    if (!src) return;
+    returnFocus = image;
+    fullImage.src = src;
+    fullImage.alt = (image.alt || '二维码') + '大图，长按可保存到手机';
+    viewer.classList.add('is-open');
+    viewer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('qr-viewer-open');
+    closeButton.focus({ preventScroll: true });
+  };
+  const closeViewer = () => {
+    if (!viewer.classList.contains('is-open')) return;
+    viewer.classList.remove('is-open');
+    viewer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('qr-viewer-open');
+    fullImage.removeAttribute('src');
+    returnFocus?.focus?.({ preventScroll: true });
+  };
+  document.addEventListener('click', event => {
+    const image = event.target.closest?.('.qrcard img');
+    if (image) { event.preventDefault(); openViewer(image); return; }
+    if (event.target === viewer || event.target === closeButton) closeViewer();
+  });
+  document.addEventListener('keydown', event => {
+    const image = event.target.closest?.('.qrcard img');
+    if (image && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openViewer(image); }
+    if (event.key === 'Escape') closeViewer();
+  });
+  panel?.addEventListener('click', event => event.stopPropagation());
+  const prepareQrImages = () => document.querySelectorAll('.qrcard img').forEach(image => {
+    image.tabIndex = 0;
+    image.setAttribute('role', 'button');
+    image.setAttribute('aria-label', (image.alt || '二维码') + '，点击查看大图');
+  });
+  prepareQrImages();
+  new MutationObserver(prepareQrImages).observe(document.querySelector('.qrgrid') || document.body, { childList: true, subtree: true });
 })();
 </script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="cloud-sync.js?v=20260823-photo-cloud-sync"></script>
 <script>
