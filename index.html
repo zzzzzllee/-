@@ -282,9 +282,20 @@ button{font:inherit}
   .photo-card.is-prev-3,.photo-card.is-next-3{z-index:996!important}
   .photo-card img{position:relative;z-index:2}
   .photo-card>span:last-child{z-index:3}
-/* 用户上传照片始终完整显示：不放大、不裁边，也不在悬停时自动缩放。 */
-.polaroid img,.intro-photo img,.detail-photo img,.roles-gallery-card img,.memory img,.memory-wall .memory img,.qrcard img,.photo-card img,.skill-card img,.hero-gallery-card img{object-fit:contain!important;background-color:#fff!important;transform:none!important}
+/* 图片边框按原图比例自动适配：完整显示、不裁剪、不拉伸。 */
+.intro-photo img,.detail-photo img,.roles-gallery-card img,.memory img,.memory-wall .memory img,.photo-card img,.skill-card img,.hero-gallery-card img{
+  display:block!important;width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;aspect-ratio:auto!important;object-fit:contain!important;background-color:#fff!important;transform:none!important
+}
 .detail-photo .frame:hover img,.roles-gallery-card:hover img{transform:none!important}
+.detail-photo,.roles-gallery-grid,.memory-wall{align-items:start!important}
+.detail-photo .frame,.roles-gallery-card,.memory-wall .memory{align-self:start!important;height:auto!important;min-height:0!important}
+.skill-card{align-items:start!important;min-height:0!important}
+.skill-card img{align-self:start!important}
+.qrcard img{display:block!important;width:100%!important;height:auto!important;aspect-ratio:1/1!important;object-fit:contain!important;background:#fff!important;transform:none!important}
+.hero-gallery-track{height:clamp(252px,70vw,350px);transition:height .28s ease}
+.hero-gallery-card{height:auto!important}
+.photo-wall-stage{height:clamp(238px,64vw,392px);min-height:0!important;transition:height .28s ease}
+.photo-card{top:0!important;right:0!important;bottom:auto!important;left:0!important;height:auto!important;min-height:0!important}
 </style>
 </head>
 <body>
@@ -501,6 +512,42 @@ button{font:inherit}
     image.src = image.dataset.src;
     image.removeAttribute('data-src');
   };
+  const syncAdaptiveStageHeight = (stage, cards, minimumHeight) => {
+    if (!stage || !cards.length) return;
+    const visibleCards = cards.filter(card => card.classList.contains('is-active') || card.classList.contains('is-prev') || card.classList.contains('is-next'));
+    visibleCards.forEach(card => {
+      const image = card.querySelector('img');
+      if (image && image.dataset.adaptiveHeightBound !== '1') {
+        image.dataset.adaptiveHeightBound = '1';
+        image.addEventListener('load', () => scheduleAdaptiveGalleryLayout());
+      }
+    });
+    requestAnimationFrame(() => {
+      const stageRect = stage.getBoundingClientRect();
+      const bottoms = visibleCards.map(card => card.getBoundingClientRect().bottom - stageRect.top).filter(value => Number.isFinite(value) && value > 0);
+      const nextHeight = Math.max(minimumHeight, Math.ceil(Math.max(0, ...bottoms) + 8));
+      if (Math.abs(stage.getBoundingClientRect().height - nextHeight) > 1) stage.style.height = nextHeight + 'px';
+    });
+  };
+  const syncHeroGalleryHeight = root => {
+    const track = root?.querySelector('[data-hero-gallery-track]');
+    if (!track) return;
+    syncAdaptiveStageHeight(track, [...track.querySelectorAll('[data-hero-card]')], window.matchMedia('(max-width:640px)').matches ? 200 : 240);
+  };
+  const syncPhotoWallHeight = root => {
+    const stage = root?.querySelector('[data-photo-wall-stage]');
+    if (!stage) return;
+    syncAdaptiveStageHeight(stage, [...stage.querySelectorAll('[data-photo-card]')], window.matchMedia('(max-width:640px)').matches ? 160 : 200);
+  };
+  let adaptiveGalleryLayoutFrame = 0;
+  const scheduleAdaptiveGalleryLayout = () => {
+    cancelAnimationFrame(adaptiveGalleryLayoutFrame);
+    adaptiveGalleryLayoutFrame = requestAnimationFrame(() => {
+      document.querySelectorAll('[data-hero-gallery]').forEach(syncHeroGalleryHeight);
+      document.querySelectorAll('[data-photo-wall]').forEach(syncPhotoWallHeight);
+    });
+  };
+  window.addEventListener('resize', scheduleAdaptiveGalleryLayout, {passive:true});
   const photoWallStates = new WeakMap();
   const getPhotoWallState = root => {
     let state = photoWallStates.get(root);
@@ -560,7 +607,7 @@ button{font:inherit}
       track.dataset.renderSignature = signature;
       track.innerHTML = items.map((item,index) => { const src=optimizeImageUrl(item.src,1000); const initiallyVisible=index===0||index===1||index===items.length-1; return '<figure class="hero-gallery-card" data-hero-card data-layout-key="hero-gallery-'+(index+1)+'"><img loading="'+(initiallyVisible?'eager':'lazy')+'"'+(index===0?' fetchpriority="high"':' fetchpriority="low"')+' decoding="async" src="'+(initiallyVisible?escapeHtml(src):transparentPixel)+'"'+(initiallyVisible?'':' data-src="'+escapeHtml(src)+'"')+' alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></figure>'; }).join('');
       const cards = [...track.querySelectorAll('[data-hero-card]')]; let activeIndex = 0; let startX = 0; let startY = 0; let pointerId = null;
-      const update = () => { const total=cards.length; cards.forEach((card,index)=>{ const offset=(index-activeIndex+total)%total; const previous=(activeIndex-index+total)%total; card.classList.remove('is-active','is-next','is-next-2','is-prev'); const stateClass=offset===0?'is-active':offset===1?'is-next':previous===1?'is-prev':offset===2?'is-next-2':''; if(stateClass){card.classList.add(stateClass); if(stateClass!=='is-next-2')loadDeferredCardImage(card);} card.setAttribute('aria-hidden',offset===0?'false':'true'); card.setAttribute('tabindex',offset===0?'0':'-1'); }); track.dataset.activeIndex=String(activeIndex); };
+      const update = () => { const total=cards.length; cards.forEach((card,index)=>{ const offset=(index-activeIndex+total)%total; const previous=(activeIndex-index+total)%total; card.classList.remove('is-active','is-next','is-next-2','is-prev'); const stateClass=offset===0?'is-active':offset===1?'is-next':previous===1?'is-prev':offset===2?'is-next-2':''; if(stateClass){card.classList.add(stateClass); if(stateClass!=='is-next-2')loadDeferredCardImage(card);} card.setAttribute('aria-hidden',offset===0?'false':'true'); card.setAttribute('tabindex',offset===0?'0':'-1'); }); track.dataset.activeIndex=String(activeIndex); scheduleAdaptiveGalleryLayout(); setTimeout(scheduleAdaptiveGalleryLayout,500); };
       const step = direction => { if(cards.length<2)return; activeIndex=(activeIndex+direction+cards.length)%cards.length; update(); };
       const onPointerDown = event => { if(!event.isPrimary)return; pointerId=event.pointerId; startX=event.clientX; startY=event.clientY; try{track.setPointerCapture?.(event.pointerId)}catch{} };
       const onPointerUp = event => { if(pointerId!==event.pointerId)return; const deltaX=event.clientX-startX,deltaY=event.clientY-startY; pointerId=null; if(Math.abs(deltaX)>38&&Math.abs(deltaX)>Math.abs(deltaY)*1.15)step(deltaX<0?1:-1); };
@@ -593,6 +640,8 @@ button{font:inherit}
       if (stateClass) { card.classList.add(stateClass); if (root.dataset.imagesEnabled === '1' && (offset === 0 || offset === 1 || previous === 1)) loadDeferredCardImage(card); }
       card.setAttribute('aria-hidden', offset === 0 ? 'false' : 'true'); card.setAttribute('tabindex', offset === 0 ? '0' : '-1');
     });
+    scheduleAdaptiveGalleryLayout();
+    setTimeout(scheduleAdaptiveGalleryLayout,500);
   };
   const enablePhotoWallImages = root => { if (root.dataset.imagesEnabled !== '1') root.dataset.imagesEnabled = '1'; updatePhotoWall(root); };
   const photoWallObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => entries.forEach(entry => { if (!entry.isIntersecting) return; enablePhotoWallImages(entry.target); photoWallObserver.unobserve(entry.target); }), { rootMargin: '60px 0px' }) : null;
@@ -707,6 +756,7 @@ button{font:inherit}
     document.querySelectorAll('.campus-decor img').forEach((img,index)=>{ if(qq[index]) { const nextSrc=optimizeImageUrl(qq[index],500); if(img.getAttribute('src')!==nextSrc)img.src=nextSrc; } });
     document.querySelectorAll('.hero-mascot img').forEach((img,index)=>{ const item=c.decorations?.mascots?.[index]; if(item?.src) { const nextSrc=optimizeImageUrl(item.src,600); if(img.getAttribute('src')!==nextSrc)img.src=nextSrc; } }); [['.intro-photo img',imgs.intro],['.detail-photo .frame:nth-child(1) img',imgs.detail1],['.detail-photo .frame:nth-child(2) img',imgs.detail2],['.m1 img',imgs.moment1],['.m2 img',imgs.moment2],['.m3 img',imgs.moment3],['.m4 img',imgs.moment4],['.skill-card:nth-child(1) img',imgs.skillAudio],['.skill-card:nth-child(2) img',imgs.skillLight],['.skill-card:nth-child(3) img',imgs.skillDJ],['.skill-card:nth-child(4) img',imgs.skillSpotlight],['.skill-card:nth-child(5) img',imgs.skillStageControl],['.qrcard:nth-child(1) img',imgs.qrWestGroup],['.qrcard:nth-child(2) img',imgs.qrWestSignup],['.qrcard:nth-child(3) img',imgs.qrNorthGroup],['.qrcard:nth-child(4) img',imgs.qrNorthSignup]].forEach(([s,v])=>setImg(s,v));
     applyVisualOverrides(c);
+    scheduleAdaptiveGalleryLayout();
   };
   let fallbackContent = {};
   let lastAppliedUpdatedAt = '';
