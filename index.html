@@ -55,12 +55,12 @@
 </script>
 <title>2026级新生招新｜校团委艺术教育中心</title>
 <style>
-:root{--cream:#fffefb;--yellow:#fbf8bc;--yellow-soft:#fffbdc;--blue:#b2d6f8;--blue-soft:#e7f2ff;--coral:#f39b8e;--coral-soft:#ffe6e2;--ink:#1b1b1b;--white:#ffffff;--line:#1b1b1b;--sky-texture:url("assets/style-sky.jpg");--paper-texture:url("assets/style-paper.jpg");--shadow:8px 8px 0 var(--ink);--small-shadow:4px 4px 0 var(--ink)}
+:root{--cream:#fffefb;--yellow:#efe0b4;--yellow-soft:#fff6df;--blue:#b9d7e8;--blue-soft:#e9f4f7;--coral:#d69ab2;--coral-soft:#f7e5ed;--ink:#1b1b1b;--white:#ffffff;--line:#1b1b1b;--sky-texture:url("assets/style-sky.jpg");--paper-texture:url("assets/style-paper.jpg");--shadow:8px 8px 0 var(--ink);--small-shadow:4px 4px 0 var(--ink)}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;background:#b2d6f8}
+html{scroll-behavior:smooth;background:#c7dceb}
 body{margin:0;color:var(--ink);font-family:"LXGW WenKai","霞鹜文楷","STKaiti","KaiTi","Microsoft YaHei",sans-serif;line-height:1.85;background:
  radial-gradient(circle at 18px 18px,rgba(38,53,74,.1) 2px,transparent 2.5px) 0 0/36px 36px,
- linear-gradient(150deg,#ffe987 0%,#fff5c6 34%,#dff6fb 72%,#bdeaf4 100%);}
+ linear-gradient(150deg,#d8c7f3 0%,#f4eafa 34%,#dff3f4 72%,#c5e2ef 100%);}
 button{font:inherit}
 .page{position:relative;width:min(780px,calc(100% - 28px));margin:24px auto 48px;background:var(--cream);border:3px solid var(--ink);box-shadow:14px 14px 0 rgba(38,53,74,.92);overflow:hidden;isolation:isolate}
 .page:before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(90deg,rgba(178,214,248,.18) 1px,transparent 1px),linear-gradient(rgba(178,214,248,.18) 1px,transparent 1px);background-size:28px 28px}.page:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:url("assets/style-paper.jpg") center top/620px auto repeat;opacity:.10;mix-blend-mode:multiply}
@@ -600,6 +600,22 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     Object.keys(override).forEach(key => { result[key] = mergeContent(result[key], override[key]); });
     return result;
   };
+  const mergeTemplateContent = (template, value) => {
+    if (value === undefined || value === null) return template;
+    if (Array.isArray(template)) {
+      if (!Array.isArray(value) || value.length === 0) return template;
+      const length = Math.max(template.length, value.length);
+      return Array.from({ length }, (_, index) => mergeTemplateContent(template[index], value[index]));
+    }
+    if (template && typeof template === 'object' && !Array.isArray(template)) {
+      const source = value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+      const result = {};
+      new Set([...Object.keys(template), ...Object.keys(source)]).forEach(key => { result[key] = mergeTemplateContent(template[key], source[key]); });
+      return result;
+    }
+    if (typeof template === 'string' && typeof value === 'string' && !value.trim()) return template;
+    return value;
+  };
   const prioritizeGainCards = content => {
     if (!content) return content;
     if (content.roles?.gallery) content.roles.gallery.title = '一场精彩演出有许多细节组成';
@@ -621,7 +637,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     return content;
   };
   const mergePublishedContent = (base, override) => {
-    const result = mergeContent(base, override || {});
+    const result = mergeTemplateContent(base, override || {});
     if (override && !override.introPhotoWall && base?.photoWall && result.photoWall) {
       result.photoWall.title = base.photoWall.title;
       result.photoWall.hint = base.photoWall.hint;
@@ -727,7 +743,26 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
   });
   const prepareEditableMap = () => {
     const textSelector = '.page h1,.page h2,.page h3,.page p,.page li,.page figcaption,.page .hero-kicker,.page .hero-sub,.page .section-label,.page .mini,.page .photo-wall-label,.page .photo-card>span:last-child,.page .roles-gallery-card figcaption,.page .memory span,.page .qrcard span,.page .footer,.page .hero-ribbon,.page .hero-note';
+    // Preserve legacy rich-* numbering, then add stable IDs for isolated labels, numbers, and captions.
     document.querySelectorAll(textSelector).forEach((el,index)=>el.dataset.richId='rich-'+index);
+    const stableTextKey = el => {
+      const parts=[]; let node=el;
+      while(node && node !== document.body && parts.length < 7){
+        const siblings=node.parentElement ? Array.from(node.parentElement.children) : [];
+        const index=siblings.indexOf(node);
+        const cls=String(node.className||'').split(/\s+/).filter(Boolean).slice(0,2).join('-');
+        parts.unshift(node.tagName.toLowerCase()+'-'+(cls||'x')+'-'+index);
+        node=node.parentElement;
+      }
+      let hash=0; const raw=parts.join('__');
+      for(let i=0;i<raw.length;i++) hash=((hash<<5)-hash+raw.charCodeAt(i))|0;
+      return (hash>>>0).toString(36);
+    };
+    document.querySelectorAll('.page *').forEach(el=>{
+      if(el.dataset.richId || el.dataset.layoutId || el.children.length || !String(el.textContent||'').trim()) return;
+      if(el.closest('[data-rich-id]') || el.matches('script,style,button,input,textarea,select,option')) return;
+      el.dataset.richId='rich-extra-'+stableTextKey(el);
+    });
 
     const legacyAssetSelector = '.page img,.page .hero-ribbon,.page .hero-year,.page .hero-note,.page .hero-spark,.page .wall-sticker,.page .campus-decor,.page .hero-mascot';
     const groupedAssetSelector = '.page .hero-gallery-card,.page .intro-photo,.page .skill-card,.page .roles-gallery-card,.page .memory,.page .qrcard,.page .photo-card,.page .campus-decor,.page .hero-mascot,.page .detail-photo .frame';
