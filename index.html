@@ -22,6 +22,8 @@
     if (url.pathname.includes('/storage/v1/object/public/')) url.pathname = url.pathname.replace('/storage/v1/object/public/', '/storage/v1/render/image/public/');
     if (!url.pathname.includes('/storage/v1/render/image/public/')) return raw;
     url.searchParams.set('width', String(width));
+    // Supabase 只传 width 时可能保留原图高度，导致部分照片比例异常、看起来像被截断。
+    url.searchParams.set('resize', 'contain');
     url.searchParams.set('quality', '78');
     return url.toString();
   };
