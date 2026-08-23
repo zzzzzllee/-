@@ -295,10 +295,11 @@ button{font:inherit}
 .hero-gallery-card img{
   object-fit:contain!important;
   object-position:center!important;
-  transform:none!important
+  transform:translate(var(--image-x,0px),var(--image-y,0px)) scale(var(--image-scale,1))!important;
+  transform-origin:center center!important
 }
 .qrcard img{object-fit:contain!important;object-position:center!important;background-color:#fff!important;transform:none!important}
-.detail-photo .frame:hover img,.roles-gallery-card:hover img{transform:none!important}
+.detail-photo .frame:hover img,.roles-gallery-card:hover img{transform:translate(var(--image-x,0px),var(--image-y,0px)) scale(var(--image-scale,1))!important}
 .qrcard img{touch-action:manipulation;-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
 .qr-image-viewer{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;padding:max(54px,env(safe-area-inset-top)) 18px max(42px,env(safe-area-inset-bottom));background:rgba(14,24,34,.9);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .qr-image-viewer.is-open{display:flex}
@@ -308,6 +309,12 @@ button{font:inherit}
 .qr-image-viewer__close{position:fixed;right:max(14px,env(safe-area-inset-right));top:max(12px,env(safe-area-inset-top));z-index:2;width:46px;height:46px;padding:0;border:2px solid #fff;border-radius:50%;background:var(--coral);color:#fff;box-shadow:3px 3px 0 var(--ink);font:900 28px/1 "Microsoft YaHei",sans-serif;cursor:pointer}
 body.qr-viewer-open{overflow:hidden;touch-action:none}
 @media(max-width:520px){.qr-image-viewer{padding-left:12px;padding-right:12px}.qr-image-viewer__panel{width:100%;padding:14px 10px 12px}.qr-image-viewer__hint{font-size:13px}}
+</style>
+<style>
+/* 用户在编辑器中调整的是相框内部画面；相框尺寸和卡片布局保持不变。 */
+.hero-gallery-card,.photo-card,.intro-photo,.detail-photo .frame,.roles-gallery-card,.memory,.skill-card{overflow:hidden}
+.hero-gallery-card span,.photo-card>span:last-child,.memory span,.intro-photo figcaption,.skill-copy{position:relative;z-index:3}
+.qrcard img{transform:none!important}
 </style>
 </head>
 <body>
@@ -563,14 +570,14 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
   const setTitle = (selector, before, mark) => { const el = document.querySelector(selector); if (!el) return; el.firstChild && (el.firstChild.nodeValue = before || ''); const span = el.querySelector('.mark'); if (span) span.textContent = mark || ''; };
   const optimizeImageUrl = window.__optimizeWechatImageUrl || ((src) => String(src || ''));
   const transparentPixel = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-  const setImg = (selector, src, width = 1000) => {
+  const setImg = (selector, src, width = 1000, imageKey = '') => {
     const el = document.querySelector(selector);
     if (!el || !src) return;
     const isQr = selector.includes('.qrcard');
     const nextSrc = isQr ? String(src) : optimizeImageUrl(src, width);
     el.loading = 'lazy';
     el.decoding = 'async';
-    if (!isQr) el.fetchPriority = 'low';
+    if (!isQr) { el.fetchPriority = 'low'; if (imageKey) el.dataset.imageKey = imageKey; }
     if (el.getAttribute('src') !== nextSrc) el.src = nextSrc;
   };
   const loadDeferredCardImage = card => {
@@ -631,12 +638,12 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     const defaultCaptions = ['大家集合，先把现场准备好','一起搬设备，把每个细节摆到位','反复确认流程，忙起来也很有默契','演出开始前，大家都在认真准备','现场协作，边忙边把事情做好','下一次幕后合影，等你加入'];
     const track = root.querySelector('[data-hero-gallery-track]');
     if (track) {
-      const items = keys.map((key,index) => { const rawCaption=String(captions[index] || '').trim(); const caption=!rawCaption || /^\u7b49\u5f85\u4e0a\u4f20\s*\d+$/i.test(rawCaption) ? defaultCaptions[index] : rawCaption; return {src:images[key] || 'assets/photo-placeholder.svg',caption}; });
+      const items = keys.map((key,index) => { const rawCaption=String(captions[index] || '').trim(); const caption=!rawCaption || /^\u7b49\u5f85\u4e0a\u4f20\s*\d+$/i.test(rawCaption) ? defaultCaptions[index] : rawCaption; return {key,src:images[key] || 'assets/photo-placeholder.svg',caption}; });
       const signature = JSON.stringify([gallery.hint || '', ...items.map(item => [optimizeImageUrl(item.src, 1000), item.caption])]);
       if (track.dataset.renderSignature === signature) return;
       stopHeroGalleryLoop();
       track.dataset.renderSignature = signature;
-      track.innerHTML = items.map((item,index) => { const src=optimizeImageUrl(item.src,1000); const initiallyVisible=index===0||index===1||index===items.length-1; return '<figure class="hero-gallery-card" data-hero-card data-layout-key="hero-gallery-'+(index+1)+'"><img loading="'+(initiallyVisible?'eager':'lazy')+'"'+(index===0?' fetchpriority="high"':' fetchpriority="low"')+' decoding="async" src="'+(initiallyVisible?escapeHtml(src):transparentPixel)+'"'+(initiallyVisible?'':' data-src="'+escapeHtml(src)+'"')+' alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></figure>'; }).join('');
+      track.innerHTML = items.map((item,index) => { const src=optimizeImageUrl(item.src,1000); const initiallyVisible=index===0||index===1||index===items.length-1; return '<figure class="hero-gallery-card" data-hero-card data-layout-key="hero-gallery-'+(index+1)+'"><img data-image-key="'+escapeHtml(item.key)+'" loading="'+(initiallyVisible?'eager':'lazy')+'"'+(index===0?' fetchpriority="high"':' fetchpriority="low"')+' decoding="async" src="'+(initiallyVisible?escapeHtml(src):transparentPixel)+'"'+(initiallyVisible?'':' data-src="'+escapeHtml(src)+'"')+' alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></figure>'; }).join('');
       const cards = [...track.querySelectorAll('[data-hero-card]')]; let activeIndex = 0; let startX = 0; let startY = 0; let pointerId = null;
       const update = () => { const total=cards.length; cards.forEach((card,index)=>{ const offset=(index-activeIndex+total)%total; const previous=(activeIndex-index+total)%total; card.classList.remove('is-active','is-next','is-next-2','is-prev'); const stateClass=offset===0?'is-active':offset===1?'is-next':previous===1?'is-prev':offset===2?'is-next-2':''; if(stateClass){card.classList.add(stateClass); if(stateClass!=='is-next-2')loadDeferredCardImage(card);} card.setAttribute('aria-hidden',offset===0?'false':'true'); card.setAttribute('tabindex',offset===0?'0':'-1'); }); track.dataset.activeIndex=String(activeIndex); };
       const step = direction => { if(cards.length<2)return; activeIndex=(activeIndex+direction+cards.length)%cards.length; update(); };
@@ -657,7 +664,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     const placeholder = 'assets/photo-placeholder.svg'; const sources = keys.map((key,index) => images[key] || (Array.isArray(wall.images) ? wall.images[index] : '') || placeholder);
     const captions = Array.isArray(wall.captions) ? wall.captions : [];
     const fallbackTitle = isIntro ? '幕后的一切，也值得被看见' : (c.closing?.photoCaption || '下一张团队合照，也许就有你');
-    return sources.map((src, index) => ({ src, caption: captions[index] || wall.title || fallbackTitle }));
+    return sources.map((src, index) => ({ key:keys[index], src, caption: captions[index] || wall.title || fallbackTitle }));
   };
   const updatePhotoWall = root => {
     const state = getPhotoWallState(root);
@@ -675,7 +682,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
   const enablePhotoWallImages = root => { if (root.dataset.imagesEnabled !== '1') root.dataset.imagesEnabled = '1'; updatePhotoWall(root); };
   const photoWallObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => entries.forEach(entry => { if (!entry.isIntersecting) return; enablePhotoWallImages(entry.target); photoWallObserver.unobserve(entry.target); }), { rootMargin: '60px 0px' }) : null;
   const stepPhotoWall = (root, direction) => { const state = getPhotoWallState(root); if (state.items.length < 2) return; enablePhotoWallImages(root); state.index = (state.index + direction + state.items.length) % state.items.length; updatePhotoWall(root); };
-  const rolesGalleryItems = c => { const gallery = c.roles?.gallery || {}; const images = c.images || {}; const keys = Array.isArray(gallery.imageKeys) && gallery.imageKeys.length ? gallery.imageKeys : ['rolesGallery1','rolesGallery2','rolesGallery3','rolesGallery4','rolesGallery5','rolesGallery6']; const placeholder = 'assets/photo-placeholder.svg'; return keys.map(key => ({src:images[key] || placeholder})); };
+  const rolesGalleryItems = c => { const gallery = c.roles?.gallery || {}; const images = c.images || {}; const keys = Array.isArray(gallery.imageKeys) && gallery.imageKeys.length ? gallery.imageKeys : ['rolesGallery1','rolesGallery2','rolesGallery3','rolesGallery4','rolesGallery5','rolesGallery6']; const placeholder = 'assets/photo-placeholder.svg'; return keys.map(key => ({key,src:images[key] || placeholder})); };
   const renderRolesGallery = c => {
     const root = document.querySelector('[data-roles-gallery]'); if (!root) return; const gallery = c.roles?.gallery || {};
     const title = root.querySelector('[data-roles-gallery-title]'); if (title) { const fullTitle = gallery.title || '一场精彩演出有许多细节组成'; const splitAt = fullTitle.indexOf('，'); title.textContent = splitAt >= 0 ? fullTitle.slice(0, splitAt + 1) : fullTitle; if (splitAt >= 0) { const mark = document.createElement('span'); mark.className = 'mark'; mark.textContent = fullTitle.slice(splitAt + 1); title.appendChild(mark); } }
@@ -685,7 +692,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
       const signature = JSON.stringify(items.map(item => optimizeImageUrl(item.src, 900)));
       if (grid.dataset.renderSignature !== signature) {
         grid.dataset.renderSignature = signature;
-        grid.innerHTML = items.map((item,index) => '<figure class="roles-gallery-card" data-layout-key="roles-gallery-'+(index+1)+'"><img loading="lazy" fetchpriority="low" decoding="async" src="'+escapeHtml(optimizeImageUrl(item.src,900))+'" alt="设备与场地展示第 '+(index + 1)+' 张"></figure>').join('');
+        grid.innerHTML = items.map((item,index) => '<figure class="roles-gallery-card" data-layout-key="roles-gallery-'+(index+1)+'"><img data-image-key="'+escapeHtml(item.key)+'" loading="lazy" fetchpriority="low" decoding="async" src="'+escapeHtml(optimizeImageUrl(item.src,900))+'" alt="设备与场地展示第 '+(index + 1)+' 张"></figure>').join('');
       }
     }
 
@@ -704,7 +711,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
         if (stage.dataset.renderSignature !== signature) {
           stage.dataset.renderSignature = signature;
           state.index = 0;
-          stage.innerHTML = items.length ? items.map((item,index) => { const src=optimizeImageUrl(item.src,900); return '<article class="photo-card" data-photo-card data-layout-key="'+(isIntro?'intro-photo-wall':'photo-wall')+'-'+(index+1)+'"><img loading="lazy" fetchpriority="low" decoding="async" src="'+transparentPixel+'" data-src="'+escapeHtml(src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></article>'; }).join('') : '<article class="photo-card is-active" data-photo-card data-layout-key="'+(isIntro?'intro-photo-wall':'photo-wall')+'-1"><img loading="lazy" src="'+fallbackSrc+'" alt="'+escapeHtml(fallbackTitle)+'"><span>'+escapeHtml(fallbackTitle)+'</span></article>';
+          stage.innerHTML = items.length ? items.map((item,index) => { const src=optimizeImageUrl(item.src,900); return '<article class="photo-card" data-photo-card data-layout-key="'+(isIntro?'intro-photo-wall':'photo-wall')+'-'+(index+1)+'"><img data-image-key="'+escapeHtml(item.key)+'" loading="lazy" fetchpriority="low" decoding="async" src="'+transparentPixel+'" data-src="'+escapeHtml(src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></article>'; }).join('') : '<article class="photo-card is-active" data-photo-card data-layout-key="'+(isIntro?'intro-photo-wall':'photo-wall')+'-1"><img data-image-key="'+(isIntro?'introPhotoWall1':'photoWall1')+'" loading="lazy" src="'+fallbackSrc+'" alt="'+escapeHtml(fallbackTitle)+'"><span>'+escapeHtml(fallbackTitle)+'</span></article>';
         }
       }
       updatePhotoWall(root);
@@ -752,6 +759,10 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
       if(!el.dataset.layoutId) el.dataset.layoutId='rich-layout-'+el.dataset.richId.slice(5);
     });
   };
+  const applyImageAdjustments = c => {
+    const adjustments=c.imageAdjustments||{};
+    document.querySelectorAll('img[data-image-key]').forEach(img=>{const value=adjustments[img.dataset.imageKey]||{};const x=Number(value.x)||0,y=Number(value.y)||0,scale=Math.max(.5,Math.min(6,Number(value.scale)||1));img.style.setProperty('--image-x',x+'px');img.style.setProperty('--image-y',y+'px');img.style.setProperty('--image-scale',String(scale));});
+  };
   const applyVisualOverrides = c => {
     prepareEditableMap();
     const rich=c.richText||{}; document.querySelectorAll('[data-rich-id]').forEach(el=>{const value=rich[el.dataset.richId];if(typeof value==='string')el.innerHTML=value;});
@@ -783,7 +794,8 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     renderRolesGallery(c);
     const qq=c.decorations?.qq||[];
     document.querySelectorAll('.campus-decor img').forEach((img,index)=>{ if(qq[index]) { const nextSrc=optimizeImageUrl(qq[index],500); if(img.getAttribute('src')!==nextSrc)img.src=nextSrc; } });
-    document.querySelectorAll('.hero-mascot img').forEach((img,index)=>{ const item=c.decorations?.mascots?.[index]; if(item?.src) { const nextSrc=optimizeImageUrl(item.src,600); if(img.getAttribute('src')!==nextSrc)img.src=nextSrc; } }); [['.intro-photo img',imgs.intro],['.detail-photo .frame:nth-child(1) img',imgs.detail1],['.detail-photo .frame:nth-child(2) img',imgs.detail2],['.m1 img',imgs.moment1],['.m2 img',imgs.moment2],['.m3 img',imgs.moment3],['.m4 img',imgs.moment4],['.skill-card:nth-child(1) img',imgs.skillAudio],['.skill-card:nth-child(2) img',imgs.skillLight],['.skill-card:nth-child(3) img',imgs.skillDJ],['.skill-card:nth-child(4) img',imgs.skillSpotlight],['.skill-card:nth-child(5) img',imgs.skillStageControl],['.qrcard:nth-child(1) img',imgs.qrWestGroup],['.qrcard:nth-child(2) img',imgs.qrWestSignup],['.qrcard:nth-child(3) img',imgs.qrNorthGroup],['.qrcard:nth-child(4) img',imgs.qrNorthSignup]].forEach(([s,v])=>setImg(s,v));
+    document.querySelectorAll('.hero-mascot img').forEach((img,index)=>{ const item=c.decorations?.mascots?.[index]; if(item?.src) { const nextSrc=optimizeImageUrl(item.src,600); if(img.getAttribute('src')!==nextSrc)img.src=nextSrc; } }); [['.intro-photo img',imgs.intro,1000,'intro'],['.detail-photo .frame:nth-child(1) img',imgs.detail1,1000,'detail1'],['.detail-photo .frame:nth-child(2) img',imgs.detail2,1000,'detail2'],['.m1 img',imgs.moment1,1000,'moment1'],['.m2 img',imgs.moment2,1000,'moment2'],['.m3 img',imgs.moment3,1000,'moment3'],['.m4 img',imgs.moment4,1000,'moment4'],['.skill-card:nth-child(1) img',imgs.skillAudio,1000,'skillAudio'],['.skill-card:nth-child(2) img',imgs.skillLight,1000,'skillLight'],['.skill-card:nth-child(3) img',imgs.skillDJ,1000,'skillDJ'],['.skill-card:nth-child(4) img',imgs.skillSpotlight,1000,'skillSpotlight'],['.skill-card:nth-child(5) img',imgs.skillStageControl,1000,'skillStageControl'],['.qrcard:nth-child(1) img',imgs.qrWestGroup,1000,''],['.qrcard:nth-child(2) img',imgs.qrWestSignup,1000,''],['.qrcard:nth-child(3) img',imgs.qrNorthGroup,1000,''],['.qrcard:nth-child(4) img',imgs.qrNorthSignup,1000,'']].forEach(([s,v,w,k])=>setImg(s,v,w,k));
+    applyImageAdjustments(c);
     applyVisualOverrides(c);
   };
   let fallbackContent = {};
