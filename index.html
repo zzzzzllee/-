@@ -28,7 +28,7 @@
   const saveCached = value => { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} };
   const optimizeImageUrl = (src, width = 1000) => {
     const raw = String(src || '');
-    const localAsset = raw.replace(/assets\/qq-west\.png$/i, 'assets/qq-west.webp').replace(/assets\/qq-north\.png$/i, 'assets/qq-north.webp').replace(/assets\/style-sky\.jpg$/i, 'assets/style-sky.webp');
+    const localAsset = raw.replace(/assets\/qq-west\.png$/i, 'assets/qq-west.webp').replace(/assets\/qq-north\.png$/i, 'assets/qq-north.webp').replace(/assets\/style-sky\.jpg$/i, 'assets/style-sky.webp').replace(/(assets\/cloud-optimized\/[^?#]+)\.jpe?g(?=([?#]|$))/i, '$1.webp');
     if (localAsset !== raw) return localAsset;
     if (!/^https?:/i.test(raw) || !raw.includes('/storage/v1/') || raw.includes('/optimized-v1/')) return raw;
     let url;
@@ -54,7 +54,7 @@
     try {
       const endpoint = cfg.url.replace(/\/$/, '') + '/rest/v1/wechat_contents?content_id=eq.' + encodeURIComponent(cfg.contentId) + '&select=content_json,updated_at';
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000);
+      const timeout = setTimeout(() => controller.abort(), 4000);
       const response = await fetch(endpoint, { cache: 'no-store', signal: controller.signal, headers: { apikey: cfg.anonKey, Authorization: 'Bearer ' + cfg.anonKey } });
       clearTimeout(timeout);
       if (!response.ok) throw new Error('cloud bootstrap ' + response.status);
@@ -606,15 +606,44 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
   const setTitle = (selector, before, mark) => { const el = document.querySelector(selector); if (!el) return; el.firstChild && (el.firstChild.nodeValue = before || ''); const span = el.querySelector('.mark'); if (span) span.textContent = mark || ''; };
   const optimizeImageUrl = window.__optimizeWechatImageUrl || ((src) => String(src || ''));
   const transparentPixel = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+  const loadDeferredImage = image => {
+    const nextSrc = image?.dataset.deferredSrc;
+    if (!image || !nextSrc) return;
+    image.removeAttribute('data-deferred-src');
+    image.dataset.deferredLoaded = '1';
+    if (image.getAttribute('src') !== nextSrc) image.src = nextSrc;
+  };
+  const deferredImageObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    deferredImageObserver.unobserve(entry.target);
+    loadDeferredImage(entry.target);
+  }), { rootMargin: '260px 0px' }) : null;
+  const observeDeferredImage = image => {
+    if (!image?.dataset.deferredSrc) return;
+    if (deferredImageObserver) deferredImageObserver.observe(image); else loadDeferredImage(image);
+  };
+  const queueDeferredImage = (image, src) => {
+    if (!image || !src) return;
+    const nextSrc = String(src);
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    image.fetchPriority = 'low';
+    if (image.dataset.deferredLoaded === '1') {
+      image.removeAttribute('data-deferred-src');
+      if (image.getAttribute('src') !== nextSrc) image.src = nextSrc;
+      return;
+    }
+    image.dataset.deferredSrc = nextSrc;
+    if (image.getAttribute('src') !== transparentPixel) image.src = transparentPixel;
+    observeDeferredImage(image);
+  };
   const setImg = (selector, src, width = 1000, imageKey = '') => {
     const el = document.querySelector(selector);
     if (!el || !src) return;
     const isQr = selector.includes('.qrcard');
     const nextSrc = isQr ? String(src) : optimizeImageUrl(src, width);
-    el.loading = 'lazy';
-    el.decoding = 'async';
-    if (!isQr) { el.fetchPriority = 'low'; if (imageKey) el.dataset.imageKey = imageKey; }
-    if (el.getAttribute('src') !== nextSrc) el.src = nextSrc;
+    if (!isQr && imageKey) el.dataset.imageKey = imageKey;
+    queueDeferredImage(el, nextSrc);
   };
   const loadDeferredCardImage = card => {
     const image = card?.querySelector('img[data-src]');
@@ -744,7 +773,8 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
       const signature = JSON.stringify(items.map(item => optimizeImageUrl(item.src, 900)));
       if (grid.dataset.renderSignature !== signature) {
         grid.dataset.renderSignature = signature;
-        grid.innerHTML = items.map((item,index) => '<figure class="roles-gallery-card" data-layout-key="roles-gallery-'+(index+1)+'"><img data-image-key="'+escapeHtml(item.key)+'" loading="lazy" fetchpriority="low" decoding="async" src="'+escapeHtml(optimizeImageUrl(item.src,900))+'" alt="设备与场地展示第 '+(index + 1)+' 张"></figure>').join('');
+        grid.innerHTML = items.map((item,index) => '<figure class="roles-gallery-card" data-layout-key="roles-gallery-'+(index+1)+'"><img data-image-key="'+escapeHtml(item.key)+'" loading="lazy" fetchpriority="low" decoding="async" src="'+transparentPixel+'" data-deferred-src="'+escapeHtml(optimizeImageUrl(item.src,900))+'" alt="设备与场地展示第 '+(index + 1)+' 张"></figure>').join('');
+        grid.querySelectorAll('img[data-deferred-src]').forEach(observeDeferredImage);
       }
     }
 
@@ -837,7 +867,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
       const portrait = img.naturalHeight > img.naturalWidth * 1.12;
       img.style.setProperty('--image-focus-y', portrait ? '32%' : '50%');
     };
-    if (img.complete) update();
+    if (img.complete && img.naturalWidth > 1 && img.naturalHeight > 1) update();
     else img.addEventListener('load', update, { once: true });
   };
   const applyImageAdjustments = c => {
@@ -858,7 +888,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     const h1 = document.querySelector('.hero h1'); if (h1) { const mainTitle=c.hero?.titleMain === '新生入场' ? '等你加入' : (c.hero?.titleMain || '等你加入'); const accentTitle=c.hero?.titleAccent === '请就位' ? '等你发光' : (c.hero?.titleAccent || '等你发光'); h1.firstChild.nodeValue = mainTitle; const o=h1.querySelector('.outline'); if(o)o.textContent=accentTitle; }
     setTitle('.intro .section-title', c.intro?.titleBefore, c.intro?.titleMark); setText('.intro .lead-card', c.intro?.lead); setText('.intro figcaption', c.intro?.caption);
     setTitle('.roles .section-title', c.roles?.titleBefore, c.roles?.titleMark); setText('.roles-intro',c.roles?.intro); setText('.roles-more-note', c.roles?.more);
-    document.querySelectorAll('.role-card').forEach((card,i)=>{ const x=c.roles?.cards?.[i]; if(!x)return; setText('h3',x.title,card); setText('p',x.body,card); setText('.mini',x.tag,card); const image=card.querySelector('img'); if(image&&x.imageKey&&c.images?.[x.imageKey]) { image.loading='lazy'; image.decoding='async'; image.fetchPriority='low'; const nextSrc=optimizeImageUrl(c.images[x.imageKey],1000); if(image.getAttribute('src')!==nextSrc)image.src=nextSrc; } });
+    document.querySelectorAll('.role-card').forEach((card,i)=>{ const x=c.roles?.cards?.[i]; if(!x)return; setText('h3',x.title,card); setText('p',x.body,card); setText('.mini',x.tag,card); const image=card.querySelector('img'); if(image&&x.imageKey&&c.images?.[x.imageKey]) { image.dataset.imageKey=x.imageKey; queueDeferredImage(image,optimizeImageUrl(c.images[x.imageKey],1000)); } });
     setTitle('.gains .section-title', c.gains?.titleBefore, c.gains?.titleMark); document.querySelectorAll('.ticket').forEach((card,i)=>{const x=c.gains?.cards?.[i];if(!x)return;setText('strong',x.title,card);setText('p',x.body,card);});
     setTitle('.moments .section-title', c.moments?.titleBefore, c.moments?.titleMark); document.querySelectorAll('.moments>p').forEach((p,i)=>{if(c.moments?.paragraphs?.[i]!==undefined)p.textContent=c.moments.paragraphs[i];});
     setTitle('.suitable .section-title', c.suitable?.titleBefore, c.suitable?.titleMark); document.querySelectorAll('.checklist li').forEach((li,i)=>{if(c.suitable?.items?.[i]!==undefined)li.textContent=c.suitable.items[i];}); setText('.encourage',c.suitable?.encourage);
@@ -874,7 +904,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     renderPhotoWall(c);
     renderRolesGallery(c);
     const qq=c.decorations?.qq||[];
-    document.querySelectorAll('.campus-decor img').forEach((img,index)=>{ if(qq[index]) { const nextSrc=optimizeImageUrl(qq[index],500); if(img.getAttribute('src')!==nextSrc)img.src=nextSrc; } });
+    document.querySelectorAll('.campus-decor img').forEach((img,index)=>{ if(qq[index]) queueDeferredImage(img,optimizeImageUrl(qq[index],500)); });
     document.querySelectorAll('.hero-mascot img').forEach((img,index)=>{ const item=c.decorations?.mascots?.[index]; if(item?.src) { const nextSrc=optimizeImageUrl(item.src,600); if(img.getAttribute('src')!==nextSrc)img.src=nextSrc; } }); [['.intro-photo img',imgs.intro,1000,'intro'],['.detail-photo .frame:nth-child(1) img',imgs.detail1,1000,'detail1'],['.detail-photo .frame:nth-child(2) img',imgs.detail2,1000,'detail2'],['.m1 img',imgs.moment1,1000,'moment1'],['.m2 img',imgs.moment2,1000,'moment2'],['.m3 img',imgs.moment3,1000,'moment3'],['.m4 img',imgs.moment4,1000,'moment4'],['.skill-card:nth-child(1) img',imgs.skillAudio,1000,'skillAudio'],['.skill-card:nth-child(2) img',imgs.skillLight,1000,'skillLight'],['.skill-card:nth-child(3) img',imgs.skillDJ,1000,'skillDJ'],['.skill-card:nth-child(4) img',imgs.skillSpotlight,1000,'skillSpotlight'],['.skill-card:nth-child(5) img',imgs.skillStageControl,1000,'skillStageControl'],['.qrcard:nth-child(1) img',imgs.qrWestGroup,1000,''],['.qrcard:nth-child(2) img',imgs.qrWestSignup,1000,''],['.qrcard:nth-child(3) img',imgs.qrNorthGroup,1000,''],['.qrcard:nth-child(4) img',imgs.qrNorthSignup,1000,'']].forEach(([s,v,w,k])=>setImg(s,v,w,k));
     applyImageAdjustments(c);
     applyVisualOverrides(c);
