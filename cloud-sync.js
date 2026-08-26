@@ -1,4 +1,4 @@
-﻿(() => {
+(() => {
   const defaults = { contentId: 'wechat-recruitment-2026', bucket: 'wechat-recruitment-assets' };
   const config = Object.assign({}, defaults, window.WECHAT_CLOUD_CONFIG || {});
   let shareKey = new URL(window.location.href).searchParams.get('share') || config.shareKey || '';
@@ -61,6 +61,18 @@
     if (error) throw error;
     lastUpdatedAt = data?.updated_at || '';
     return data?.content_json || null;
+  };  // 编辑器打开时可从已发布的云端内容恢复现有共创密钥，避免用户进入无密钥页面后无法保存。
+  // 这里只在编辑器主动调用时读取，公开推文页面不会加载此脚本。
+  const loadShareKey = async (force = false) => {
+    if (!client || (shareKey && !force)) return shareKey;
+    const { data, error } = await client.from('wechat_contents').select('share_key').eq('content_id', config.contentId).maybeSingle();
+    if (error) throw error;
+    const remoteKey = String(data?.share_key || '').trim();
+    if (remoteKey) {
+      shareKey = remoteKey;
+      initClient();
+    }
+    return shareKey;
   };
 
   const saveContentOnce = async content => {
@@ -173,7 +185,8 @@
     getLastUpdatedAt: () => lastUpdatedAt,
     setShareKey,
     getShareUrl,
+    createShareKey: randomShareKey,
     createShareLink: () => { const next = randomShareKey(); const nextUrl = new URL(window.location.href); nextUrl.searchParams.set('share', next); return nextUrl.toString(); },
-    loadContent, saveContent, uploadAsset, subscribe
+    loadContent, loadShareKey, saveContent, uploadAsset, subscribe
   };
 })();

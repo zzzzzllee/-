@@ -504,11 +504,39 @@ doc.addEventListener('pointermove',event=>{
   const bindImageUrls = () => document.querySelectorAll('[data-image-url]').forEach(element => element.addEventListener('input', event => { const key = event.target.dataset.imageUrl; content.images[key] = event.target.value.trim(); delete pending[key]; const image = $('#img-' + key); if (image) image.src = content.images[key]; pushPreview(); scheduleDraft(); }));
   const ensureVideoUpload = () => { if (document.querySelector('[data-video-upload]')) return; const urlField = document.querySelector('[data-path="video.url"]')?.closest('.field'); if (!urlField) return; const wrapper = document.createElement('div'); wrapper.className = 'field full'; wrapper.innerHTML = '<label>上传宣传片文件</label><input type="file" accept="video/mp4,video/webm,video/ogg" data-video-upload><small>选择视频后会自动上传到云端；未配置云端时请填写可访问的视频地址。</small>'; urlField.parentElement?.appendChild(wrapper); wrapper.querySelector('[data-video-upload]').addEventListener('change', event => { const file = event.target.files?.[0]; if (!file) return; pendingVideo = { file }; scheduleDraft(); }); };
   const draft = async () => { if (!await persistDraft()) return; pushPreview(); status('本机草稿已保存，右侧预览已刷新。' + (cloudReady() ? '云端也会继续自动同步。' : '')); };
+    const syncShareKeyUi = (message = '') => {
+    const key = cloud()?.getShareKey?.() || '';
+    const keyInput = $('#shareKeyInput');
+    if (keyInput && document.activeElement !== keyInput) keyInput.value = key;
+    const urlInput = $('#shareUrlInput');
+    if (urlInput) urlInput.value = key ? (cloud()?.getShareUrl?.() || window.location.href) : window.location.href;
+    const state = $('#shareKeyState');
+    if (state) { state.className = 'share-state' + (key ? ' ready' : ''); state.textContent = message || (key ? '共创密钥已就绪。现在可以保存云端，也可以复制共享链接给其他编辑者。' : '当前还没有共创密钥。请粘贴已有密钥，或点击“生成共创密钥”建立新的共享编辑链接。'); }
+  };
+  const setEditorShareKey = value => {
+    const next = String(value || '').trim();
+    if (!next) { syncShareKeyUi('请先输入共创密钥。'); return false; }
+    cloud()?.setShareKey?.(next, true); syncShareKeyUi('共创密钥已设置，当前地址已更新。现在可以保存云端或复制共享链接。'); return true;
+  };
+  const recoverShareKey = async (showStatus = true) => {
+    if (!cloud()?.isConfigured?.()) { syncShareKeyUi('云端服务尚未配置，暂时不能读取共创密钥。'); return false; }
+    try { const key = await cloud()?.loadShareKey?.(true); if (!key) { syncShareKeyUi('云端还没有共创密钥记录。请点击“生成共创密钥”，再保存一次以建立共享编辑。'); return false; } cloud()?.setShareKey?.(key, true); syncShareKeyUi('已从云端恢复现有共创密钥，当前编辑器可以保存。'); if (showStatus) status('已恢复云端共创密钥，当前编辑器可以保存和上传图片。'); return true; }
+    catch (error) { syncShareKeyUi('读取云端共创密钥失败：' + cloudErrorMessage(error)); if (showStatus) status('暂时无法读取云端共创密钥：' + cloudErrorMessage(error), true); return false; }
+  };
+  const generateShareKey = async () => {
+    if (!cloud()?.isConfigured?.()) { syncShareKeyUi('云端服务尚未配置，生成密钥后也无法同步。'); return; }
+    try { const existing = await cloud()?.loadShareKey?.(true); if (existing) { cloud()?.setShareKey?.(existing, true); syncShareKeyUi('云端已有共创密钥，为避免旧共享链接失效，已恢复原密钥，没有覆盖它。'); status('云端已有共创密钥，已恢复原密钥。请直接复制共享链接给其他编辑者。', true); return; } }
+    catch (error) { syncShareKeyUi('无法确认云端是否已有密钥，请改用已有密钥后再保存。'); status('生成前无法确认云端密钥：' + cloudErrorMessage(error), true); return; }
+    const next = cloud()?.createShareKey?.(); if (!next) { syncShareKeyUi('当前浏览器不支持生成安全密钥，请手动输入已有密钥。'); return; } setEditorShareKey(next); status('已生成新的共创密钥。请点击“立即保存到云端”完成首次建立，再复制共享链接。');
+  };
+  const ensureEditorShareKey = async () => cloudReady() || recoverShareKey(false);
   const copyShareLink = async () => { const value = cloud()?.getShareUrl?.() || window.location.href; try { await navigator.clipboard.writeText(value); status('共享编辑链接已复制：\n' + value); } catch { window.prompt('请复制这个共享编辑链接', value); } };
   const load = async () => {
     try {
+      if (cloud()?.isConfigured?.() && !cloud()?.hasShareKey?.()) await recoverShareKey(false);
+      syncShareKeyUi();
       const missingShareKey = Boolean(cloud()?.isConfigured?.() && !cloud()?.hasShareKey?.());
-      status(missingShareKey ? '当前链接缺少共享编辑密钥，云端内容可读取，但保存请使用带 ?share= 的共享编辑链接。' : '正在打开编辑器…');
+      status(missingShareKey ? '当前链接缺少共创密钥，请在“共享编辑设置”中输入、恢复或生成。' : '正在打开编辑器…');
       const response = await fetch('content.json?ts=' + Date.now(), { cache: 'no-store' }); if (!response.ok) throw new Error('HTTP ' + response.status);
       fallbackContent = await response.json();
       const saved = await readDraft();
@@ -535,8 +563,12 @@ doc.addEventListener('pointermove',event=>{
   };
   bindVisualTools();
   $('#previewBtn').onclick = draft;
-  $('#cloudSaveBtn').onclick = async () => { clearTimeout(autosaveTimer); const localSaved = await persistDraft(); if (cloudReady()) await saveCloud(); else if (cloud()?.isConfigured?.()) status((localSaved ? '本机草稿已保存，但' : '本机草稿保存失败，并且') + '当前链接缺少共享编辑密钥；请使用原始共享编辑链接。', true); else status(localSaved ? '本机草稿已保存；还没有配置云端服务。' : '本机草稿保存失败；还没有配置云端服务。', true); };
-  $('#copyShareBtn').onclick = copyShareLink;
+  $('#cloudSaveBtn').onclick = async () => { clearTimeout(autosaveTimer); const localSaved = await persistDraft(); const ready = cloudReady() || await ensureEditorShareKey(); if (ready) await saveCloud(); else if (cloud()?.isConfigured?.()) status((localSaved ? '本机草稿已保存，但' : '本机草稿保存失败，并且') + '还没有共创密钥；请在上方输入、恢复或生成。', true); else status(localSaved ? '本机草稿已保存；还没有配置云端服务。' : '本机草稿保存失败；还没有配置云端服务。', true); };
+    $('#copyShareBtn').onclick = copyShareLink;
+  $('#useShareKeyBtn').onclick = () => setEditorShareKey($('#shareKeyInput')?.value);
+  $('#recoverShareKeyBtn').onclick = () => recoverShareKey(true);
+  $('#generateShareKeyBtn').onclick = generateShareKey;
+  $('#shareKeyInput').addEventListener('keydown', event => { if (event.key === 'Enter') setEditorShareKey(event.target.value); });
   $('#resetBtn').onclick = async () => { await clearDraft(); location.reload(); };
   load();
 })();
