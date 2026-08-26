@@ -444,13 +444,29 @@ doc.addEventListener('pointermove',event=>{
   const load = async () => {
     try {
       const missingShareKey = Boolean(cloud()?.isConfigured?.() && !cloud()?.hasShareKey?.());
-      status(missingShareKey ? '当前链接缺少共享编辑密钥，云端内容可读取，但保存请使用带 ?share= 的共享编辑链接。' : '正在读取云端内容…');
+      status(missingShareKey ? '当前链接缺少共享编辑密钥，云端内容可读取，但保存请使用带 ?share= 的共享编辑链接。' : '正在打开编辑器…');
       const response = await fetch('content.json?ts=' + Date.now(), { cache: 'no-store' }); if (!response.ok) throw new Error('HTTP ' + response.status);
-      fallbackContent = await response.json(); const cloudContent = cloudReady() ? await cloud().loadContent() : null; const saved = await readDraft();
-      const sourceContent = mergePendingDraftImages(cloudContent, saved);
-      content = mergePublishedContent(fallbackContent, sourceContent || {}); baseContent = cloneValue(content); syncPhotoWall(); renderForm(); refreshPreview();
-      if (cloudReady()) { unsubscribeCloud = cloud().subscribe(incoming => { if (!incoming || cloudSaving) return; if (dirty) { status('检测到其他编辑者的新内容。当前还有未保存修改，请先保存后再接收云端更新。', true); return; } content = mergePublishedContent(fallbackContent || {}, incoming); baseContent = cloneValue(content); syncPhotoWall(); renderForm(); refreshPreview(); status('已收到其他编辑者的最新修改。'); }); status(cloudContent ? '已读取云端最新内容，修改会自动同步。共享链接可复制给其他编辑者。' : '云端暂无内容，第一次保存时会创建并同步。'); }
-      else status('云端服务尚未配置：当前使用本机 IndexedDB 草稿。配置后即可多人在线同步。');
+      fallbackContent = await response.json();
+      const saved = await readDraft();
+      const initialContent = mergePendingDraftImages(null, saved);
+      content = mergePublishedContent(fallbackContent, initialContent || {}); baseContent = cloneValue(content); syncPhotoWall(); renderForm(); refreshPreview();
+      if (cloudReady()) {
+        status('编辑器已打开，正在读取云端最新内容…');
+        unsubscribeCloud = cloud().subscribe(incoming => {
+          if (!incoming || cloudSaving) return;
+          if (dirty) { status('检测到其他编辑者的新内容。当前还有未保存修改，请先保存后再接收云端更新。', true); return; }
+          content = mergePublishedContent(fallbackContent || {}, incoming); baseContent = cloneValue(content); syncPhotoWall(); renderForm(); refreshPreview(); status('已收到其他编辑者的最新修改。');
+        });
+        cloud().loadContent().then(cloudContent => {
+          if (!cloudContent) { status('编辑器已打开；云端暂无内容，第一次保存时会创建并同步。'); return; }
+          if (dirty) { status('编辑器已打开；云端有最新内容，但当前还有未保存修改，请先保存后再接收云端更新。', true); return; }
+          const sourceContent = mergePendingDraftImages(cloudContent, saved);
+          content = mergePublishedContent(fallbackContent || {}, sourceContent || {}); baseContent = cloneValue(content); syncPhotoWall(); renderForm(); refreshPreview(); status('已读取云端最新内容，修改会自动同步。共享链接可复制给其他编辑者。');
+        }).catch(error => {
+          status('编辑器已打开，但云端读取较慢；当前先显示本机/默认内容，稍后可继续编辑或点击“立即保存到云端”。', true);
+          console.warn('编辑器云端内容读取失败：', error);
+        });
+      } else status('云端服务尚未配置：当前使用本机 IndexedDB 草稿。配置后即可多人在线同步。');
     } catch (error) { status('读取推文内容失败：' + error.message, true); }
   };
   bindVisualTools();
