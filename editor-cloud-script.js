@@ -16,6 +16,7 @@
   let unsubscribeCloud = () => {};
   const pending = {};
   const RECOVERY_KEY = 'wechatRecruitmentPendingCloudImages2026';
+  const PUBLISHED_SNAPSHOT_KEY = 'wechatRecruitmentCloudSnapshot2026-v2';
   const visual = { selected: null, selectedImage: null, doc: null, drag: null, pendingDrag: null, imageDrag: null, imageResize: null, cropOverlay: null, cropSession: null, cropDrag: null, suppressClickUntil: 0, mode: 'browse' };
   const $ = selector => document.querySelector(selector);
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
@@ -77,6 +78,44 @@
     return prioritizeGainCards(result);
   };
   const isDataUrl = value => /^data:image\//i.test(String(value || ''));
+  const fileToDataUrl = file => new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = () => reject(reader.error || new Error('读取图片失败')); reader.readAsDataURL(file); });
+  const optimizeUploadedImage = async (file, key) => {
+    if (!file || /^qr/i.test(String(key || '')) || /image\/(gif|svg\+xml)/i.test(file.type || '')) return file;
+    let source = null;
+    let objectUrl = '';
+    try {
+      if ('createImageBitmap' in window) source = await createImageBitmap(file, { imageOrientation: 'from-image' });
+      else {
+        objectUrl = URL.createObjectURL(file);
+        source = await new Promise((resolve, reject) => { const image = new Image(); image.onload = () => resolve(image); image.onerror = () => reject(new Error('无法解析图片')); image.src = objectUrl; });
+      }
+      const width = source.width || source.naturalWidth;
+      const height = source.height || source.naturalHeight;
+      if (!width || !height) return file;
+      const maxSide = 1600;
+      const ratio = Math.min(1, maxSide / Math.max(width, height));
+      const targetWidth = Math.max(1, Math.round(width * ratio));
+      const targetHeight = Math.max(1, Math.round(height * ratio));
+      const canvas = document.createElement('canvas');
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+      const context = canvas.getContext('2d', { alpha: false });
+      if (!context) return file;
+      context.fillStyle = '#fff';
+      context.fillRect(0, 0, targetWidth, targetHeight);
+      context.drawImage(source, 0, 0, targetWidth, targetHeight);
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', .82));
+      if (!blob || (ratio === 1 && blob.size >= file.size * .96)) return file;
+      const stem = String(file.name || key || 'photo').replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '') || String(key || 'photo');
+      return new File([blob], stem + '.webp', { type: 'image/webp', lastModified: Date.now() });
+    } catch (error) {
+      console.warn('图片自动优化失败，保留原图上传：', error);
+      return file;
+    } finally {
+      source?.close?.();
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    }
+  };
   const isPlaceholderAsset = value => { const src = String(value || ''); return !src || /photo-placeholder|qr-(west|north)-(group|signup)-placeholder/i.test(src); };
   const readCloudImageRecovery = () => { try { return JSON.parse(localStorage.getItem(RECOVERY_KEY) || '{}'); } catch { return {}; } };
   const writeCloudImageRecovery = value => { try { localStorage.setItem(RECOVERY_KEY, JSON.stringify(value || {})); } catch {} };
@@ -396,6 +435,7 @@ doc.addEventListener('pointermove',event=>{
       const savedContent = (await cloud().saveContent(payload, cloud().getLastUpdatedAt?.())) || payload;
       baseContent = cloneValue(savedContent);
       clearCloudImageRecovery(savedContent);
+      try { localStorage.setItem(PUBLISHED_SNAPSHOT_KEY, JSON.stringify({ content_json: savedContent, updated_at: cloud().getLastUpdatedAt?.() || new Date().toISOString() })); } catch {}
       if (contentRevision === startedRevision) {
         content = savedContent;
         dirty = false;
@@ -436,7 +476,31 @@ doc.addEventListener('pointermove',event=>{
   };
   const scheduleDraft = () => { contentRevision += 1; dirty = true; clearTimeout(autosaveTimer); autosaveTimer = setTimeout(async () => { const localSaved = await persistDraft(); if (cloudReady()) await saveCloud(); else status(localSaved ? '修改已自动保存到本机；配置云端后即可多人同步。' : '本机空间不足，当前修改只保留在页面中；请尽快配置云端。', !localSaved); }, 600); };
   const bindFields = () => document.querySelectorAll('[data-path]').forEach(element => element.addEventListener('input', event => { setPath(content, event.target.dataset.path, event.target.value); scheduleDraft(); }));
-  const bindImages = () => document.querySelectorAll('[data-image]').forEach(element => element.addEventListener('change', event => { const file = event.target.files?.[0]; if (!file) return; const reader = new FileReader(); reader.onload = () => { pending[event.target.dataset.image] = { file, dataUrl: reader.result }; content.images[event.target.dataset.image] = reader.result; const image = $('#img-' + event.target.dataset.image); if (image) image.src = reader.result; const urlInput = document.querySelector(`[data-image-url="${event.target.dataset.image}"]`); if (urlInput) urlInput.value = reader.result; pushPreview(); scheduleDraft(); }; reader.readAsDataURL(file); }));
+  const bindImages = () => document.querySelectorAll('[data-image]').forEach(element => element.addEventListener('change', async event => {
+    const originalFile = event.target.files?.[0];
+    if (!originalFile) return;
+    const key = event.target.dataset.image;
+    event.target.disabled = true;
+    status('正在优化图片，保持比例并加快手机加载…');
+    try {
+      const file = await optimizeUploadedImage(originalFile, key);
+      const dataUrl = await fileToDataUrl(file);
+      pending[key] = { file, dataUrl };
+      content.images[key] = dataUrl;
+      if (content.imageAdjustments) delete content.imageAdjustments[key];
+      const image = $('#img-' + key);
+      if (image) image.src = dataUrl;
+      const urlInput = document.querySelector(`[data-image-url="${key}"]`);
+      if (urlInput) urlInput.value = dataUrl;
+      pushPreview();
+      scheduleDraft();
+      status(file === originalFile ? '图片已载入，将按比例铺满相框；可在右侧继续移动、缩放或裁剪。' : '图片已自动压缩并按比例铺满相框；可在右侧继续移动、缩放或裁剪。');
+    } catch (error) {
+      status('图片读取失败：' + (error?.message || error), true);
+    } finally {
+      event.target.disabled = false;
+    }
+  }));
   const bindImageUrls = () => document.querySelectorAll('[data-image-url]').forEach(element => element.addEventListener('input', event => { const key = event.target.dataset.imageUrl; content.images[key] = event.target.value.trim(); delete pending[key]; const image = $('#img-' + key); if (image) image.src = content.images[key]; pushPreview(); scheduleDraft(); }));
   const ensureVideoUpload = () => { if (document.querySelector('[data-video-upload]')) return; const urlField = document.querySelector('[data-path="video.url"]')?.closest('.field'); if (!urlField) return; const wrapper = document.createElement('div'); wrapper.className = 'field full'; wrapper.innerHTML = '<label>上传宣传片文件</label><input type="file" accept="video/mp4,video/webm,video/ogg" data-video-upload><small>选择视频后会自动上传到云端；未配置云端时请填写可访问的视频地址。</small>'; urlField.parentElement?.appendChild(wrapper); wrapper.querySelector('[data-video-upload]').addEventListener('change', event => { const file = event.target.files?.[0]; if (!file) return; pendingVideo = { file }; scheduleDraft(); }); };
   const draft = async () => { if (!await persistDraft()) return; pushPreview(); status('本机草稿已保存，右侧预览已刷新。' + (cloudReady() ? '云端也会继续自动同步。' : '')); };

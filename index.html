@@ -7,15 +7,29 @@
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://lbaoqsxmpvqxpbogvpyj.supabase.co" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preload" as="fetch" href="content.json" crossorigin="anonymous">
+<link rel="preload" as="image" href="assets/qq-west.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/qq-north.webp" fetchpriority="high">
 <script src="cloud-config.js"></script>
 <script>
 (() => {
   const cfg = window.WECHAT_CLOUD_CONFIG || {};
   const key = 'wechatRecruitmentCloudSnapshot2026-v2';
-  const readCached = () => { try { return JSON.parse(sessionStorage.getItem(key) || 'null'); } catch { return null; } };
-  const saveCached = value => { try { sessionStorage.setItem(key, JSON.stringify(value)); } catch {} };
+  const readCached = () => {
+    try {
+      let raw = localStorage.getItem(key);
+      if (!raw) {
+        raw = sessionStorage.getItem(key);
+        if (raw) localStorage.setItem(key, raw);
+      }
+      return JSON.parse(raw || 'null');
+    } catch { return null; }
+  };
+  const saveCached = value => { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} };
   const optimizeImageUrl = (src, width = 1000) => {
     const raw = String(src || '');
+    const localAsset = raw.replace(/assets\/qq-west\.png$/i, 'assets/qq-west.webp').replace(/assets\/qq-north\.png$/i, 'assets/qq-north.webp').replace(/assets\/style-sky\.jpg$/i, 'assets/style-sky.webp');
+    if (localAsset !== raw) return localAsset;
     if (!/^https?:/i.test(raw) || !raw.includes('/storage/v1/') || raw.includes('/optimized-v1/')) return raw;
     let url;
     try { url = new URL(raw); } catch { return raw; }
@@ -57,7 +71,7 @@
 </script>
 <title>2026级新生招新｜校团委艺术教育中心</title>
 <style>
-:root{--cream:#fffefb;--yellow:#efe0b4;--yellow-soft:#fff6df;--blue:#b9d7e8;--blue-soft:#e9f4f7;--coral:#d69ab2;--coral-soft:#f7e5ed;--ink:#1b1b1b;--white:#ffffff;--line:#1b1b1b;--sky-texture:url("assets/style-sky.jpg");--paper-texture:url("assets/style-paper.jpg");--shadow:8px 8px 0 var(--ink);--small-shadow:4px 4px 0 var(--ink)}
+:root{--cream:#fffefb;--yellow:#efe0b4;--yellow-soft:#fff6df;--blue:#b9d7e8;--blue-soft:#e9f4f7;--coral:#d69ab2;--coral-soft:#f7e5ed;--ink:#1b1b1b;--white:#ffffff;--line:#1b1b1b;--sky-texture:url("assets/style-sky.webp");--paper-texture:url("assets/style-paper.webp");--shadow:8px 8px 0 var(--ink);--small-shadow:4px 4px 0 var(--ink)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;background:#c7dceb}
 body{margin:0;color:var(--ink);font-family:"LXGW WenKai","霞鹜文楷","STKaiti","KaiTi","Microsoft YaHei",sans-serif;line-height:1.85;background:
@@ -65,7 +79,7 @@ body{margin:0;color:var(--ink);font-family:"LXGW WenKai","霞鹜文楷","STKaiti
  linear-gradient(150deg,#d8c7f3 0%,#f4eafa 34%,#dff3f4 72%,#c5e2ef 100%);}
 button{font:inherit}
 .page{position:relative;width:min(780px,calc(100% - 28px));margin:24px auto 48px;background:var(--cream);border:3px solid var(--ink);box-shadow:14px 14px 0 rgba(38,53,74,.92);overflow:hidden;isolation:isolate}
-.page:before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(90deg,rgba(178,214,248,.18) 1px,transparent 1px),linear-gradient(rgba(178,214,248,.18) 1px,transparent 1px);background-size:28px 28px}.page:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:url("assets/style-paper.jpg") center top/620px auto repeat;opacity:.10;mix-blend-mode:multiply}
+.page:before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(90deg,rgba(178,214,248,.18) 1px,transparent 1px),linear-gradient(rgba(178,214,248,.18) 1px,transparent 1px);background-size:28px 28px}.page:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:url("assets/style-paper.webp") center top/620px auto repeat;opacity:.10;mix-blend-mode:multiply}
 
 .hero{position:relative;min-height:650px;padding:44px 34px 26px;overflow:hidden;background:var(--yellow)}
 .hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 25%,rgba(255,255,255,.6) 0 3px,transparent 4px) 0 0/28px 28px;opacity:.62}
@@ -92,7 +106,7 @@ button{font:inherit}
 .video-shell{position:relative;overflow:hidden;background:#1b1b1b;border:2px solid var(--ink);aspect-ratio:16/9;display:grid;place-items:center}
 .video-shell video{display:none;width:100%;height:100%;object-fit:contain;background:#111}
 .video-shell.has-video video{display:block}.video-shell.has-video .video-empty{display:none}
-.video-empty{padding:28px 20px;text-align:center;color:#fff;background:linear-gradient(135deg,rgba(27,27,27,.92),rgba(79,117,145,.9)),url("assets/style-sky.jpg") center/cover;font:900 20px/1.6 "Microsoft YaHei",sans-serif}
+.video-empty{padding:28px 20px;text-align:center;color:#fff;background:linear-gradient(135deg,rgba(27,27,27,.92),rgba(79,117,145,.9)),url("assets/style-sky.webp") center/cover;font:900 20px/1.6 "Microsoft YaHei",sans-serif}
 .video-empty span{display:block;margin-top:6px;font:500 12px/1.7 "Microsoft YaHei",sans-serif;opacity:.82}
 .video-note{margin:14px 0 0;color:rgba(27,27,27,.72);font-size:12px;line-height:1.7}.section{position:relative;padding:70px 52px}
 .section:nth-of-type(odd){background:rgba(255,255,255,.82)}
@@ -140,7 +154,7 @@ button{font:inherit}
 .check-paper:before{content:"CHECK LIST";position:absolute;right:18px;top:-17px;padding:5px 12px;background:var(--yellow);border:2px solid var(--ink);font:900 12px/1 Georgia,serif;letter-spacing:.08em;transform:rotate(3deg)}
 .checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;margin:14px 0;padding:11px 12px 11px 52px;border-bottom:2px dashed rgba(38,53,74,.25);font-size:16px}.checklist li:last-child{border-bottom:0}.checklist li:before{content:"✓";position:absolute;left:7px;top:8px;width:30px;height:30px;display:grid;place-items:center;border:2px solid var(--ink);background:var(--blue);color:#fff;font:900 18px/1 Arial;transform:rotate(-4deg)}
 .encourage{margin:26px 0 0;padding:18px 21px;background:var(--coral-soft);border-left:7px solid var(--coral);font-weight:700}
-.apply-section{background:linear-gradient(145deg,rgba(178,214,248,.94) 0%,rgba(223,240,255,.92) 72%,rgba(255,251,220,.94) 100%),url("assets/style-sky.jpg") center/cover!important;color:var(--ink)}
+.apply-section{background:linear-gradient(145deg,rgba(178,214,248,.94) 0%,rgba(223,240,255,.92) 72%,rgba(255,251,220,.94) 100%),url("assets/style-sky.webp") center/cover!important;color:var(--ink)}
 .apply-section .section-label{background:var(--yellow);color:var(--ink)}
 .apply-section .section-title:after{background:var(--coral)}
 .admission{position:relative;padding:29px 26px 32px;background:var(--cream);border:3px solid var(--ink);box-shadow:10px 10px 0 var(--coral);overflow:hidden}
@@ -174,7 +188,7 @@ button{font:inherit}
 }
 @media(max-width:520px){.campus-decor img{width:98px;max-width:27vw}.campus-west{left:-6px;bottom:14px}.campus-north{right:-6px;top:46px}.campus-decor span{font-size:9px;padding:2px 6px}}@media(max-width:390px){.hero{min-height:880px}.hero h1{font-size:clamp(62px,17vw,68px)}.hero-sub{font-size:14px}.section{padding-left:16px;padding-right:16px}.section-title{font-size:28px}.memory-wall{height:auto}.qrgrid{gap:8px}.qrcard span{font-size:10px}.ticket{padding-left:62px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-spark,.tape,.hero-note,.wall-sticker,.closing-title,.floaty,.campus-decor{animation:none!important}.reveal{opacity:1;transform:none;transition:none}.polaroid,.role-card,.qrcard,.photo-card,.photo-wall-controls button{transition:none}}
-.cloud-pending .page img{visibility:visible}.cloud-loading{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:#fffefb;backdrop-filter:blur(7px);font:700 14px/1.6 "Microsoft YaHei",sans-serif;color:var(--ink);transition:opacity .2s ease}.cloud-loading.is-hidden{opacity:0;pointer-events:none}.cloud-loading-card{padding:16px 20px;background:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);text-align:center}.cloud-loading-dot{display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:var(--coral);animation:cloudPulse 1s ease-in-out infinite alternate}@keyframes cloudPulse{to{transform:scale(1.45);background:var(--blue)}}@media print{body{background:#fff}.page{width:100%;margin:0;border:0;box-shadow:none}.reveal{opacity:1;transform:none}.section{break-inside:avoid}.hero{min-height:640px}}
+.cloud-pending .page{visibility:hidden}.cloud-ready .page{visibility:visible}.cloud-loading{position:fixed;inset:auto 12px 12px auto;z-index:100;display:grid;place-items:center;padding:8px 12px;background:rgba(255,255,255,.92);border:1px solid var(--ink);border-radius:999px;box-shadow:3px 3px 0 rgba(27,27,27,.18);font:700 11px/1.3 "Microsoft YaHei",sans-serif;color:var(--ink);transition:opacity .2s ease;pointer-events:none}.cloud-loading.is-hidden{opacity:0;pointer-events:none}.cloud-loading-card{padding:16px 20px;background:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);text-align:center}.cloud-loading-dot{display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:var(--coral);animation:cloudPulse 1s ease-in-out infinite alternate}@keyframes cloudPulse{to{transform:scale(1.45);background:var(--blue)}}@media print{body{background:#fff}.page{width:100%;margin:0;border:0;box-shadow:none}.reveal{opacity:1;transform:none}.section{break-inside:avoid}.hero{min-height:640px}}
 
 /* 2026 招新重构：公开页只读、岗位卡、零基础重点和可视化布局覆盖 */
 .hero-mascot{position:absolute;z-index:7;pointer-events:none;overflow:visible}.hero-mascot img{display:block;width:clamp(72px,13vw,112px)!important;max-width:112px!important;max-height:112px!important;height:auto;object-fit:contain;filter:drop-shadow(4px 5px 0 rgba(27,27,27,.18))}.hero-wolf{left:-10px;bottom:8px;transform:rotate(-9deg)}.hero-owl{right:6px;top:auto;bottom:48px;transform:rotate(8deg)}.hero-owl img{width:clamp(72px,13vw,112px)!important;max-width:112px!important;max-height:112px!important}
@@ -284,7 +298,7 @@ button{font:inherit}
   .photo-card.is-prev-3,.photo-card.is-next-3{z-index:996!important}
   .photo-card img{position:relative;z-index:2}
   .photo-card>span:last-child{z-index:3}
-/* 固定相框尺寸不变：所有上传照片按原比例完整放入相框，不裁剪、不拉伸。 */
+/* 相框尺寸保持不变：照片按原比例铺满，竖图自动裁掉两侧空白并优先保留人物上半身。 */
 .polaroid img,
 .intro-photo img,
 .detail-photo img,
@@ -295,8 +309,8 @@ button{font:inherit}
 .photo-card img,
 .skill-card img,
 .hero-gallery-card img{
-  object-fit:contain!important;
-  object-position:center!important;
+  object-fit:cover!important;
+  object-position:center var(--image-focus-y,50%)!important;
   transform:translate(var(--image-x,0px),var(--image-y,0px)) translate(var(--image-crop-x,0%),var(--image-crop-y,0%)) scale(var(--image-scale-x,var(--image-scale,1)),var(--image-scale-y,var(--image-scale,1))) scale(var(--image-crop-scale-x,1),var(--image-crop-scale-y,1))!important;
   transform-origin:center center!important
 }
@@ -338,8 +352,8 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
       <p class="hero-gallery-hint" data-hero-gallery-hint>手指左右滑动，按顺序看看我们的现场</p>
     </div>
     <div class="hero-note">从观众席<br>走向舞台幕后</div>
-    <div class="hero-mascot hero-wolf" data-layout-key="mascot-west" aria-hidden="true"><img src="assets/qq-west.png" alt="白狼装饰"></div>
-    <div class="hero-mascot hero-owl" data-layout-key="mascot-north" aria-hidden="true"><img src="assets/qq-north.png" alt="猫头鹰装饰"></div>
+    <div class="hero-mascot hero-wolf" data-layout-key="mascot-west" aria-hidden="true"><img src="assets/qq-west.webp" alt="白狼装饰"></div>
+    <div class="hero-mascot hero-owl" data-layout-key="mascot-north" aria-hidden="true"><img src="assets/qq-north.webp" alt="猫头鹰装饰"></div>
   </header>
 
   <section class="section intro">
@@ -424,7 +438,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     <h2 class="section-title reveal">宣传片，<span class="mark">先看见我们</span></h2>
     <div class="video-card reveal">
       <p class="video-intro">一支宣传片，记录舞台亮起之前的准备、协作与期待。把视频放在这里，让新生先用几分钟认识艺术教育中心。</p>
-      <div class="video-shell" id="promoVideoShell"><video id="promoVideo" controls playsinline preload="metadata" poster="assets/style-sky.jpg"></video><div class="video-empty">宣传片视频位置<span>在在线编辑器中粘贴 MP4 / WebM 视频地址</span></div></div>
+      <div class="video-shell" id="promoVideoShell"><video id="promoVideo" controls playsinline preload="metadata" poster="assets/style-sky.webp"></video><div class="video-empty">宣传片视频位置<span>在在线编辑器中粘贴 MP4 / WebM 视频地址</span></div></div>
       <p class="video-note">视频地址可填写 GitHub Pages 可访问的 MP4、WebM 或其他浏览器支持的视频链接。</p>
     </div>
   </section>
@@ -461,8 +475,8 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     <div class="section-label">YOUR TICKET</div>
     <h2 class="section-title reveal">现在，轮到你<span class="mark">入场了</span></h2>
     <div class="admission reveal">
-      <div class="campus-decor campus-west" data-layout-key="campus-west" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qq-west.png" alt="西区 QQ 人装饰"><span>西区</span></div>
-      <div class="campus-decor campus-north" data-layout-key="campus-north" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qq-north.png" alt="北区 QQ 人装饰"><span>北区</span></div>
+      <div class="campus-decor campus-west" data-layout-key="campus-west" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qq-west.webp" alt="西区 QQ 人装饰"><span>西区</span></div>
+      <div class="campus-decor campus-north" data-layout-key="campus-north" aria-hidden="true"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-fallback-src="assets/qq-north.webp" alt="北区 QQ 人装饰"><span>北区</span></div>
       <h3>招新对象：2026级新生</h3>
       <p class="apply-meta">报名时间：<strong class="pending">【待补充】</strong><br>报名截止：<strong class="pending">【待补充】</strong><br>报名方式：长按识别对应二维码，进入咨询群或填写报名表。</p>
       <div class="qrgrid">
@@ -816,9 +830,19 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
       if(!el.dataset.layoutId) el.dataset.layoutId='rich-layout-'+el.dataset.richId.slice(5);
     });
   };
+  const applyAutomaticImageFocus = img => {
+    if (!img || img.closest('.qrcard')) return;
+    const update = () => {
+      if (!img.naturalWidth || !img.naturalHeight) return;
+      const portrait = img.naturalHeight > img.naturalWidth * 1.12;
+      img.style.setProperty('--image-focus-y', portrait ? '32%' : '50%');
+    };
+    if (img.complete) update();
+    else img.addEventListener('load', update, { once: true });
+  };
   const applyImageAdjustments = c => {
     const adjustments=c.imageAdjustments||{};
-    document.querySelectorAll('img[data-image-key]').forEach(img=>{const value=adjustments[img.dataset.imageKey]||{};const x=Number(value.x)||0,y=Number(value.y)||0,legacy=Math.max(.3,Math.min(6,Number(value.scale)||1)),scaleX=Math.max(.3,Math.min(6,Number(value.scaleX??legacy)||legacy)),scaleY=Math.max(.3,Math.min(6,Number(value.scaleY??legacy)||legacy));['width','height','max-width','max-height','left','top','position','object-fit','object-position'].forEach(name=>img.style.removeProperty(name));img.style.setProperty('--image-crop-x','0%');img.style.setProperty('--image-crop-y','0%');img.style.setProperty('--image-crop-scale-x','1');img.style.setProperty('--image-crop-scale-y','1');const crop=value.crop;if(crop&&Number(crop.width)>0&&Number(crop.height)>0){const left=Math.max(0,Math.min(.92,Number(crop.left)||0)),top=Math.max(0,Math.min(.92,Number(crop.top)||0)),width=Math.max(.08,Math.min(1-left,Number(crop.width)||1)),height=Math.max(.08,Math.min(1-top,Number(crop.height)||1));img.style.setProperty('--image-crop-x',(-left*100/width)+'%');img.style.setProperty('--image-crop-y',(-top*100/height)+'%');img.style.setProperty('--image-crop-scale-x',String(1/width));img.style.setProperty('--image-crop-scale-y',String(1/height));img.style.setProperty('object-fit','fill','important');img.style.setProperty('object-position','center','important');}img.style.setProperty('--image-x',x+'px');img.style.setProperty('--image-y',y+'px');img.style.setProperty('--image-scale-x',String(scaleX));img.style.setProperty('--image-scale-y',String(scaleY));img.style.setProperty('--image-scale',String((scaleX+scaleY)/2));});
+    document.querySelectorAll('img[data-image-key]').forEach(img=>{applyAutomaticImageFocus(img);const value=adjustments[img.dataset.imageKey]||{};const x=Number(value.x)||0,y=Number(value.y)||0,legacy=Math.max(.3,Math.min(6,Number(value.scale)||1)),scaleX=Math.max(.3,Math.min(6,Number(value.scaleX??legacy)||legacy)),scaleY=Math.max(.3,Math.min(6,Number(value.scaleY??legacy)||legacy));['width','height','max-width','max-height','left','top','position','object-fit','object-position'].forEach(name=>img.style.removeProperty(name));img.style.setProperty('--image-crop-x','0%');img.style.setProperty('--image-crop-y','0%');img.style.setProperty('--image-crop-scale-x','1');img.style.setProperty('--image-crop-scale-y','1');const crop=value.crop;if(crop&&Number(crop.width)>0&&Number(crop.height)>0){const left=Math.max(0,Math.min(.92,Number(crop.left)||0)),top=Math.max(0,Math.min(.92,Number(crop.top)||0)),width=Math.max(.08,Math.min(1-left,Number(crop.width)||1)),height=Math.max(.08,Math.min(1-top,Number(crop.height)||1));img.style.setProperty('--image-crop-x',(-left*100/width)+'%');img.style.setProperty('--image-crop-y',(-top*100/height)+'%');img.style.setProperty('--image-crop-scale-x',String(1/width));img.style.setProperty('--image-crop-scale-y',String(1/height));img.style.setProperty('object-fit','fill','important');img.style.setProperty('object-position','center','important');}img.style.setProperty('--image-x',x+'px');img.style.setProperty('--image-y',y+'px');img.style.setProperty('--image-scale-x',String(scaleX));img.style.setProperty('--image-scale-y',String(scaleY));img.style.setProperty('--image-scale',String((scaleX+scaleY)/2));});
   };
   const applyVisualOverrides = c => {
     prepareEditableMap();
@@ -857,9 +881,21 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
   };
   let fallbackContent = {};
   let lastAppliedUpdatedAt = '';
+  let lastAppliedSignature = '';
   const loading = document.getElementById('cloudLoading');
   const finishLoading = () => { document.documentElement.classList.remove('cloud-pending'); document.documentElement.classList.add('cloud-ready'); loading?.classList.add('is-hidden'); setTimeout(() => loading?.remove(), 350); };
-  const applySnapshot = (content, updatedAt = '') => { if (!content) return; lastAppliedUpdatedAt = updatedAt || lastAppliedUpdatedAt; applyContent(mergePublishedContent(fallbackContent, content)); finishLoading(); };
+  const contentSignature = value => { try { return JSON.stringify(value); } catch { return String(Date.now()); } };
+  const applySnapshot = (content, updatedAt = '') => {
+    if (!content) return false;
+    const merged = mergePublishedContent(fallbackContent, content);
+    const signature = contentSignature(merged);
+    if (signature === lastAppliedSignature) { lastAppliedUpdatedAt = updatedAt || lastAppliedUpdatedAt; finishLoading(); return false; }
+    lastAppliedSignature = signature;
+    lastAppliedUpdatedAt = updatedAt || lastAppliedUpdatedAt;
+    applyContent(merged);
+    finishLoading();
+    return true;
+  };
   const isEditorPreview = new URLSearchParams(location.search).get('editorPreview') === '1';
   let previewContentReceived = false;
   if (isEditorPreview) window.addEventListener('message', event => {
@@ -876,15 +912,15 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     }
     const cachedSnapshot = window.__wechatCachedSnapshot;
     if (cachedSnapshot?.content_json) applySnapshot(cachedSnapshot.content_json, cachedSnapshot.updated_at);
-    fallbackContent = await fallbackPromise || {};
-    if (!cachedSnapshot?.content_json) applySnapshot(fallbackContent);
     const cloudPromise = window.__wechatCloudBootstrap || Promise.resolve(null);
-    const snapshot = await cloudPromise;
+    const [fallbackValue, snapshot] = await Promise.all([fallbackPromise, cloudPromise]);
+    fallbackContent = fallbackValue || {};
     if (snapshot?.content_json) applySnapshot(snapshot.content_json, snapshot.updated_at);
-    else {
+    else if (!cachedSnapshot?.content_json) {
       let cloudContent = null;
-      try { cloudContent = await window.WechatCloudSync?.loadContent?.(); } catch (error) { console.warn('?????????????????', error); }
+      try { cloudContent = await window.WechatCloudSync?.loadContent?.(); } catch (error) { console.warn('公开页云端内容读取失败', error); }
       if (cloudContent) applySnapshot(cloudContent, window.WechatCloudSync?.getLastUpdatedAt?.() || '');
+      else applySnapshot(fallbackContent);
     }
     const subscribeRealtime = () => {
       if (subscribeRealtime.unsubscribe) return;

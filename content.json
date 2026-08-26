@@ -149,13 +149,13 @@
     "titleMark": "先看见我们",
     "intro": "想先看看我们平时在忙什么？把宣传片放在这里，几分钟看懂真实的幕后日常。",
     "url": "",
-    "poster": "assets/style-sky.jpg",
+    "poster": "assets/style-sky.webp",
     "note": "视频内容可在在线编辑器中上传或替换。"
   },
   "decorations": {
     "qq": [
-      "assets/qq-west.png",
-      "assets/qq-north.png"
+      "assets/qq-west.webp",
+      "assets/qq-north.webp"
     ],
     "campusLabels": [
       "西区",
@@ -164,11 +164,11 @@
     "mascots": [
       {
         "name": "白狼",
-        "src": "assets/qq-west.png"
+        "src": "assets/qq-west.webp"
       },
       {
         "name": "猫头鹰",
-        "src": "assets/qq-north.png"
+        "src": "assets/qq-north.webp"
       }
     ]
   },
