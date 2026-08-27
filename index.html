@@ -247,6 +247,14 @@ button{font:inherit}
 }
 @media(min-width:641px){.hero-gallery-track{height:350px}}
 @media(max-width:390px){.hero{min-height:730px}.hero-gallery-card span{font-size:11px}.hero-gallery{margin-bottom:100px}.hero-gallery-hint{max-width:calc(100% - 44px)}}
+  /* 设备与场地展示采用独立的大图陈列，不再使用其他板块的拼贴/翻页效果。 */
+  .roles-gallery{padding:24px 20px 20px;transform:none}
+  .roles-gallery-head{align-items:flex-start;margin-bottom:20px}
+  .roles-gallery-title{max-width:430px;font-size:24px;line-height:1.3}
+  .roles-gallery-grid{display:grid;grid-template-columns:1fr;gap:18px}
+  .roles-gallery-card,.roles-gallery-card:nth-child(n){grid-column:1/-1;min-height:0;margin:0;padding:0;transform:none;border:2px solid var(--ink);border-radius:4px;background:#fff;box-shadow:5px 6px 0 rgba(38,53,74,.2);overflow:hidden}
+  .roles-gallery-card img{display:block;width:100%;height:auto;min-height:0;aspect-ratio:16/10;object-fit:cover;transition:none}
+  .roles-gallery-card:hover img{transform:none}
   /* Stable responsive gallery layer */
   html,body{overflow-x:hidden}
   .photo-wall,.intro-photo-wall,.roles-gallery{transform:none}
@@ -287,9 +295,10 @@ button{font:inherit}
     .photo-card.is-prev-3{transform:translate(-23px,26px) rotate(-9deg) scale(.89)}
     .photo-card.is-next-3{transform:translate(23px,26px) rotate(9deg) scale(.89)}
     .roles-gallery{margin-top:26px;padding:15px 11px 14px}
-    .roles-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-    .roles-gallery-card,.roles-gallery-card:nth-child(n){grid-column:span 1;transform:none!important}
-    .roles-gallery-card img{aspect-ratio:4/3;height:auto;min-height:0}
+    .roles-gallery{padding:18px 12px 16px}
+    .roles-gallery-grid{grid-template-columns:1fr;gap:15px}
+    .roles-gallery-card,.roles-gallery-card:nth-child(n){grid-column:1/-1;transform:none!important}
+    .roles-gallery-card img{width:100%;height:auto;min-height:0;aspect-ratio:4/3}
     .photo-wall-hint{margin-top:28px!important;padding:10px 12px!important;font-size:12px;line-height:1.65}
     .qrcard:before{right:-5px;top:-9px;padding:3px 6px;font-size:8px}
   }
@@ -414,7 +423,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
   <section class="section roles-details" data-roles-gallery>
     <div class="section-no">02</div>
     <div class="section-label">DETAILS MAKE THE SHOW</div>
-    <h2 class="section-title reveal" data-roles-gallery-title>一场精彩演出有许多细节组成</h2>
+    <h2 class="section-title reveal" data-roles-gallery-title>一场精彩演出由许多细节组成</h2>
     <div class="roles-gallery reveal">
       <div class="roles-gallery-grid" data-roles-gallery-grid></div>
       <p class="roles-gallery-hint" data-roles-gallery-hint>从调音台、灯光控台到舞台、后台与观众席，熟悉每一件设备、每一处场地，才能让演出稳稳发生。</p>
@@ -675,12 +684,11 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
       new Set([...Object.keys(template), ...Object.keys(source)]).forEach(key => { result[key] = mergeTemplateContent(template[key], source[key]); });
       return result;
     }
-    if (typeof template === 'string' && typeof value === 'string' && !value.trim()) return template;
     return value;
   };
   const prioritizeGainCards = content => {
     if (!content) return content;
-    if (content.roles?.gallery) content.roles.gallery.title = '一场精彩演出有许多细节组成';
+    if (content.roles?.gallery) content.roles.gallery.title = '一场精彩演出由许多细节组成';
     if (content.gains && Array.isArray(content.gains.cards)) {
       const priority = ['真技能', '饭票福利', '综测分', '一群搭子', '校园大场面'];
       const rank = title => { const index = priority.indexOf(String(title || '').trim()); return index < 0 ? priority.length : index; };
@@ -763,7 +771,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
   const rolesGalleryItems = c => { const gallery = c.roles?.gallery || {}; const images = c.images || {}; const keys = Array.isArray(gallery.imageKeys) && gallery.imageKeys.length ? gallery.imageKeys : ['rolesGallery1','rolesGallery2','rolesGallery3','rolesGallery4','rolesGallery5','rolesGallery6']; const placeholder = 'assets/photo-placeholder.svg'; return keys.map(key => ({key,src:images[key] || placeholder})); };
   const renderRolesGallery = c => {
     const root = document.querySelector('[data-roles-gallery]'); if (!root) return; const gallery = c.roles?.gallery || {};
-    const title = root.querySelector('[data-roles-gallery-title]'); if (title) { const fullTitle = gallery.title || '一场精彩演出有许多细节组成'; const splitAt = fullTitle.indexOf('，'); title.textContent = splitAt >= 0 ? fullTitle.slice(0, splitAt + 1) : fullTitle; if (splitAt >= 0) { const mark = document.createElement('span'); mark.className = 'mark'; mark.textContent = fullTitle.slice(splitAt + 1); title.appendChild(mark); } }
+    const title = root.querySelector('[data-roles-gallery-title]'); if (title) { const fullTitle = gallery.title || '一场精彩演出由许多细节组成'; const splitAt = fullTitle.indexOf('，'); title.textContent = splitAt >= 0 ? fullTitle.slice(0, splitAt + 1) : fullTitle; if (splitAt >= 0) { const mark = document.createElement('span'); mark.className = 'mark'; mark.textContent = fullTitle.slice(splitAt + 1); title.appendChild(mark); } }
     const hintText = root.querySelector('[data-roles-gallery-hint]'); if (hintText) { const rawHint = String(gallery.hint || '').trim(); const defaultHint = '从调音台、灯光控台到舞台、后台与观众席，熟悉每一件设备、每一处场地，才能让演出稳稳发生。'; hintText.textContent = !rawHint || rawHint === '从设备、排练到现场协作，每一张都是真实发生的准备' ? defaultHint : rawHint; }
     const grid = root.querySelector('[data-roles-gallery-grid]'); const items = rolesGalleryItems(c);
     if (grid) {
@@ -909,9 +917,18 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     const adjustments=c.imageAdjustments||{};
     document.querySelectorAll('img[data-image-key]').forEach(img=>{applyAutomaticImageFocus(img);const value=adjustments[img.dataset.imageKey]||{};const x=Number(value.x)||0,y=Number(value.y)||0,legacy=Math.max(.3,Math.min(6,Number(value.scale)||1)),scaleX=Math.max(.3,Math.min(6,Number(value.scaleX??legacy)||legacy)),scaleY=Math.max(.3,Math.min(6,Number(value.scaleY??legacy)||legacy));['width','height','max-width','max-height','left','top','position','object-fit','object-position'].forEach(name=>img.style.removeProperty(name));img.style.setProperty('--image-crop-x','0%');img.style.setProperty('--image-crop-y','0%');img.style.setProperty('--image-crop-scale-x','1');img.style.setProperty('--image-crop-scale-y','1');const crop=value.crop;const hasCrop=Boolean(crop&&Number(crop.width)>0&&Number(crop.height)>0);const hasManualAdjustment=hasCrop||Math.abs(x)>.5||Math.abs(y)>.5||Math.abs(scaleX-1)>.01||Math.abs(scaleY-1)>.01;if(!isEditorPreview&&!hasManualAdjustment){const source=img.getAttribute('src')||img.currentSrc||'';img.classList.add('show-whole-photo');img.style.setProperty('--whole-photo-bg','url('+JSON.stringify(source)+')');}else{img.classList.remove('show-whole-photo');img.style.removeProperty('--whole-photo-bg');}if(hasCrop){const left=Math.max(0,Math.min(.92,Number(crop.left)||0)),top=Math.max(0,Math.min(.92,Number(crop.top)||0)),width=Math.max(.08,Math.min(1-left,Number(crop.width)||1)),height=Math.max(.08,Math.min(1-top,Number(crop.height)||1));img.style.setProperty('--image-crop-x',(-left*100/width)+'%');img.style.setProperty('--image-crop-y',(-top*100/height)+'%');img.style.setProperty('--image-crop-scale-x',String(1/width));img.style.setProperty('--image-crop-scale-y',String(1/height));img.style.setProperty('object-fit','fill','important');img.style.setProperty('object-position','center','important');}img.style.setProperty('--image-x',x+'px');img.style.setProperty('--image-y',y+'px');img.style.setProperty('--image-scale-x',String(scaleX));img.style.setProperty('--image-scale-y',String(scaleY));img.style.setProperty('--image-scale',String((scaleX+scaleY)/2));});
   };
+  const richTextSignature = value => String(value ?? '').replace(/\u00a0/g, ' ').replace(/[\s\u200b-\u200d\ufeff]+/g, '');
+  const richTextPlainValue = value => { const holder=document.createElement('div'); holder.innerHTML=String(value ?? ''); return holder.textContent || ''; };
   const applyVisualOverrides = c => {
     prepareEditableMap();
-    const rich=c.richText||{}; document.querySelectorAll('[data-rich-id]').forEach(el=>{const value=rich[el.dataset.richId];if(typeof value==='string')el.innerHTML=value;});
+    const rich=c.richText||{}, staleRichIds=[];
+    document.querySelectorAll('[data-rich-id]').forEach(el=>{
+      const id=el.dataset.richId,value=rich[id]; if(typeof value!=='string')return;
+      const mapped=Boolean(el.dataset.contentPath||el.dataset.contentBeforePath||el.dataset.contentLinesPaths||el.dataset.contentMethodPath);
+      if(mapped && richTextSignature(el.innerText ?? el.textContent ?? '')!==richTextSignature(richTextPlainValue(value))){staleRichIds.push(id);return;}
+      el.innerHTML=value;
+    });
+    window.__wechatStaleRichTextIds=staleRichIds;
     // 富文本会替换标题内部的 span，替换后重新标记一次，确保拆分标题仍能准确同步到左侧。
     prepareEditableMap();
     const layout=c.layout||{}; document.querySelectorAll('[data-layout-id]').forEach(el=>{const value=layout[el.dataset.layoutId]||{};const x=Number(value.x)||0,y=Number(value.y)||0,z=Number(value.z)||0;el.style.setProperty('--layout-x',x+'px');el.style.setProperty('--layout-y',y+'px');if(z){el.style.zIndex=String(z);if(getComputedStyle(el).position==='static')el.style.position='relative';}else el.style.removeProperty('z-index');});
@@ -932,7 +949,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     setTitle('.apply-section .section-title', c.apply?.titleBefore, c.apply?.titleMark); setText('.admission h3',c.apply?.object); const meta=document.querySelector('.apply-meta'); if(meta)meta.innerHTML='报名时间：<strong class="pending">'+(c.apply?.signupTime||'【待补充】')+'</strong><br>报名截止：<strong class="pending">'+(c.apply?.deadline||'【待补充】')+'</strong><br>报名方式：'+(c.apply?.method||'') ;
     document.querySelectorAll('.qrcard').forEach((card,i)=>{const label=c.apply?.qrLabels?.[i]||card.querySelector('span')?.textContent||'';const scan=c.apply?.qrScanLabels?.[i]||label||'SCAN';card.dataset.scanLabel=scan;card.setAttribute('aria-label',label);const span=card.querySelector('span');if(span&&label)span.textContent=label;});
     setText('.zero-section h2',c.barrier?.title);setText('.zero-main',c.barrier?.body);setText('.zero-note',c.barrier?.note);
-    const cp=document.querySelector('.closing-copy p'); if(cp)cp.innerHTML=(c.closing?.body||'')+'<strong>'+(c.closing?.emphasis||'一起开演')+'</strong>。'; setText('.closing-title',c.closing?.title); const cs=document.querySelector('.closing-sub'); if(cs)cs.innerHTML=(c.closing?.subLine1||'')+'<br>'+(c.closing?.subLine2||'');
+    const cp=document.querySelector('.closing-copy p'); if(cp){const emphasis=c.closing?.emphasis||'一起开演';const ending=/[。！？!?]$/.test(emphasis)?'':'。';cp.innerHTML=(c.closing?.body||'')+'<strong>'+emphasis+'</strong>'+ending;} setText('.closing-title',c.closing?.title); const cs=document.querySelector('.closing-sub'); if(cs)cs.innerHTML=(c.closing?.subLine1||'')+'<br>'+(c.closing?.subLine2||'');
     const v=c.video||{};
     setTitle('.video-section .section-title',v.titleBefore||'宣传片，',v.titleMark||'先看见我们'); setText('.video-intro',v.intro); setText('.video-note',v.note);
     const pv=document.querySelector('#promoVideo'), pvs=document.querySelector('#promoVideoShell'); if(pv&&pvs){if(v.url){pv.src=v.url;if(v.poster)pv.poster=v.poster;pvs.classList.add('has-video');pv.load()}else{pv.removeAttribute('src');pvs.classList.remove('has-video')}}

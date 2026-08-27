@@ -1,134 +1,23 @@
 {
-  "siteTitle": "等你加入，等你发光｜校团委艺术教育中心 2026 招新",
   "hero": {
+    "sub": "2026级新生招新",
     "kicker": "校团委艺术教育中心",
     "titleMain": "等你加入",
-    "titleAccent": "等你发光",
-    "sub": "2026级新生招新"
-  },
-  "intro": {
-    "titleBefore": "台前很闪，",
-    "titleMark": "幕后也超酷",
-    "lead": "你在台下看到的是灯光、音乐和掌声；我们在幕后做的是把设备、节奏和现场稳稳接住。校团委艺术教育中心面向 2026 级新生招新，想离舞台更近一点，就来和我们一起玩真的。",
-    "caption": "每一次亮相，都有一群人在幕后认真准备"
-  },
-  "roles": {
-    "titleBefore": "进到我们部门，",
-    "titleMark": "这些技能都能学",
-    "intro": "五个岗位都可以从零开始。先跟着师兄师姐练，再到真实活动里上手，慢慢找到你最喜欢的位置。",
-    "more": "更多幕后岗位等待你来发现",
-    "cards": [
-      {
-        "title": "音控",
-        "body": "把人声、音乐和现场音量调到舒服又清楚。你会从接线、调音台基础和话筒使用学起。",
-        "tag": "调音台 / 话筒 / 音频",
-        "imageKey": "skillAudio"
-      },
-      {
-        "title": "灯控",
-        "body": "根据节目节奏切换灯光，让舞台该亮时亮、该炸时炸。先认灯位，再学基础编程和现场操作。",
-        "tag": "灯位 / 编程 / 氛围",
-        "imageKey": "skillLight"
-      },
-      {
-        "title": "打碟",
-        "body": "学会衔接音乐、抓节拍和控制现场气氛。不是专业 DJ 也能从最基础的按键与节奏开始。",
-        "tag": "节拍 / 串歌 / 氛围",
-        "imageKey": "skillDJ"
-      },
-      {
-        "title": "追光",
-        "body": "用一束光稳稳跟住舞台上的主角。要练眼力、反应和配合，成就感直接拉满。",
-        "tag": "跟光 / 预判 / 配合",
-        "imageKey": "skillSpotlight"
-      },
-      {
-        "title": "场控",
-        "body": "拿着流程、盯住时间、对接台前幕后。哪里需要人，哪里就有场控把现场接住。",
-        "tag": "流程 / 对接 / 应变",
-        "imageKey": "skillStageControl"
-      }
-    ],
-    "gallery": {
-      "title": "一场精彩演出有许多细节组成",
-      "hint": "从调音台、灯光控台到舞台、后台与观众席，熟悉每一件设备、每一处场地，才能让演出稳稳发生。",
-      "imageKeys": [
-        "rolesGallery1",
-        "rolesGallery2",
-        "rolesGallery3",
-        "rolesGallery4",
-        "rolesGallery5",
-        "rolesGallery6"
-      ],
-      "captions": [
-        "设备就位，舞台才有准确亮起的可能",
-        "流程确认，让每一次衔接更加顺畅",
-        "排练中的反复，是现场稳定的底气",
-        "后台协作，把不同任务拼成一个整体",
-        "忙碌现场里，每个人都在自己的位置上",
-        "演出开始前，还有许多细节等待完成"
-      ]
-    }
-  },
-  "gains": {
-    "titleBefore": "加入之后，",
-    "titleMark": "你能拿到这些",
-    "cards": [
-      {
-        "title": "真技能",
-        "body": "从音控、灯控到场控，学到能直接上手的舞台技能。"
-      },
-      {
-        "title": "饭票福利",
-        "body": "部分活动会按实际安排提供工作餐或饭票，干活也要记得好好吃饭。"
-      },
-      {
-        "title": "综测分",
-        "body": "参与符合学校认定要求的活动，可按实际规定申请相应综测分。"
-      },
-      {
-        "title": "一群搭子",
-        "body": "认识不同专业的新朋友，忙完艺起聊天、拍照、吃饭。"
-      },
-      {
-        "title": "校园大场面",
-        "body": "迎新、晚会、音乐会等活动，都可能留下你的名字和身影。"
-      }
-    ]
-  },
-  "moments": {
-    "titleBefore": "忙完正事，",
-    "titleMark": "艺起很会玩",
-    "paragraphs": [
-      "这里不是只有对讲机和流程表。活动结束后艺起拍照、聚餐、复盘吐槽，很多大学里的熟人和朋友，就是这样认识的。",
-      "你可以认真学技能，也可以放心交朋友。忙的时候艺起扛，轻松的时候艺起笑，这才是我们的部门日常。"
-    ]
-  },
-  "suitable": {
-    "titleBefore": "只要你愿意来，",
-    "titleMark": "就有位置给你",
-    "items": [
-      "对舞台、音乐、灯光或校园活动有一点点好奇；",
-      "愿意从零学，不会就问，不懂就练；",
-      "做事靠谱，答应的任务会认真完成；",
-      "愿意和大家沟通，一起把现场做好；",
-      "想让大学生活多点技能、多点朋友、多点故事。"
-    ],
-    "encourage": "我们的宗旨是，态度要好，立场要坚定！"
+    "titleAccent": "等你发光"
   },
   "apply": {
-    "titleBefore": "现在，轮到你",
-    "titleMark": "入场了",
-    "object": "招新对象：2026级新生",
-    "signupTime": "【待补充】",
-    "deadline": "【待补充】",
     "method": "长按识别对应二维码，进入咨询群或填写报名表。",
+    "object": "招新对象：2026级新生",
+    "deadline": "【待补充】",
     "qrLabels": [
       "西校区 · 咨询群",
       "西校区 · 报名表",
       "北校区 · 咨询群",
       "北校区 · 报名表"
     ],
+    "titleMark": "入场了",
+    "signupTime": "【待补充】",
+    "titleBefore": "现在，轮到你",
     "qrScanLabels": [
       "西区咨询群",
       "西区报名表",
@@ -136,99 +25,232 @@
       "北区报名表"
     ]
   },
-  "closing": {
-    "photoCaption": "下一张团队合照，也许就有你",
-    "body": "不会没关系，没经验也没关系。带着一点好奇来，剩下的我们一起学。来艺教中心，和我们",
-    "emphasis": "一起把舞台点亮",
-    "title": "新生入场，请就位！",
-    "subLine1": "校团委艺术教育中心",
-    "subLine2": "零基础友好 · 等你来玩真的"
-  },
-  "video": {
-    "titleBefore": "宣传片，",
-    "titleMark": "先看见我们",
-    "intro": "想先看看我们平时在忙什么？把宣传片放在这里，几分钟看懂真实的幕后日常。",
-    "url": "",
-    "poster": "assets/style-sky.webp",
-    "note": "视频内容可在在线编辑器中上传或替换。"
-  },
-  "decorations": {
-    "qq": [
-      "assets/qq-west.webp",
-      "assets/qq-north.webp"
-    ],
-    "campusLabels": [
-      "西区",
-      "北区"
-    ],
-    "mascots": [
+  "gains": {
+    "cards": [
       {
-        "name": "白狼",
-        "src": "assets/qq-west.webp"
+        "body": "学习音控、灯控、现场调度等舞台实操技能，掌握可落地运用的专业技术。",
+        "title": "真技能"
       },
       {
-        "name": "猫头鹰",
-        "src": "assets/qq-north.webp"
+        "body": "部分活动将按工作安排提供工作餐或餐补，于忙碌的工作之中，为你送上一份贴心保障。",
+        "title": "饭票福利"
+      },
+      {
+        "body": "参与符合学校认定要求的活动，可按实际规定申请相应综测分。",
+        "title": "综测分"
+      },
+      {
+        "body": "邂逅来自各个专业的同频伙伴，于并肩工作中收获珍贵友谊，工作之余闲谈相伴，共赴岁岁朝夕。",
+        "title": "一群搭子"
+      },
+      {
+        "body": "深度参与迎新、文艺晚会等校级活动，在盛大的校园舞台留下属于自己的身影与印记，收获难忘的实践履历。",
+        "title": "校园大场面"
+      },
+      {
+        "body": ""
       }
-    ]
+    ],
+    "titleMark": "你能收获这些",
+    "titleBefore": "加入我们，"
+  },
+  "intro": {
+    "lead": "你在台下看到的是灯光、音乐和掌声；我们在幕后做的是把设备、节奏和现场做到最好。校团委艺术教育中心面向 2026 级新生招新，想离舞台更近一点，就来和我们一起玩真的。",
+    "caption": "每一次亮相，都有一群人在幕后认真准备",
+    "titleMark": "幕后也超酷",
+    "titleBefore": "台前很闪，"
+  },
+  "roles": {
+    "more": "更多幕后岗位等待你来发现",
+    "cards": [
+      {
+        "tag": "调音台 / 话筒 / 音频",
+        "body": "负责舞台音频系统调试，完成各节目音量统筹与音频保障，为整场演出提供稳定的音频支持。",
+        "title": "音控",
+        "imageKey": "skillAudio"
+      },
+      {
+        "tag": "灯位 / 编程 / 氛围",
+        "body": "根据节目编排与表演节奏完成灯光切换调度，运用灯光烘托舞台演出氛围。岗位需要收悉各类灯位布局，掌握灯光设备与现场实操能力。",
+        "title": "灯控",
+        "imageKey": "skillLight"
+      },
+      {
+        "tag": "节拍 / 串歌 / 氛围",
+        "body": "负责活动暖场音乐播放、节目音频衔接工作；岗位从音频播放软件基础操作学起，完成曲目串接，搭建现场听觉氛围。",
+        "title": "打碟",
+        "imageKey": "skillDJ"
+      },
+      {
+        "tag": "跟光 / 预判 / 配合",
+        "body": "操作追光设备，精准锁定舞台核心表演人员，需要观察力、临场反应能力与团队协同意识，配合节目完成定点光束跟随。",
+        "title": "追光",
+        "imageKey": "skillSpotlight"
+      },
+      {
+        "tag": "流程 / 对接 / 应变",
+        "body": "对照活动流程把控时间节点，统筹台前幕后对接工作；灵活处理现场突发状况，统筹调度人力，保障现场活动有序推进。",
+        "title": "场控",
+        "imageKey": "skillStageControl"
+      }
+    ],
+    "intro": "在学习中成长，从实践里总结。\n体验各岗位的乐趣，让艺教充实你的大学生活",
+    "gallery": {
+      "hint": "从调音台、灯光控台到舞台、后台与观众席，熟悉每一件设备、每一处场地，才能让演出有序进行。",
+      "title": "一场精彩演出由许多细节组成",
+      "captions": [
+        "设备就位，舞台才有准确亮起的可能",
+        "流程确认，让每一次衔接更加顺畅",
+        "排练中的反复，是现场稳定的底气",
+        "后台协作，把不同任务拼成一个整体",
+        "忙碌现场里，每个人都在自己的位置上",
+        "演出开始前，还有许多细节等待完成"
+      ],
+      "imageKeys": [
+        "rolesGallery1",
+        "rolesGallery2",
+        "rolesGallery3",
+        "rolesGallery4",
+        "rolesGallery5",
+        "rolesGallery6"
+      ]
+    },
+    "titleMark": "胜任多种岗位",
+    "titleBefore": "掌握多元技能，"
+  },
+  "video": {
+    "url": "",
+    "note": "视频内容可在在线编辑器中上传或替换。",
+    "intro": "想先看看我们平时在忙什么？从宣传片几分钟里看懂真实的部门日常。",
+    "poster": "assets/style-sky.jpg",
+    "titleMark": "先看见我们",
+    "titleBefore": "宣传片，"
   },
   "images": {
     "hero1": "assets/cloud-optimized/hero1.jpg",
-    "hero2": "assets/cloud-optimized/hero2.jpg",
+    "hero2": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-hero2-1787770015123-nj2epv-5.webp",
     "hero3": "assets/cloud-optimized/hero3.jpg",
+    "hero4": "assets/cloud-optimized/hero4.jpg",
+    "hero5": "assets/cloud-optimized/hero5.jpg",
+    "hero6": "assets/cloud-optimized/hero6.jpg",
+    "intro": "assets/photo-placeholder.svg",
+    "closing": "assets/photo-placeholder.svg",
+    "detail1": "assets/photo-placeholder.svg",
+    "detail2": "assets/photo-placeholder.svg",
     "moment1": "assets/cloud-optimized/moment1.jpg",
     "moment2": "assets/cloud-optimized/moment2.jpg",
     "moment3": "assets/cloud-optimized/moment3.jpg",
     "moment4": "assets/cloud-optimized/moment4.jpg",
-    "qrWestGroup": "assets/qr-west-group-placeholder.png",
-    "qrWestSignup": "assets/qr-west-signup-placeholder.png",
-    "qrNorthGroup": "assets/qr-north-group-placeholder.png",
-    "qrNorthSignup": "assets/qr-north-signup-placeholder.png",
+    "skillDJ": "assets/cloud-optimized/skillDJ.jpg",
     "photoWall1": "assets/cloud-optimized/photoWall1.jpg",
     "photoWall2": "assets/cloud-optimized/photoWall2.jpg",
     "photoWall3": "assets/cloud-optimized/photoWall3.jpg",
     "photoWall4": "assets/cloud-optimized/photoWall4.jpg",
     "photoWall5": "assets/cloud-optimized/photoWall5.jpg",
     "photoWall6": "assets/cloud-optimized/photoWall6.jpg",
+    "skillAudio": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-skillAudio-1787771834953-r3kbr6-27f27e5c4e9a71c929e3b08be9bb56e1.webp",
+    "skillLight": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-skillLight-1787771931185-wu1nz7-d9c0f5232e82a0f1ad531df65070745d.webp",
+    "qrWestGroup": "assets/qr-west-group-placeholder.png",
+    "qrNorthGroup": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-qrNorthGroup-1787798831455-zmybkc-d6f2a9a528ec29744a8d881ce06226b0.jpg",
+    "qrWestSignup": "assets/qr-west-signup-placeholder.png",
+    "qrNorthSignup": "assets/qr-north-signup-placeholder.png",
     "rolesGallery1": "assets/cloud-optimized/rolesGallery1.jpg",
     "rolesGallery2": "assets/cloud-optimized/rolesGallery2.jpg",
     "rolesGallery3": "assets/cloud-optimized/rolesGallery3.jpg",
     "rolesGallery4": "assets/cloud-optimized/rolesGallery4.jpg",
     "rolesGallery5": "assets/cloud-optimized/rolesGallery5.jpg",
     "rolesGallery6": "assets/cloud-optimized/rolesGallery6.jpg",
-    "introPhotoWall1": "assets/cloud-optimized/introPhotoWall1.jpg",
-    "introPhotoWall2": "assets/cloud-optimized/introPhotoWall2.jpg",
-    "introPhotoWall3": "assets/cloud-optimized/introPhotoWall3.jpg",
-    "introPhotoWall4": "assets/cloud-optimized/introPhotoWall4.jpg",
+    "skillSpotlight": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-skillSpotlight-1787771985534-vr2g87-33ef11682ec662708019300a5f599eb2.webp",
+    "introPhotoWall1": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall1-1787773340074-9lin6z-d71a6edbb53e64b4597839e482d48f60.webp",
+    "introPhotoWall2": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall2-1787769802676-wd8cik-introphotowall2.webp",
+    "introPhotoWall3": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall3-1787769804337-w65b77-introphotowall3.webp",
+    "introPhotoWall4": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall4-1787773441919-bnkhel-8.webp",
     "introPhotoWall5": "assets/cloud-optimized/introPhotoWall5.jpg",
-    "introPhotoWall6": "assets/cloud-optimized/introPhotoWall6.jpg",
-    "skillAudio": "assets/cloud-optimized/skillAudio.jpg",
-    "skillLight": "assets/cloud-optimized/skillLight.jpg",
-    "skillDJ": "assets/cloud-optimized/skillDJ.jpg",
-    "skillSpotlight": "assets/cloud-optimized/skillSpotlight.jpg",
-    "skillStageControl": "assets/cloud-optimized/skillStageControl.jpg",
-    "hero4": "assets/cloud-optimized/hero4.jpg",
-    "hero5": "assets/cloud-optimized/hero5.jpg",
-    "hero6": "assets/cloud-optimized/hero6.jpg"
+    "introPhotoWall6": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall6-1787769808321-wjwifr-introphotowall6.webp",
+    "skillStageControl": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-skillStageControl-1787772083162-qe6d7v-0b354ea5d8a867a663b26a719e3813f5.webp"
+  },
+  "layout": {
+    "rich-layout-51": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "barrier": {
+    "body": "无需任何基础！各类舞台设备知识\n从零开始，和师兄师姐一路同行",
+    "note": "不懂设备、没做过活动都没关系。愿意学、愿意来，就是最好的开场。",
+    "title": "零基础也能大胆来",
+    "eyebrow": "ZERO EXPERIENCE? NO PROBLEM!"
+  },
+  "closing": {
+    "body": "在这里没有经验也没关系，带着一点好奇来，剩下的我们一起学。欢迎加入校团委艺术教育中心，来和我们",
+    "title": "新生入场，请就位！",
+    "emphasis": "一起把舞台点亮！",
+    "subLine1": "校团委艺术教育中心",
+    "subLine2": "零基础友好 · 等你来玩真的",
+    "photoCaption": "下一张团队合照，也许就有你"
+  },
+  "moments": {
+    "titleMark": "",
+    "paragraphs": [
+      "我们的部门工作，远不止于对讲机与流程表，更有活动后的合影、聚餐与复盘交流。许多伙伴正是在这些轻松时刻相识相知。",
+      "在这里，既可潜心提升专业技能，亦可坦然结交真挚友谊。忙碌时我们并肩担当，闲暇时我们共享欢笑，这便是我们部门的日常风貌。"
+    ],
+    "titleBefore": "工作之外，我们亦有艺彩纷呈"
+  },
+  "richText": {
+    "rich-17": "零基础也能大胆来",
+    "rich-18": "无需任何基础！各类舞台设备知识<div>从零开始，和师兄师姐一路同行</div>",
+    "rich-22": "在学习中成长，从实践里总结。<div>体验各岗位的乐趣，让艺教充实你的大学生活</div>",
+    "rich-24": "负责舞台音频系统调试，完成各节目音量统筹与音频保障，为整场演出提供稳定的音频支持。",
+    "rich-27": "根据节目编排与表演节奏完成灯光切换调度，运用灯光烘托舞台演出氛围。岗位需要收悉各类灯位布局，掌握灯光设备与现场实操能力。",
+    "rich-30": "负责活动暖场音乐播放、节目音频衔接工作；岗位从音频播放软件基础操作学起，完成曲目串接，搭建现场听觉氛围。",
+    "rich-33": "操作追光设备，精准锁定舞台核心表演人员，需要观察力、临场反应能力与团队协同意识，配合节目完成定点光束跟随。",
+    "rich-36": "对照活动流程把控时间节点，统筹台前幕后对接工作；灵活处理现场突发状况，统筹调度人力，保障现场活动有序推进。",
+    "rich-40": "一场精彩演出由许多细节组成",
+    "rich-41": "从调音台、灯光控台到舞台、后台与观众席，熟悉每一件设备、每一处场地，才能让演出有序进行。",
+    "rich-44": "学习音控、灯控、现场调度等舞台实操技能，掌握可落地运用的专业技术。",
+    "rich-45": "部分活动将按工作安排提供工作餐或餐补，于忙碌的工作之中，为你送上一份贴心保障。",
+    "rich-47": "邂逅来自各个专业的同频伙伴，于并肩工作中收获珍贵友谊，工作之余闲谈相伴，共赴岁岁朝夕。",
+    "rich-48": "深度参与迎新、文艺晚会等校级活动，在盛大的校园舞台留下属于自己的身影与印记，收获难忘的实践履历。",
+    "rich-52": "<div>我们的部门工作，远不止于对讲机与流程表，更有活动后的合影、聚餐与复盘交流。许多伙伴正是在这些轻松时刻相识相知。</div>",
+    "rich-53": "在这里，既可潜心提升专业技能，亦可坦然结交真挚友谊。忙碌时我们并肩担当，闲暇时我们共享欢笑，这便是我们部门的日常风貌。",
+    "rich-60": "想先看看我们平时在忙什么？从宣传片几分钟里看懂真实的部门日常。",
+    "rich-74": "对舞台、音乐、灯光或校园活动怀有初步兴趣，愿意在此领域探索。",
+    "rich-75": "愿意从基础学起，在实践中逐步积累与成长。",
+    "rich-76": "责任心强，能够信守承诺，对分配的任务认真负责、按时保质完成。",
+    "rich-77": "善于团队沟通，乐于协作配合，共同保障活动现场的执行效果。",
+    "rich-78": "希望通过部门实践，丰富大学生活，提升专业技能，拓展人际交往，积累成长经历。",
+    "rich-extra-725hx": "你在台下看到的是灯光、音乐和掌声；我们在幕后做的是把设备、节奏和现场做到最好。校团委艺术教育中心面向 2026 级新生招新，想离舞台更近一点，就来和我们一起玩真的。",
+    "rich-extra-r673c": "一起团建，保留每次的欢乐",
+    "rich-extra-eev32a": "同伴们同心协作，高效完成舞台现场布置",
+    "rich-extra-pnka4a": "集结共商，细致把控舞台每处细节",
+    "rich-extra-16jp66m": "反复确认流程，忙起来也很有默契",
+    "rich-extra-1i56jsc": "共赴舞台璀璨时刻，期待与你并肩同行",
+    "rich-extra-1v8ylis": "你在台下看到的是灯光、音乐和掌声；我们在幕后做的是把设备、节奏和现场稳稳把控。校团委艺术教育中心面向 2026 级新生招新，想离舞台更近一点，就来和我们一起。"
+  },
+  "suitable": {
+    "items": [
+      "对舞台、音乐、灯光或校园活动怀有初步兴趣，愿意在此领域探索。",
+      "愿意从基础学起，在实践中逐步积累与成长。",
+      "责任心强，能够信守承诺，对分配的任务认真负责、按时保质完成。",
+      "善于团队沟通，乐于协作配合，共同保障活动现场的执行效果。",
+      "希望通过部门实践，丰富大学生活，提升专业技能，拓展人际交往，积累成长经历。"
+    ],
+    "encourage": "我们的宗旨是，态度要好，立场要坚定！",
+    "titleMark": "你需要具备什么",
+    "titleBefore": "加入我们，"
   },
   "photoWall": {
-    "title": "下一张团队合照，也许就有你",
     "hint": "手指左右滑动，翻看属于我们的共同瞬间",
-    "imageKeys": [
-      "photoWall1",
-      "photoWall2",
-      "photoWall3",
-      "photoWall4",
-      "photoWall5",
-      "photoWall6"
-    ],
+    "title": "下一张团队合照，也许就有你",
     "images": [
-      "assets/photo-placeholder.svg",
-      "assets/photo-placeholder.svg",
-      "assets/photo-placeholder.svg",
-      "assets/photo-placeholder.svg",
-      "assets/photo-placeholder.svg",
-      "assets/photo-placeholder.svg"
+      "assets/cloud-optimized/photoWall1.jpg",
+      "assets/cloud-optimized/photoWall2.jpg",
+      "assets/cloud-optimized/photoWall3.jpg",
+      "assets/cloud-optimized/photoWall4.jpg",
+      "assets/cloud-optimized/photoWall5.jpg",
+      "assets/cloud-optimized/photoWall6.jpg"
     ],
     "captions": [
       "下一张团队合照，也许就有你",
@@ -237,18 +259,66 @@
       "每一场活动，都是新的共同记忆",
       "一起把想法变成真正发生的舞台",
       "等你加入，也等你出现在下一张合照里"
+    ],
+    "imageKeys": [
+      "photoWall1",
+      "photoWall2",
+      "photoWall3",
+      "photoWall4",
+      "photoWall5",
+      "photoWall6"
+    ]
+  },
+  "siteTitle": "等你加入，等你发光｜校团委艺术教育中心 2026 招新",
+  "decorations": {
+    "qq": [
+      "assets/qq-west.png",
+      "assets/qq-north.png"
+    ],
+    "mascots": [
+      {
+        "src": "assets/qq-west.png",
+        "name": "白狼"
+      },
+      {
+        "src": "assets/qq-north.png",
+        "name": "猫头鹰"
+      }
+    ],
+    "campusLabels": [
+      "西区",
+      "北区"
+    ]
+  },
+  "heroGallery": {
+    "hint": "手指左右滑动，按顺序看看我们的现场",
+    "captions": [
+      "集结共商，细致把控舞台每处细节",
+      "一起团建，保留每次的欢乐",
+      "反复确认流程，忙起来也很有默契",
+      "演出开始前，大家都在认真准备",
+      "同伴们同心协作，高效完成舞台现场布置",
+      "共赴舞台璀璨时刻，期待与你并肩同行"
+    ],
+    "imageKeys": [
+      "hero1",
+      "hero2",
+      "hero3",
+      "hero4",
+      "hero5",
+      "hero6"
     ]
   },
   "introPhotoWall": {
-    "title": "幕后的一切，也值得被看见",
     "hint": "手指左右滑动，看看舞台亮起之前",
-    "imageKeys": [
-      "introPhotoWall1",
-      "introPhotoWall2",
-      "introPhotoWall3",
-      "introPhotoWall4",
-      "introPhotoWall5",
-      "introPhotoWall6"
+    "title": "幕后的一切，也值得被看见",
+    "images": [
+      "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall1-1787773340074-9lin6z-d71a6edbb53e64b4597839e482d48f60.webp",
+      "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall2-1787769802676-wd8cik-introphotowall2.webp",
+      "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall3-1787769804337-w65b77-introphotowall3.webp",
+      "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall4-1787773441919-bnkhel-8.webp",
+      "assets/cloud-optimized/introPhotoWall5.jpg",
+      "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-introPhotoWall6-1787769808321-wjwifr-introphotowall6.webp"
     ],
     "captions": [
       "灯光亮起以前，准备已经开始",
@@ -258,40 +328,17 @@
       "演出的完整，来自每个位置的配合",
       "掌声响起之前，我们一直都在"
     ],
-    "images": [
-      "assets/photo-placeholder.svg",
-      "assets/photo-placeholder.svg",
-      "assets/photo-placeholder.svg",
-      "assets/photo-placeholder.svg",
-      "assets/photo-placeholder.svg",
-      "assets/photo-placeholder.svg"
-    ]
-  },
-  "barrier": {
-    "eyebrow": "ZERO EXPERIENCE? NO PROBLEM!",
-    "title": "零基础也能大胆来",
-    "body": "不用有基础！师兄师姐从 0 讲起，包教包会，不用有压力！",
-    "note": "不懂设备、没做过活动都没关系。愿意学、愿意来，就是最好的开场。"
-  },
-  "richText": {},
-  "layout": {},
-  "heroGallery": {
-    "hint": "手指左右滑动，按顺序看看我们的现场",
     "imageKeys": [
-      "hero1",
-      "hero2",
-      "hero3",
-      "hero4",
-      "hero5",
-      "hero6"
-    ],
-    "captions": [
-      "大家集合，先把现场准备好",
-      "一起搬设备，把每个细节摆到位",
-      "反复确认流程，忙起来也很有默契",
-      "演出开始前，大家都在认真准备",
-      "现场协作，边忙边把事情做好",
-      "下一次幕后合影，等你加入"
+      "introPhotoWall1",
+      "introPhotoWall2",
+      "introPhotoWall3",
+      "introPhotoWall4",
+      "introPhotoWall5",
+      "introPhotoWall6"
     ]
-  }
+  },
+  "deletedRichText": [
+    "rich-75"
+  ],
+  "imageAdjustments": {}
 }

@@ -45,7 +45,6 @@
       new Set([...Object.keys(template), ...Object.keys(source)]).forEach(key => { result[key] = mergeTemplateContent(template[key], source[key]); });
       return result;
     }
-    if (typeof template === 'string' && typeof value === 'string' && !value.trim()) return template;
     return cloneValue(value);
   };
   const prioritizeGainCards = content => {
@@ -300,6 +299,11 @@
     if (!rendered || visual.lastStructuredTextDocument === doc && visual.lastStructuredTextContent === rendered) return;
     visual.lastStructuredTextDocument = doc;
     visual.lastStructuredTextContent = rendered;
+    const staleIds = Array.isArray(win?.__wechatStaleRichTextIds) ? win.__wechatStaleRichTextIds : [];
+    staleIds.forEach(id => {
+      if (content.richText) delete content.richText[id];
+      if (!dirty && baseContent?.richText) delete baseContent.richText[id];
+    });
     syncStructuredTextFromPreview(doc, doc, !dirty);
   };
   const updateRichFromElement = element => {
@@ -539,7 +543,7 @@ doc.addEventListener('pointermove',event=>{
     return cloudSavePromise;
   };
   const scheduleDraft = () => { contentRevision += 1; dirty = true; clearTimeout(autosaveTimer); autosaveTimer = setTimeout(async () => { const localSaved = await persistDraft(); if (cloudReady()) await saveCloud(); else status(localSaved ? '修改已自动保存到本机；配置云端后即可多人同步。' : '本机空间不足，当前修改只保留在页面中；请尽快配置云端。', !localSaved); }, 600); };
-  const bindFields = () => document.querySelectorAll('[data-path]').forEach(element => element.addEventListener('input', event => { setPath(content, event.target.dataset.path, event.target.value); scheduleDraft(); }));
+  const bindFields = () => document.querySelectorAll('[data-path]').forEach(element => element.addEventListener('input', event => { setPath(content, event.target.dataset.path, event.target.value); pushPreview(); scheduleDraft(); }));
   const bindImages = () => document.querySelectorAll('[data-image]').forEach(element => element.addEventListener('change', async event => {
     const originalFile = event.target.files?.[0];
     if (!originalFile) return;
