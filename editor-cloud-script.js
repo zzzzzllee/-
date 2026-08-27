@@ -70,11 +70,6 @@
   };
   const mergePublishedContent = (base, override) => {
     const result = mergeTemplateContent(base, override || {});
-    ['intro', 'closing', 'detail1', 'detail2'].forEach(key => {
-      if (result.images) delete result.images[key];
-      if (result.imageAdjustments) delete result.imageAdjustments[key];
-    });
-    if (result.richText?.['rich-75'] && /<ul\b[^>]*class=["']checklist/i.test(String(result.richText['rich-75']))) delete result.richText['rich-75'];
     if (override && !override.introPhotoWall && base?.photoWall && result.photoWall) {
       result.photoWall.title = base.photoWall.title;
       result.photoWall.hint = base.photoWall.hint;
@@ -138,12 +133,12 @@
   const normalizeRolesGalleryHint = value => { const raw = String(value || '').trim(); const defaultHint = '从调音台、灯光控台到舞台、后台与观众席，熟悉每一件设备、每一处场地，才能让演出稳稳发生。'; return !raw || raw === '从设备、排练到现场协作，每一张都是真实发生的准备' ? defaultHint : raw; };
   const arr = (path, fallback = []) => Array.isArray(getPath(content, path)) ? getPath(content, path) : fallback;
   const imageNames = {
-    hero1: '首屏滑动照片 · 第 1 张', hero2: '首屏滑动照片 · 第 2 张', hero3: '首屏滑动照片 · 第 3 张', hero4: '首屏滑动照片 · 第 4 张', hero5: '首屏滑动照片 · 第 5 张', hero6: '首屏滑动照片 · 第 6 张', skillAudio:'技能岗位 · 音控', skillLight:'技能岗位 · 灯控', skillDJ:'技能岗位 · 打碟', skillSpotlight:'技能岗位 · 追光', skillStageControl:'技能岗位 · 场控',
+    hero1: '首屏滑动照片 · 第 1 张', hero2: '首屏滑动照片 · 第 2 张', hero3: '首屏滑动照片 · 第 3 张', hero4: '首屏滑动照片 · 第 4 张', hero5: '首屏滑动照片 · 第 5 张', hero6: '首屏滑动照片 · 第 6 张', skillAudio:'技能岗位 · 音控', skillLight:'技能岗位 · 灯控', skillDJ:'技能岗位 · 打碟', skillSpotlight:'技能岗位 · 追光', skillStageControl:'技能岗位 · 场控', detail1: '旧版岗位图 · 备用 1', detail2: '旧版岗位图 · 备用 2',
     moment1: '青春照片墙 · 左上', moment2: '青春照片墙 · 右上', moment3: '青春照片墙 · 左下', moment4: '青春照片墙 · 右下',
     qrWestGroup: '西区 · 咨询群二维码', qrWestSignup: '西区 · 报名表二维码', qrNorthGroup: '北区 · 咨询群二维码', qrNorthSignup: '北区 · 报名表二维码',
     introPhotoWall1: '开场幕后相册 · 第 1 张', introPhotoWall2: '开场幕后相册 · 第 2 张', introPhotoWall3: '开场幕后相册 · 第 3 张', introPhotoWall4: '开场幕后相册 · 第 4 张', introPhotoWall5: '开场幕后相册 · 第 5 张', introPhotoWall6: '开场幕后相册 · 第 6 张',
     photoWall1: '结尾团队相册 · 第 1 张', photoWall2: '结尾团队相册 · 第 2 张', photoWall3: '结尾团队相册 · 第 3 张', photoWall4: '结尾团队相册 · 第 4 张', photoWall5: '结尾团队相册 · 第 5 张', photoWall6: '结尾团队相册 · 第 6 张',
-    rolesGallery1: '设备与场地展示 · 第 1 张', rolesGallery2: '设备与场地展示 · 第 2 张', rolesGallery3: '设备与场地展示 · 第 3 张', rolesGallery4: '设备与场地展示 · 第 4 张', rolesGallery5: '设备与场地展示 · 第 5 张', rolesGallery6: '设备与场地展示 · 第 6 张'
+    rolesGallery1: '设备与场地展示 · 第 1 张', rolesGallery2: '设备与场地展示 · 第 2 张', rolesGallery3: '设备与场地展示 · 第 3 张', rolesGallery4: '设备与场地展示 · 第 4 张', rolesGallery5: '设备与场地展示 · 第 5 张', rolesGallery6: '设备与场地展示 · 第 6 张', intro: '备用旧图 · 原开场单图', closing: '备用旧图 · 原结尾合照'
   };
   const imageGroups = [
     {title:'01 · 首屏手动横向滑动照片',note:'每张图片都可以填写对应说明。手机左右滑一次切换一张，页面不会自动播放。',items:[{key:'hero1',captionPath:'heroGallery.captions.0'},{key:'hero2',captionPath:'heroGallery.captions.1'},{key:'hero3',captionPath:'heroGallery.captions.2'},{key:'hero4',captionPath:'heroGallery.captions.3'},{key:'hero5',captionPath:'heroGallery.captions.4'},{key:'hero6',captionPath:'heroGallery.captions.5'}]},
@@ -153,6 +148,7 @@
     {title:'05 · “青春不设限”四张照片',note:'按左上、右上、左下、右下排列，文字贴纸不会遮图。',items:[{key:'moment1'},{key:'moment2'},{key:'moment3'},{key:'moment4'}]},
     {title:'06 · 结尾团队翻页相册',note:'仅用于“下一张团队合照，也许就有你”板块。第 1 张到第 6 张按手机左右滑动顺序排列。',items:[{key:'photoWall1',captionPath:'photoWall.captions.0'},{key:'photoWall2',captionPath:'photoWall.captions.1'},{key:'photoWall3',captionPath:'photoWall.captions.2'},{key:'photoWall4',captionPath:'photoWall.captions.3'},{key:'photoWall5',captionPath:'photoWall.captions.4'},{key:'photoWall6',captionPath:'photoWall.captions.5'}]},
     {title:'07 · 报名二维码',note:'按西区咨询群、西区报名表、北区咨询群、北区报名表排列。',items:[{key:'qrWestGroup'},{key:'qrWestSignup'},{key:'qrNorthGroup'},{key:'qrNorthSignup'}]},
+    {title:'备用旧图',note:'旧版字段，当前页面不直接显示，保留用于兼容以前保存的内容。',items:[{key:'intro'},{key:'closing'}]}
   ];
   const renderImageItem = (item,index) => { const key=item.key,src=content.images?.[key]||'',caption=item.captionPath?text(item.captionPath):''; return '<div class="image-row"><div class="image-order">'+String(index+1).padStart(2,'0')+'</div><img id="img-'+esc(key)+'" src="'+esc(src)+'" alt="'+esc(imageNames[key]||key)+'"><div class="image-fields"><label>'+esc(imageNames[key]||key)+'</label>'+(item.captionPath?'<div class="image-caption"><span>图片说明</span><input data-path="'+esc(item.captionPath)+'" value="'+esc(caption)+'" placeholder="输入这张照片下方的说明"></div>':'')+'<input type="url" class="image-url-input" data-image-url="'+esc(key)+'" value="'+esc(src)+'" placeholder="图片地址（可填写在线图片 URL）"><small>可粘贴图片地址，或选择本机图片上传。</small><input type="file" accept="image/*" data-image="'+esc(key)+'"><div class="token-note image-current">当前地址：'+esc(src)+'</div></div></div>'; };
   const status = (message, error = false) => { const el = $('#status'); if (el) { el.textContent = message; el.className = 'status' + (error ? ' error' : ''); } };
@@ -248,26 +244,72 @@
   const persistDraft = async () => { syncPhotoWall(); try { await writeIndexedDraft(content); return true; } catch { try { localStorage.setItem(KEY, JSON.stringify(buildSlimDraft())); return true; } catch { status('文字修改已保留在当前页面，但本机草稿保存失败。请配置云端或清理浏览器站点数据。', true); return false; } } };
   const labelVisualSelection = message => { const el=$('#visualSelection'); if(el) el.textContent=message||'可视化编辑：点文字直接改；拖住文字、图片、外框或空白处整体移动'; };
   const selectedLayout = () => visual.selected?.dataset?.layoutId || '';
-  const updateDeleteTextButton = () => { const button = $('#deleteTextBtn'); if (button) button.disabled = !visual.selected?.dataset?.richId; };
+  const cleanPreviewText = value => String(value ?? '').replace(/\u00a0/g, ' ').replace(/[ \t]+\n/g, '\n').replace(/\n[ \t]+/g, '\n').replace(/[ \t]{2,}/g, ' ').trim();
+  const setStructuredPreviewValue = (path, value, mirrorBase = false) => {
+    if (!path) return false;
+    const next = cleanPreviewText(value);
+    const changed = getPath(content, path) !== next;
+    if (changed) setPath(content, path, next);
+    if (mirrorBase && baseContent && getPath(baseContent, path) !== next) setPath(baseContent, path, next);
+    return changed;
+  };
+  const previewTextWithoutParts = element => {
+    const copy = element.cloneNode(true);
+    copy.querySelectorAll('[data-content-part]').forEach(part => part.remove());
+    return cleanPreviewText(copy.innerText ?? copy.textContent ?? '');
+  };
+  const syncMappedPreviewElement = (element, mirrorBase = false) => {
+    if (!element) return false;
+    let changed = false;
+    if (element.dataset.contentPath) {
+      let value = cleanPreviewText(element.innerText ?? element.textContent ?? '');
+      if (element.dataset.contentTransform === 'hero-sub') value = value.replace(/^[\s●•·]+/, '').replace(/[\s→]+$/, '').trim();
+      changed = setStructuredPreviewValue(element.dataset.contentPath, value, mirrorBase) || changed;
+    }
+    if (element.dataset.contentBeforePath) {
+      let value = previewTextWithoutParts(element);
+      if (element.dataset.contentTransform === 'closing-body') value = value.replace(/[。.]\s*$/, '').trim();
+      changed = setStructuredPreviewValue(element.dataset.contentBeforePath, value, mirrorBase) || changed;
+    }
+    if (element.dataset.contentLinesPaths) {
+      const paths = element.dataset.contentLinesPaths.split('|').filter(Boolean);
+      const lines = String(element.innerText ?? element.textContent ?? '').split(/\n+/).map(cleanPreviewText).filter(Boolean);
+      paths.forEach((path, index) => { changed = setStructuredPreviewValue(path, lines[index] || '', mirrorBase) || changed; });
+    }
+    if (element.dataset.contentMethodPath) {
+      const text = String(element.innerText ?? element.textContent ?? '');
+      const match = text.match(/报名方式\s*[：:]\s*([\s\S]*)$/);
+      if (match) changed = setStructuredPreviewValue(element.dataset.contentMethodPath, match[1], mirrorBase) || changed;
+    }
+    return changed;
+  };
+  const syncStructuredTextFromPreview = (doc, root = doc, mirrorBase = false) => {
+    if (!doc || !content) return false;
+    const selector = '[data-content-path],[data-content-before-path],[data-content-lines-paths],[data-content-method-path]';
+    const elements = [];
+    if (root?.matches?.(selector)) elements.push(root);
+    root?.querySelectorAll?.(selector).forEach(element => elements.push(element));
+    const unique = [...new Set(elements)];
+    let changed = false;
+    unique.forEach(element => { changed = syncMappedPreviewElement(element, mirrorBase) || changed; });
+    if (changed) renderForm();
+    return changed;
+  };
+  const syncLoadedPreviewText = (doc, win) => {
+    const rendered = win?.__wechatRenderedContent;
+    if (!rendered || visual.lastStructuredTextDocument === doc && visual.lastStructuredTextContent === rendered) return;
+    visual.lastStructuredTextDocument = doc;
+    visual.lastStructuredTextContent = rendered;
+    syncStructuredTextFromPreview(doc, doc, !dirty);
+  };
   const updateRichFromElement = element => {
-    const id = element?.dataset?.richId; if (!id) return;
-    content.richText = content.richText || {}; content.richText[id] = element.innerHTML;
-    const path = element.dataset.contentPath;
-    if (path) { setPath(content, path, String(element.innerText ?? element.textContent ?? '').replace(/\u00a0/g, ' ').trim()); renderForm(); }
+    const id=element?.dataset?.richId; if(!id)return;
+    content.richText=content.richText||{}; content.richText[id]=element.innerHTML;
+    syncStructuredTextFromPreview(element.ownerDocument, element, false);
     scheduleDraft();
   };
-  const deleteSelectedRichText = () => {
-    const element = visual.selected?.dataset?.richId ? visual.selected : visual.doc?.activeElement?.closest?.('[data-rich-id]');
-    if (!element) { status('请先在右侧点选要删除的文字框。', true); return; }
-    const id = element.dataset.richId, layoutId = element.dataset.layoutId;
-    content.deletedRichText = Array.isArray(content.deletedRichText) ? content.deletedRichText : [];
-    if (!content.deletedRichText.includes(id)) content.deletedRichText.push(id);
-    if (content.richText) delete content.richText[id]; if (layoutId && content.layout) delete content.layout[layoutId];
-    element.remove(); visual.selected = null; updateDeleteTextButton(); renderForm(); pushPreview(); scheduleDraft();
-    status('已删除当前文字框，保存后所有设备都会保持删除。');
-  };
   const updateLayoutStyle = (element,value) => { element.style.setProperty('--layout-x',(Number(value.x)||0)+'px'); element.style.setProperty('--layout-y',(Number(value.y)||0)+'px'); if(Number(value.z)){element.style.zIndex=String(value.z);if(getComputedStyle(element).position==='static')element.style.position='relative';}else element.style.removeProperty('z-index'); };
-  const selectVisual = element => { visual.doc?.querySelectorAll('.editor-selected').forEach(el=>el.classList.remove('editor-selected')); visual.selected=element||null; if(element){element.classList.add('editor-selected');const kind=element.dataset.richId?'文字':'素材';labelVisualSelection('已选中'+kind+'：'+(element.innerText||element.alt||element.dataset.layoutId||'当前元素').trim().slice(0,24));}else if(visual.mode==='move')labelVisualSelection('移动元素模式：按住文字、QQ 人、图片外框或其他素材拖动'); updateDeleteTextButton(); };
+  const selectVisual = element => { visual.doc?.querySelectorAll('.editor-selected').forEach(el=>el.classList.remove('editor-selected')); visual.selected=element||null; if(element){element.classList.add('editor-selected');const kind=element.dataset.richId?'文字':'素材';labelVisualSelection('已选中'+kind+'：'+(element.innerText||element.alt||element.dataset.layoutId||'当前元素').trim().slice(0,24));}else if(visual.mode==='move')labelVisualSelection('移动元素模式：按住文字、QQ 人、图片外框或其他素材拖动'); };
   const clampImageScale = value => Math.max(.3, Math.min(6, Number(value) || 1));
   const normalizeCrop = crop => { if(!crop)return null;let left=Math.max(0,Math.min(.92,Number(crop.left)||0)),top=Math.max(0,Math.min(.92,Number(crop.top)||0)),width=Math.max(.08,Math.min(1-left,Number(crop.width)||1)),height=Math.max(.08,Math.min(1-top,Number(crop.height)||1));return {left:Number(left.toFixed(4)),top:Number(top.toFixed(4)),width:Number(width.toFixed(4)),height:Number(height.toFixed(4))}; };
   const imageAdjustmentValue = key => { const saved=content?.imageAdjustments?.[key]||{};const legacy=clampImageScale(saved.scale);return {x:Number(saved.x)||0,y:Number(saved.y)||0,scale:legacy,scaleX:clampImageScale(saved.scaleX??legacy),scaleY:clampImageScale(saved.scaleY??legacy),crop:normalizeCrop(saved.crop)}; };
@@ -299,7 +341,8 @@
     visual.doc=doc;
     doc.documentElement.dataset.editorMode=visual.mode;
     const win=frame.contentWindow;
-    if(win&&!win.__wechatVisualEditorListenerBound){win.__wechatVisualEditorListenerBound=true;win.addEventListener('wechat-content-rendered',()=>armVisualEditor());}
+    if(win&&!win.__wechatVisualEditorListenerBound){win.__wechatVisualEditorListenerBound=true;win.addEventListener('wechat-content-rendered',()=>{syncLoadedPreviewText(doc,win);armVisualEditor();});}
+    syncLoadedPreviewText(doc,win);
 const visualStyle = doc.getElementById('editorVisualStyle') || doc.head.appendChild(Object.assign(doc.createElement('style'), { id: 'editorVisualStyle' }));
      visualStyle.textContent='html,body{overscroll-behavior-y:contain}html .reveal{transition:none!important}[data-rich-id]{outline:1px dashed transparent;cursor:text}[data-rich-id]:hover{outline-color:#f39b8e}.editor-selected,.editor-image-selected{outline:3px solid #ff5b4d!important;outline-offset:3px!important}html[data-editor-mode=move] [data-layout-id]{touch-action:none;pointer-events:auto!important;cursor:move}html[data-editor-mode=move] [data-rich-id][data-layout-id]{cursor:grab;touch-action:none!important;user-select:none!important;-webkit-user-select:none!important}html[data-editor-mode=move] [data-rich-id][data-layout-id]:active{cursor:grabbing}.editor-image-selected{outline:0!important;outline-offset:0!important;box-shadow:0 0 0 3px rgba(255,91,77,.9),0 0 0 6px rgba(255,255,255,.92)!important}html[data-editor-mode=move] [data-layout-id]:hover{filter:drop-shadow(0 0 3px #ff5b4d)}html[data-editor-mode=image] img[data-image-key]{touch-action:none!important;pointer-events:auto!important;cursor:move!important;user-select:none!important;-webkit-user-select:none!important;-webkit-user-drag:none!important}.editor-image-crop-overlay{position:fixed;z-index:2147483000;display:none;box-sizing:border-box;border:3px solid #ff5b4d;box-shadow:0 0 0 2px rgba(255,255,255,.88),0 0 0 5px rgba(255,91,77,.28);pointer-events:none}.editor-image-crop-overlay.is-visible{display:block}.editor-image-crop-handle{position:absolute;width:44px;height:44px;margin:0;padding:0;border:0;background:transparent;pointer-events:auto;touch-action:none;cursor:pointer}.editor-image-crop-handle::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:12px;border:2px solid #26354a;border-radius:3px;background:#ffd84d;box-shadow:0 0 0 2px #fff;transform:translate(-50%,-50%)}.editor-image-crop-handle[data-handle=nw]{left:0;top:0;transform:translate(-50%,-50%);cursor:nwse-resize}.editor-image-crop-handle[data-handle=n]{left:50%;top:0;transform:translate(-50%,-50%);cursor:ns-resize}.editor-image-crop-handle[data-handle=ne]{right:0;top:0;transform:translate(50%,-50%);cursor:nesw-resize}.editor-image-crop-handle[data-handle=e]{right:0;top:50%;transform:translate(50%,-50%);cursor:ew-resize}.editor-image-crop-handle[data-handle=se]{right:0;bottom:0;transform:translate(50%,50%);cursor:nwse-resize}.editor-image-crop-handle[data-handle=s]{left:50%;bottom:0;transform:translate(-50%,50%);cursor:ns-resize}.editor-image-crop-handle[data-handle=sw]{left:0;bottom:0;transform:translate(-50%,50%);cursor:nesw-resize}.editor-image-crop-handle[data-handle=w]{left:0;top:50%;transform:translate(-50%,-50%);cursor:ew-resize}.hero-mascot,.hero-mascot *,.campus-decor,.campus-decor *{pointer-events:auto!important}.hero-mascot,.campus-decor{position:absolute!important;z-index:1200!important;user-select:none!important;-webkit-user-select:none!important;-webkit-user-drag:none!important}.campus-decor{animation:none!important}html[data-editor-mode=move] .hero-mascot,html[data-editor-mode=move] .campus-decor{cursor:grab!important;touch-action:none!important}html[data-editor-mode=move] .hero-mascot:active,html[data-editor-mode=move] .campus-decor:active{cursor:grabbing!important}.hero-mascot img,.campus-decor img{pointer-events:auto!important;-webkit-user-drag:none!important}.hero-owl,.hero-owl *{display:block!important;visibility:visible!important;pointer-events:auto!important}@media(max-width:640px){.hero-mascot img{width:76px!important;max-width:76px!important;max-height:76px!important}}';
      visualStyle.textContent+=' .editor-real-crop-overlay{position:fixed;z-index:2147483646;overflow:hidden;pointer-events:none;border:2px solid #fff;box-shadow:0 0 0 2px #ff5b4d}.editor-real-crop-selection{position:absolute;pointer-events:auto;border:3px solid #ffe45e;box-shadow:0 0 0 9999px rgba(10,20,30,.62);touch-action:none;cursor:move}.editor-real-crop-selection:before,.editor-real-crop-selection:after{content:"";position:absolute;pointer-events:none}.editor-real-crop-selection:before{left:33.333%;top:0;width:33.333%;height:100%;border-left:1px dashed rgba(255,255,255,.8);border-right:1px dashed rgba(255,255,255,.8)}.editor-real-crop-selection:after{left:0;top:33.333%;width:100%;height:33.333%;border-top:1px dashed rgba(255,255,255,.8);border-bottom:1px dashed rgba(255,255,255,.8)}.editor-real-crop-handle{position:absolute;width:18px;height:18px;padding:0;border:3px solid #fff;border-radius:50%;background:#ff5b4d;box-shadow:0 1px 4px rgba(0,0,0,.5);touch-action:none;z-index:2}.editor-real-crop-handle[data-crop-handle=nw]{left:0;top:0;transform:translate(-50%,-50%)}.editor-real-crop-handle[data-crop-handle=n]{left:50%;top:0;transform:translate(-50%,-50%)}.editor-real-crop-handle[data-crop-handle=ne]{right:0;top:0;transform:translate(50%,-50%)}.editor-real-crop-handle[data-crop-handle=e]{right:0;top:50%;transform:translate(50%,-50%)}.editor-real-crop-handle[data-crop-handle=se]{right:0;bottom:0;transform:translate(50%,50%)}.editor-real-crop-handle[data-crop-handle=s]{left:50%;bottom:0;transform:translate(-50%,50%)}.editor-real-crop-handle[data-crop-handle=sw]{left:0;bottom:0;transform:translate(-50%,50%)}.editor-real-crop-handle[data-crop-handle=w]{left:0;top:50%;transform:translate(-50%,-50%)}@media(max-width:640px){.editor-real-crop-handle{width:24px;height:24px}}';
@@ -411,7 +454,7 @@ doc.addEventListener('pointermove',event=>{
   };
   const armVisualEditor = () => [0,120,360,900].forEach(delay=>setTimeout(setupVisualEditor,delay));
   const changeLayer = mode => { const id=selectedLayout(); if(!id){status('请先在右侧预览中点选一张图片或装饰素材。',true);return;} content.layout=content.layout||{};const value={x:0,y:0,z:0,...content.layout[id]};if(mode==='top')value.z=999;else if(mode==='up')value.z=Math.min(999,(Number(value.z)||0)+1);else if(mode==='down')value.z=Math.max(-99,(Number(value.z)||0)-1);else if(mode==='bottom')value.z=-99;else if(mode==='reset')Object.assign(value,{x:0,y:0,z:0});content.layout[id]=value;updateLayoutStyle(visual.selected,value);scheduleDraft(); };
-  const bindVisualTools = () => { $('#browseModeBtn').onclick=()=>setVisualMode('browse');$('#textModeBtn').onclick=()=>setVisualMode('text');$('#moveModeBtn').onclick=()=>setVisualMode('move');$('#imageModeBtn').onclick=()=>setVisualMode('image');$('#boldBtn').onclick=()=>{const doc=visual.doc;if(!doc)return;doc.execCommand('bold',false,null);const active=doc.activeElement?.closest?.('[data-rich-id]')||visual.selected;if(active?.dataset?.richId)updateRichFromElement(active);};$('#deleteTextBtn').onclick=deleteSelectedRichText;$('#topBtn').onclick=()=>changeLayer('top');$('#upBtn').onclick=()=>changeLayer('up');$('#downBtn').onclick=()=>changeLayer('down');$('#bottomBtn').onclick=()=>changeLayer('bottom');$('#resetLayoutBtn').onclick=()=>changeLayer('reset');$('#imageZoomOutBtn').onclick=()=>changeImageZoom(-.1);$('#imageZoomInBtn').onclick=()=>changeImageZoom(.1);$('#imageFillBtn').onclick=fillSelectedImage;$('#imageResetBtn').onclick=resetSelectedImage;$('#startCropBtn').onclick=startCropSession;$('#applyCropBtn').onclick=applyCropSession;$('#cancelCropBtn').onclick=cancelCropSession;setVisualMode('browse'); };
+  const bindVisualTools = () => { $('#browseModeBtn').onclick=()=>setVisualMode('browse');$('#textModeBtn').onclick=()=>setVisualMode('text');$('#moveModeBtn').onclick=()=>setVisualMode('move');$('#imageModeBtn').onclick=()=>setVisualMode('image');$('#boldBtn').onclick=()=>{const doc=visual.doc;if(!doc)return;doc.execCommand('bold',false,null);const active=doc.activeElement?.closest?.('[data-rich-id]')||visual.selected;if(active?.dataset?.richId)updateRichFromElement(active);};$('#topBtn').onclick=()=>changeLayer('top');$('#upBtn').onclick=()=>changeLayer('up');$('#downBtn').onclick=()=>changeLayer('down');$('#bottomBtn').onclick=()=>changeLayer('bottom');$('#resetLayoutBtn').onclick=()=>changeLayer('reset');$('#imageZoomOutBtn').onclick=()=>changeImageZoom(-.1);$('#imageZoomInBtn').onclick=()=>changeImageZoom(.1);$('#imageFillBtn').onclick=fillSelectedImage;$('#imageResetBtn').onclick=resetSelectedImage;$('#startCropBtn').onclick=startCropSession;$('#applyCropBtn').onclick=applyCropSession;$('#cancelCropBtn').onclick=cancelCropSession;setVisualMode('browse'); };
 
   const pushPreview = () => { const frame = $('#preview'); if (frame?.contentWindow) { frame.contentWindow.postMessage({ type: 'wechat-recruitment-preview', content }, '*'); armVisualEditor(); } };
   const refreshPreview = () => { const frame = $('#preview'); if (frame) { frame.onload = () => pushPreview(); frame.src = 'index.html?editorPreview=1&preview=' + Date.now(); } };

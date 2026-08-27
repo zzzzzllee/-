@@ -855,18 +855,45 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     document.querySelectorAll('[data-rich-id]').forEach(el=>{
       if(!el.dataset.layoutId) el.dataset.layoutId='rich-layout-'+el.dataset.richId.slice(5);
     });
-    const markContentPath = (selector, pathOrFn) => document.querySelectorAll(selector).forEach((el, index) => { el.dataset.contentPath = typeof pathOrFn === 'function' ? pathOrFn(el, index) : pathOrFn; });
-    markContentPath('.hero-kicker', 'hero.kicker'); markContentPath('.intro .lead-card', 'intro.lead');
+
+    // 左侧表单只是右侧成稿的结构化镜像：这些标记只负责告诉编辑器
+    // “右侧这段最终显示文字”应回填到左侧哪个字段，不会反向覆盖右侧。
+    const markContentPath = (selector, pathOrFn) => document.querySelectorAll(selector).forEach((el, index) => {
+      el.dataset.contentPath = typeof pathOrFn === 'function' ? pathOrFn(el, index) : pathOrFn;
+    });
+    const markSplitTitle = (selector, beforePath, markPath, markSelector = '.mark') => document.querySelectorAll(selector).forEach(el => {
+      el.dataset.contentBeforePath = beforePath;
+      const mark = el.querySelector(markSelector);
+      if (mark) { mark.dataset.contentPath = markPath; mark.dataset.contentPart = '1'; }
+    });
+    markContentPath('.hero-kicker', 'hero.kicker');
+    markSplitTitle('.hero h1', 'hero.titleMain', 'hero.titleAccent', '.outline');
+    markContentPath('.hero-sub', 'hero.sub'); document.querySelector('.hero-sub')?.setAttribute('data-content-transform', 'hero-sub');
+    markContentPath('[data-hero-gallery-hint]', 'heroGallery.hint');
+    markContentPath('.hero-gallery-card > span', (_, index) => 'heroGallery.captions.' + index);
+    markSplitTitle('.intro .section-title', 'intro.titleBefore', 'intro.titleMark');
+    markContentPath('.intro .lead-card', 'intro.lead'); markContentPath('.intro figcaption', 'intro.caption');
     markContentPath('.intro .photo-wall-title', 'introPhotoWall.title'); markContentPath('.intro .photo-wall-hint', 'introPhotoWall.hint');
+    markContentPath('[data-photo-wall="intro"] .photo-card > span', (_, index) => 'introPhotoWall.captions.' + index);
     markContentPath('.zero-section h2', 'barrier.title'); markContentPath('.zero-main', 'barrier.body'); markContentPath('.zero-note', 'barrier.note');
+    markSplitTitle('.roles .section-title', 'roles.titleBefore', 'roles.titleMark');
     markContentPath('.roles-intro', 'roles.intro'); markContentPath('.roles-more-note', 'roles.more');
     markContentPath('.role-card h3', (_, index) => 'roles.cards.' + index + '.title'); markContentPath('.role-card p', (_, index) => 'roles.cards.' + index + '.body'); markContentPath('.role-card .mini', (_, index) => 'roles.cards.' + index + '.tag');
     markContentPath('.roles-gallery-title', 'roles.gallery.title'); markContentPath('.roles-gallery-hint', 'roles.gallery.hint');
+    markSplitTitle('.gains .section-title', 'gains.titleBefore', 'gains.titleMark');
     markContentPath('.gains .ticket strong', (_, index) => 'gains.cards.' + index + '.title'); markContentPath('.gains .ticket p', (_, index) => 'gains.cards.' + index + '.body');
-    markContentPath('.moments > p', (_, index) => 'moments.paragraphs.' + index); markContentPath('.video-intro', 'video.intro'); markContentPath('.video-note', 'video.note');
+    markSplitTitle('.moments .section-title', 'moments.titleBefore', 'moments.titleMark'); markContentPath('.moments > p', (_, index) => 'moments.paragraphs.' + index);
+    markSplitTitle('.video-section .section-title', 'video.titleBefore', 'video.titleMark'); markContentPath('.video-intro', 'video.intro'); markContentPath('.video-note', 'video.note');
     markContentPath('.team-photo-section .photo-wall-title', 'photoWall.title'); markContentPath('.team-photo-section .photo-wall-hint', 'photoWall.hint');
-    markContentPath('.suitable .checklist li', (_, index) => 'suitable.items.' + index); markContentPath('.encourage', 'suitable.encourage');
-    markContentPath('.admission h3', 'apply.object'); markContentPath('.qrcard span', (_, index) => 'apply.qrLabels.' + index);
+    markContentPath('.team-photo-section .photo-card > span', (_, index) => 'photoWall.captions.' + index);
+    markSplitTitle('.suitable .section-title', 'suitable.titleBefore', 'suitable.titleMark'); markContentPath('.suitable .checklist li', (_, index) => 'suitable.items.' + index); markContentPath('.encourage', 'suitable.encourage');
+    markSplitTitle('.apply-section .section-title', 'apply.titleBefore', 'apply.titleMark'); markContentPath('.admission h3', 'apply.object');
+    const applyMeta = document.querySelector('.apply-meta'); if (applyMeta) applyMeta.dataset.contentMethodPath = 'apply.method';
+    document.querySelectorAll('.apply-meta strong').forEach((el, index) => { el.dataset.contentPath = index === 0 ? 'apply.signupTime' : 'apply.deadline'; el.dataset.contentPart = '1'; });
+    markContentPath('.qrcard span', (_, index) => 'apply.qrLabels.' + index);
+    const closingCopy = document.querySelector('.closing-copy p'); if (closingCopy) { closingCopy.dataset.contentBeforePath = 'closing.body'; closingCopy.dataset.contentTransform = 'closing-body'; const strong = closingCopy.querySelector('strong'); if (strong) { strong.dataset.contentPath = 'closing.emphasis'; strong.dataset.contentPart = '1'; } }
+    markContentPath('.closing-title', 'closing.title');
+    const closingSub = document.querySelector('.closing-sub'); if (closingSub) closingSub.dataset.contentLinesPaths = 'closing.subLine1|closing.subLine2';
   };
   const applyAutomaticImageFocus = img => {
     if (!img || img.closest('.qrcard')) return;
@@ -884,8 +911,9 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
   };
   const applyVisualOverrides = c => {
     prepareEditableMap();
-    const rich=c.richText||{}; const deleted=new Set(Array.isArray(c.deletedRichText)?c.deletedRichText:[]);
-    document.querySelectorAll('[data-rich-id]').forEach(el=>{const id=el.dataset.richId;if(deleted.has(id)){el.hidden=true;el.setAttribute('aria-hidden','true');return;}el.hidden=false;el.removeAttribute('aria-hidden');const value=rich[id];if(typeof value==='string')el.innerHTML=value;});
+    const rich=c.richText||{}; document.querySelectorAll('[data-rich-id]').forEach(el=>{const value=rich[el.dataset.richId];if(typeof value==='string')el.innerHTML=value;});
+    // 富文本会替换标题内部的 span，替换后重新标记一次，确保拆分标题仍能准确同步到左侧。
+    prepareEditableMap();
     const layout=c.layout||{}; document.querySelectorAll('[data-layout-id]').forEach(el=>{const value=layout[el.dataset.layoutId]||{};const x=Number(value.x)||0,y=Number(value.y)||0,z=Number(value.z)||0;el.style.setProperty('--layout-x',x+'px');el.style.setProperty('--layout-y',y+'px');if(z){el.style.zIndex=String(z);if(getComputedStyle(el).position==='static')el.style.position='relative';}else el.style.removeProperty('z-index');});
     window.__wechatRenderedContent=c;
     window.dispatchEvent(new CustomEvent('wechat-content-rendered',{detail:c}));
