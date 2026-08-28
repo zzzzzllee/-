@@ -42,19 +42,26 @@
     url.searchParams.set('quality', '78');
     return url.toString();
   };
+  const preloadedImageUrls = new Set();
   const preloadAll = content => {
-    const entries = Object.entries(content?.images || {});
-    const decorationSources = [ ...(content?.decorations?.qq || []), ...((content?.decorations?.mascots || []).map(item => item?.src)) ];
+    // 只预加载首屏会立即看到的图片，避免所有内容图同时抢占手机带宽。
+    const heroKeys = Array.isArray(content?.heroGallery?.imageKeys) && content.heroGallery.imageKeys.length
+      ? content.heroGallery.imageKeys.slice(0, 3)
+      : ['hero1', 'hero2', 'hero3'];
+    const images = content?.images || {};
     const sources = [
-      ...entries.map(([key, src]) => ({ key, src: /^qr/i.test(key) ? String(src || '') : optimizeImageUrl(src, 1000) })),
-      ...decorationSources.map(src => ({ key: 'decoration', src: optimizeImageUrl(src, 600) }))
+      ...heroKeys.map(key => ({ key, src: optimizeImageUrl(images[key], 1000) })),
+      ...((content?.decorations?.qq || []).slice(0, 2)).map(src => ({ key: 'decoration', src: optimizeImageUrl(src, 600) })),
+      ...(content?.video?.poster ? [{ key: 'video-poster', src: optimizeImageUrl(content.video.poster, 1200) }] : [])
     ].filter(item => item.src);
-    const seen = new Set();
     window.__wechatImagePreloads = window.__wechatImagePreloads || [];
     sources.forEach(item => {
-      if (seen.has(item.src)) return;
-      seen.add(item.src);
-      const image = new Image(); image.decoding = 'async'; image.fetchPriority = /^hero(1|2|6)$/.test(item.key) ? 'high' : 'auto'; image.src = item.src;
+      if (preloadedImageUrls.has(item.src)) return;
+      preloadedImageUrls.add(item.src);
+      const image = new Image();
+      image.decoding = 'async';
+      image.fetchPriority = /^hero(1|2|3)$/.test(item.key) ? 'high' : 'auto';
+      image.src = item.src;
       window.__wechatImagePreloads.push(image);
     });
   };
@@ -119,7 +126,7 @@ button{font:inherit}
 .video-card{position:relative;padding:20px;background:rgba(255,255,255,.86);border:3px solid var(--ink);box-shadow:var(--shadow);transform:rotate(-.6deg)}
 .video-intro{margin:0 0 18px;font-size:16px;line-height:1.9}
 .video-shell{position:relative;overflow:hidden;background:#1b1b1b;border:2px solid var(--ink);aspect-ratio:16/9;display:grid;place-items:center}
-.video-shell video{display:none;width:100%;height:100%;object-fit:contain;background:#111}
+.video-shell video{display:none;width:100%;height:100%;object-fit:contain;background:#111}.video-shell video::-webkit-media-controls-overflow-button{display:none!important}
 .video-shell.has-video video{display:block}.video-shell.has-video .video-empty{display:none}
 .video-empty{padding:28px 20px;text-align:center;color:#fff;background:linear-gradient(135deg,rgba(27,27,27,.92),rgba(79,117,145,.9)),url("assets/style-sky.webp") center/cover;font:900 20px/1.6 "Microsoft YaHei",sans-serif}
 .video-empty span{display:block;margin-top:6px;font:500 12px/1.7 "Microsoft YaHei",sans-serif;opacity:.82}
@@ -464,7 +471,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     <h2 class="section-title reveal">宣传片，<span class="mark">先看见我们</span></h2>
     <div class="video-card reveal">
       <p class="video-intro">一支宣传片，记录舞台亮起之前的准备、协作与期待。把视频放在这里，让新生先用几分钟认识艺术教育中心。</p>
-      <div class="video-shell" id="promoVideoShell"><video id="promoVideo" controls playsinline preload="metadata" poster="assets/style-sky.webp"></video><div class="video-empty">宣传片视频位置<span>在在线编辑器中粘贴 MP4 / WebM 视频地址</span></div></div>
+      <div class="video-shell" id="promoVideoShell"><video id="promoVideo" controls controlslist="nodownload noplaybackrate noremoteplayback" disablepictureinpicture disableremoteplayback playsinline preload="none" poster="assets/style-sky.webp"></video><div class="video-empty">宣传片视频位置<span>在在线编辑器中粘贴 MP4 / WebM 视频地址</span></div></div>
       <p class="video-note">视频地址可填写 GitHub Pages 可访问的 MP4、WebM 或其他浏览器支持的视频链接。</p>
     </div>
   </section>
@@ -632,12 +639,13 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
   const setTitle = (selector, before, mark) => { const el = document.querySelector(selector); if (!el) return; el.firstChild && (el.firstChild.nodeValue = before || ''); const span = el.querySelector('.mark'); if (span) span.textContent = mark || ''; };
   const optimizeImageUrl = window.__optimizeWechatImageUrl || ((src) => String(src || ''));
   const transparentPixel = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-  const setImmediateImage = (image, src, priority = 'auto') => {
+  const setImmediateImage = (image, src, priority = 'auto', loading = 'lazy') => {
     if (!image || !src) return;
     const nextSrc = String(src);
-    image.loading = 'eager';
+    const critical = Boolean(image.closest('.hero, .campus-decor, .hero-mascot'));
+    image.loading = critical ? 'eager' : loading;
     image.decoding = 'async';
-    image.fetchPriority = priority;
+    image.fetchPriority = critical ? 'high' : priority;
     image.removeAttribute('data-src');
     image.removeAttribute('data-deferred-src');
     image.dataset.deferredLoaded = '1';
@@ -649,7 +657,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     const isQr = selector.includes('.qrcard');
     const nextSrc = isQr ? String(src) : optimizeImageUrl(src, width);
     if (!isQr && imageKey) el.dataset.imageKey = imageKey;
-    setImmediateImage(el, nextSrc);
+    setImmediateImage(el, nextSrc, 'auto', 'lazy');
   };
   const loadDeferredCardImage = card => {
     const image = card?.querySelector('img[data-src]');
@@ -716,6 +724,41 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     return prioritizeGainCards(result);
   };
   let stopHeroGalleryLoop = () => {};
+  let promoVideoObserver = null;
+  const preparePromoVideo = (video, shell, url, poster) => {
+    if (!video || !shell || !url) return;
+    const source = String(url);
+    if (video.dataset.videoSource === source && video.dataset.videoLoaded === '1') return;
+    video.dataset.videoSource = source;
+    video.dataset.videoLoaded = '';
+    video.preload = 'none';
+    video.controlsList?.add('nodownload', 'noplaybackrate', 'noremoteplayback');
+    video.disablePictureInPicture = true;
+    video.disableRemotePlayback = true;
+    video.poster = poster || 'assets/style-sky.webp';
+    video.removeAttribute('src');
+    shell.classList.add('has-video');
+    const activate = () => {
+      if (video.dataset.videoLoaded === '1') return;
+      video.dataset.videoLoaded = '1';
+      video.src = source;
+      video.preload = 'auto';
+      video.load();
+    };
+    if (video.dataset.videoActivateBound !== '1') {
+      video.addEventListener('pointerdown', activate, { passive: true });
+      video.addEventListener('play', activate, { passive: true });
+      video.dataset.videoActivateBound = '1';
+    }
+    promoVideoObserver?.disconnect();
+    promoVideoObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      activate();
+      promoVideoObserver?.disconnect();
+    }, { rootMargin: '900px 0px' }) : null;
+    if (promoVideoObserver) promoVideoObserver.observe(video);
+    else setTimeout(activate, 1800);
+  };
   const renderHeroGallery = c => {
     const root = document.querySelector('[data-hero-gallery]'); if (!root) return;
     const gallery = c.heroGallery || {}; const images = c.images || {};
@@ -729,7 +772,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
       if (track.dataset.renderSignature === signature) return;
       stopHeroGalleryLoop();
       track.dataset.renderSignature = signature;
-      track.innerHTML = items.map((item,index) => { const src=optimizeImageUrl(item.src,1000); return '<figure class="hero-gallery-card" data-hero-card data-layout-key="hero-gallery-'+(index+1)+'"><img data-image-key="'+escapeHtml(item.key)+'" loading="eager" fetchpriority="'+(index===0||index===1||index===items.length-1?'high':'auto')+'" decoding="async" src="'+escapeHtml(src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></figure>'; }).join('');
+      track.innerHTML = items.map((item,index) => { const src=optimizeImageUrl(item.src,1000); return '<figure class="hero-gallery-card" data-hero-card data-layout-key="hero-gallery-'+(index+1)+'"><img data-image-key="'+escapeHtml(item.key)+'" loading="'+(index < 3 ? 'eager' : 'lazy')+'" fetchpriority="'+(index < 2 ? 'high' : 'auto')+'" decoding="async" src="'+escapeHtml(src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></figure>'; }).join('');
       const cards = [...track.querySelectorAll('[data-hero-card]')]; let activeIndex = 0; let startX = 0; let startY = 0; let pointerId = null;
       const update = () => { const total=cards.length; cards.forEach((card,index)=>{ const offset=(index-activeIndex+total)%total; const previous=(activeIndex-index+total)%total; card.classList.remove('is-active','is-next','is-next-2','is-prev'); const stateClass=offset===0?'is-active':offset===1?'is-next':previous===1?'is-prev':offset===2?'is-next-2':''; if(stateClass){card.classList.add(stateClass); if(stateClass!=='is-next-2')loadDeferredCardImage(card);} card.setAttribute('aria-hidden',offset===0?'false':'true'); card.setAttribute('tabindex',offset===0?'0':'-1'); }); track.dataset.activeIndex=String(activeIndex); };
       const step = direction => { if(cards.length<2)return; activeIndex=(activeIndex+direction+cards.length)%cards.length; update(); };
@@ -778,7 +821,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
       const signature = JSON.stringify(items.map(item => optimizeImageUrl(item.src, 900)));
       if (grid.dataset.renderSignature !== signature) {
         grid.dataset.renderSignature = signature;
-        grid.innerHTML = items.map((item,index) => '<figure class="roles-gallery-card" data-layout-key="roles-gallery-'+(index+1)+'"><img data-image-key="'+escapeHtml(item.key)+'" loading="eager" fetchpriority="auto" decoding="async" src="'+escapeHtml(optimizeImageUrl(item.src,900))+'" alt="设备与场地展示第 '+(index + 1)+' 张"></figure>').join('');
+        grid.innerHTML = items.map((item,index) => '<figure class="roles-gallery-card" data-layout-key="roles-gallery-'+(index+1)+'"><img data-image-key="'+escapeHtml(item.key)+'" loading="'+(index === 0 ? 'eager' : 'lazy')+'" fetchpriority="'+(index === 0 ? 'high' : 'auto')+'" decoding="async" src="'+escapeHtml(optimizeImageUrl(item.src,900))+'" alt="设备与场地展示第 '+(index + 1)+' 张"></figure>').join('');
       }
     }
 
@@ -797,7 +840,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
         if (stage.dataset.renderSignature !== signature) {
           stage.dataset.renderSignature = signature;
           state.index = 0;
-          stage.innerHTML = items.length ? items.map((item,index) => { const src=optimizeImageUrl(item.src,900); return '<article class="photo-card" data-photo-card data-layout-key="'+(isIntro?'intro-photo-wall':'photo-wall')+'-'+(index+1)+'"><img data-image-key="'+escapeHtml(item.key)+'" loading="eager" fetchpriority="auto" decoding="async" src="'+escapeHtml(src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></article>'; }).join('') : '<article class="photo-card is-active" data-photo-card data-layout-key="'+(isIntro?'intro-photo-wall':'photo-wall')+'-1"><img data-image-key="'+(isIntro?'introPhotoWall1':'photoWall1')+'" loading="eager" src="'+fallbackSrc+'" alt="'+escapeHtml(fallbackTitle)+'"><span>'+escapeHtml(fallbackTitle)+'</span></article>';
+          stage.innerHTML = items.length ? items.map((item,index) => { const src=optimizeImageUrl(item.src,900); return '<article class="photo-card" data-photo-card data-layout-key="'+(isIntro?'intro-photo-wall':'photo-wall')+'-'+(index+1)+'"><img data-image-key="'+escapeHtml(item.key)+'" loading="'+(index === 0 ? 'eager' : 'lazy')+'" fetchpriority="'+(index === 0 ? 'high' : 'auto')+'" decoding="async" src="'+escapeHtml(src)+'" alt="'+escapeHtml(item.caption)+'"><span>'+escapeHtml(item.caption)+'</span></article>'; }).join('') : '<article class="photo-card is-active" data-photo-card data-layout-key="'+(isIntro?'intro-photo-wall':'photo-wall')+'-1"><img data-image-key="'+(isIntro?'introPhotoWall1':'photoWall1')+'" loading="eager" src="'+fallbackSrc+'" alt="'+escapeHtml(fallbackTitle)+'"><span>'+escapeHtml(fallbackTitle)+'</span></article>';
         }
       }
       updatePhotoWall(root);
@@ -952,7 +995,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     const cp=document.querySelector('.closing-copy p'); if(cp){const emphasis=c.closing?.emphasis||'一起开演';const ending=/[。！？!?]$/.test(emphasis)?'':'。';cp.innerHTML=(c.closing?.body||'')+'<strong>'+emphasis+'</strong>'+ending;} setText('.closing-title',c.closing?.title); const cs=document.querySelector('.closing-sub'); if(cs)cs.innerHTML=(c.closing?.subLine1||'')+'<br>'+(c.closing?.subLine2||'');
     const v=c.video||{};
     setTitle('.video-section .section-title',v.titleBefore||'宣传片，',v.titleMark||'先看见我们'); setText('.video-intro',v.intro); setText('.video-note',v.note);
-    const pv=document.querySelector('#promoVideo'), pvs=document.querySelector('#promoVideoShell'); if(pv&&pvs){if(v.url){pv.src=v.url;if(v.poster)pv.poster=v.poster;pvs.classList.add('has-video');pv.load()}else{pv.removeAttribute('src');pvs.classList.remove('has-video')}}
+    const pv=document.querySelector('#promoVideo'), pvs=document.querySelector('#promoVideoShell'); if(pv&&pvs){if(v.url){preparePromoVideo(pv,pvs,v.url,v.poster)}else{promoVideoObserver?.disconnect();pv.dataset.videoSource='';pv.dataset.videoLoaded='';pv.removeAttribute('src');pv.poster='assets/style-sky.webp';pvs.classList.remove('has-video')}}
     const imgs=c.images||{};
     renderHeroGallery(c);
     renderPhotoWall(c);
