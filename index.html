@@ -305,7 +305,7 @@ button{font:inherit}
     .roles-gallery{padding:18px 12px 16px}
     .roles-gallery-grid{grid-template-columns:1fr;gap:15px}
     .roles-gallery-card,.roles-gallery-card:nth-child(n){grid-column:1/-1;transform:none!important}
-    .roles-gallery-card img{width:100%;height:auto;min-height:0;aspect-ratio:4/3}
+    .roles-gallery-card img{width:100%;height:auto;min-height:0;aspect-ratio:4/3;object-fit:contain!important}
     .photo-wall-hint{margin-top:28px!important;padding:10px 12px!important;font-size:12px;line-height:1.65}
     .qrcard:before{right:-5px;top:-9px;padding:3px 6px;font-size:8px}
   }
@@ -329,7 +329,7 @@ button{font:inherit}
   .photo-card.is-prev-3,.photo-card.is-next-3{z-index:996!important}
   .photo-card img{position:relative;z-index:2}
   .photo-card>span:last-child{z-index:3}
-/* 相框尺寸保持不变：照片按原比例铺满，竖图自动裁掉两侧空白并优先保留人物上半身。 */
+/* 相框尺寸保持不变：照片默认完整显示，不自动裁剪；需要对准主体时可在编辑器中移动、缩放后保存。 */
 .polaroid img,
 .intro-photo img,
 .detail-photo img,
@@ -340,16 +340,18 @@ button{font:inherit}
 .photo-card img,
 .skill-card img,
 .hero-gallery-card img{
-  object-fit:cover!important;
-  object-position:center var(--image-focus-y,50%)!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background-image:none!important;
+  background-color:transparent!important;
   transform:translate(var(--image-x,0px),var(--image-y,0px)) translate(var(--image-crop-x,0%),var(--image-crop-y,0%)) scale(var(--image-scale-x,var(--image-scale,1)),var(--image-scale-y,var(--image-scale,1))) scale(var(--image-crop-scale-x,1),var(--image-crop-scale-y,1))!important;
   transform-origin:center center!important
 }
 .qrcard img{object-fit:contain!important;object-position:center!important;background-color:#fff!important;transform:none!important}
 /* 放在统一 cover 规则之后，确保公开页完整显示照片的规则不会被覆盖。 */
-.page img.show-whole-photo{object-fit:contain!important;object-position:center!important;background-image:linear-gradient(rgba(20,34,53,.22),rgba(20,34,53,.22)),var(--whole-photo-bg)!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important}
+.page img.show-whole-photo{object-fit:contain!important;object-position:center!important;background-image:none!important;background-color:transparent!important;background-size:auto!important;background-position:center!important;background-repeat:no-repeat!important}
 /* 细节组成相册只放大照片本身，不叠加统一底图。 */
-.page .roles-gallery-card img.show-whole-photo{object-fit:cover!important;background-image:none!important;background-size:auto!important;background-position:center var(--image-focus-y,50%)!important}
+.page .roles-gallery-card img.show-whole-photo{object-fit:contain!important;background-image:none!important;background-color:transparent!important;background-size:auto!important;background-position:center!important}
 .detail-photo .frame:hover img,.roles-gallery-card:hover img{transform:translate(var(--image-x,0px),var(--image-y,0px)) translate(var(--image-crop-x,0%),var(--image-crop-y,0%)) scale(var(--image-scale-x,var(--image-scale,1)),var(--image-scale-y,var(--image-scale,1))) scale(var(--image-crop-scale-x,1),var(--image-crop-scale-y,1))!important}
 .qrcard img{touch-action:manipulation;-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
 .qr-image-viewer{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;padding:max(54px,env(safe-area-inset-top)) 18px max(42px,env(safe-area-inset-bottom));background:rgba(14,24,34,.9);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
@@ -960,7 +962,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
   };
   const applyImageAdjustments = c => {
     const adjustments=c.imageAdjustments||{};
-    document.querySelectorAll('img[data-image-key]').forEach(img=>{applyAutomaticImageFocus(img);const value=adjustments[img.dataset.imageKey]||{};const x=Number(value.x)||0,y=Number(value.y)||0,legacy=Math.max(.3,Math.min(6,Number(value.scale)||1)),scaleX=Math.max(.3,Math.min(6,Number(value.scaleX??legacy)||legacy)),scaleY=Math.max(.3,Math.min(6,Number(value.scaleY??legacy)||legacy));['width','height','max-width','max-height','left','top','position','object-fit','object-position'].forEach(name=>img.style.removeProperty(name));img.style.setProperty('--image-crop-x','0%');img.style.setProperty('--image-crop-y','0%');img.style.setProperty('--image-crop-scale-x','1');img.style.setProperty('--image-crop-scale-y','1');const crop=value.crop;const hasCrop=Boolean(crop&&Number(crop.width)>0&&Number(crop.height)>0);const hasManualAdjustment=hasCrop||Math.abs(x)>.5||Math.abs(y)>.5||Math.abs(scaleX-1)>.01||Math.abs(scaleY-1)>.01;const useWholePhotoBackdrop=!img.closest('.roles-gallery-card');if(!isEditorPreview&&!hasManualAdjustment&&useWholePhotoBackdrop){const source=img.getAttribute('src')||img.currentSrc||'';img.classList.add('show-whole-photo');img.style.setProperty('--whole-photo-bg','url('+JSON.stringify(source)+')');}else{img.classList.remove('show-whole-photo');img.style.removeProperty('--whole-photo-bg');}if(hasCrop){const left=Math.max(0,Math.min(.92,Number(crop.left)||0)),top=Math.max(0,Math.min(.92,Number(crop.top)||0)),width=Math.max(.08,Math.min(1-left,Number(crop.width)||1)),height=Math.max(.08,Math.min(1-top,Number(crop.height)||1));img.style.setProperty('--image-crop-x',(-left*100/width)+'%');img.style.setProperty('--image-crop-y',(-top*100/height)+'%');img.style.setProperty('--image-crop-scale-x',String(1/width));img.style.setProperty('--image-crop-scale-y',String(1/height));img.style.setProperty('object-fit','fill','important');img.style.setProperty('object-position','center','important');}img.style.setProperty('--image-x',x+'px');img.style.setProperty('--image-y',y+'px');img.style.setProperty('--image-scale-x',String(scaleX));img.style.setProperty('--image-scale-y',String(scaleY));img.style.setProperty('--image-scale',String((scaleX+scaleY)/2));});
+    document.querySelectorAll('img[data-image-key]').forEach(img=>{applyAutomaticImageFocus(img);const value=adjustments[img.dataset.imageKey]||{};const x=Number(value.x)||0,y=Number(value.y)||0,legacy=Math.max(.3,Math.min(6,Number(value.scale)||1)),scaleX=Math.max(.3,Math.min(6,Number(value.scaleX??legacy)||legacy)),scaleY=Math.max(.3,Math.min(6,Number(value.scaleY??legacy)||legacy));['width','height','max-width','max-height','left','top','position','object-fit','object-position'].forEach(name=>img.style.removeProperty(name));img.style.setProperty('--image-crop-x','0%');img.style.setProperty('--image-crop-y','0%');img.style.setProperty('--image-crop-scale-x','1');img.style.setProperty('--image-crop-scale-y','1');const crop=value.cropEnabled===true?value.crop:null;const hasCrop=Boolean(crop&&Number(crop.width)>0&&Number(crop.height)>0);img.classList.remove('show-whole-photo');img.style.removeProperty('--whole-photo-bg');img.style.setProperty('object-fit','contain','important');img.style.setProperty('object-position','center','important');if(hasCrop){const left=Math.max(0,Math.min(.92,Number(crop.left)||0)),top=Math.max(0,Math.min(.92,Number(crop.top)||0)),width=Math.max(.08,Math.min(1-left,Number(crop.width)||1)),height=Math.max(.08,Math.min(1-top,Number(crop.height)||1));img.style.setProperty('--image-crop-x',(-left*100/width)+'%');img.style.setProperty('--image-crop-y',(-top*100/height)+'%');img.style.setProperty('--image-crop-scale-x',String(1/width));img.style.setProperty('--image-crop-scale-y',String(1/height));img.style.setProperty('object-fit','fill','important');img.style.setProperty('object-position','center','important');}img.style.setProperty('--image-x',x+'px');img.style.setProperty('--image-y',y+'px');img.style.setProperty('--image-scale-x',String(scaleX));img.style.setProperty('--image-scale-y',String(scaleY));img.style.setProperty('--image-scale',String((scaleX+scaleY)/2));});
   };
   const richTextSignature = value => String(value ?? '').replace(/\u00a0/g, ' ').replace(/[\s\u200b-\u200d\ufeff]+/g, '');
   const richTextPlainValue = value => { const holder=document.createElement('div'); holder.innerHTML=String(value ?? ''); return holder.textContent || ''; };
