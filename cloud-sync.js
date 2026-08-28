@@ -29,6 +29,63 @@
   };
   const isConflict = error => Boolean(error?.conflict) || String(error?.code || '') === '409';
   const publicAssetUrl = path => client.storage.from(config.bucket).getPublicUrl(path).data.publicUrl;
+  const storagePathFromUrl = value => {
+    const raw = String(value || '').trim();
+    if (!/^https?:/i.test(raw)) return '';
+    let url;
+    try { url = new URL(raw); } catch { return ''; }
+    const marker = `/storage/v1/object/public/${config.bucket}/`;
+    const renderMarker = `/storage/v1/render/image/public/${config.bucket}/`;
+    let index = url.pathname.indexOf(marker);
+    if (index < 0) index = url.pathname.indexOf(renderMarker);
+    if (index < 0) return '';
+    const markerLength = url.pathname.includes(marker) ? marker.length : renderMarker.length;
+    const start = index + markerLength;
+    return start > 0 ? decodeURIComponent(url.pathname.slice(start)) : '';
+  };
+  const collectStoragePaths = (value, output = new Set()) => {
+    if (typeof value === 'string') {
+      const path = storagePathFromUrl(value);
+      if (path) output.add(path);
+      return output;
+    }
+    if (Array.isArray(value)) {
+      value.forEach(item => collectStoragePaths(item, output));
+      return output;
+    }
+    if (value && typeof value === 'object') Object.values(value).forEach(item => collectStoragePaths(item, output));
+    return output;
+  };
+  const cleanupObsoleteAssets = async content => {
+    if (!client || !content || !shareKey) return;
+    try {
+      // 只清理当前内容仍在使用的共享目录，绝不碰本地 assets 或其他文章。
+      const current = await readCurrentRow();
+      if (!current || !sameContent(current.content_json, content)) return;
+      const prefix = `${config.contentId}/${shareKey}`;
+      const keep = collectStoragePaths(current.content_json);
+      const stale = [];
+      for (let offset = 0; ; offset += 1000) {
+        const { data, error } = await client.storage.from(config.bucket).list(prefix, { limit: 1000, offset, sortBy: { column: 'name', order: 'asc' } });
+        if (error) throw error;
+        const rows = Array.isArray(data) ? data : [];
+        rows.forEach(row => {
+          const name = String(row?.name || '').trim();
+          if (name && !keep.has(`${prefix}/${name}`)) stale.push(`${prefix}/${name}`);
+        });
+        if (rows.length < 1000) break;
+      }
+      for (let index = 0; index < stale.length; index += 100) {
+        const batch = stale.slice(index, index + 100);
+        const { error } = await client.storage.from(config.bucket).remove(batch);
+        if (error) throw error;
+      }
+      if (stale.length) console.info(`已清理 ${stale.length} 个旧版图片/视频资源`);
+    } catch (error) {
+      // 清理失败不能回滚刚刚保存的最新内容；通常是 Supabase 尚未执行 storage delete policy。
+      console.warn('最新内容已保存，但旧版图片/视频清理失败', error);
+    }
+  };
   const stableSerialize = value => {
     if (Array.isArray(value)) return '[' + value.map(stableSerialize).join(',') + ']';
     if (value && typeof value === 'object') return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + stableSerialize(value[key])).join(',') + '}';
@@ -88,7 +145,10 @@
     if (updated) {
       lastUpdatedAt = updated.updated_at || values.updated_at;
       const verified = await reconcileSave(content);
-      if (verified) return verified;
+      if (verified) {
+        await cleanupObsoleteAssets(verified);
+        return verified;
+      }
       throw makeConflict('云端保存后校验未通过，正在重试。');
     }
 
@@ -115,7 +175,10 @@
     }
     lastUpdatedAt = inserted?.updated_at || values.updated_at;
     const verified = await reconcileSave(content);
-    if (verified) return verified;
+    if (verified) {
+      await cleanupObsoleteAssets(verified);
+      return verified;
+    }
     throw makeConflict('云端创建后校验未通过，正在重试。');
   };
 

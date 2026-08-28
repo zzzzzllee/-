@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN" class="cloud-ready">
+<html lang="zh-CN" class="cloud-pending">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -67,8 +67,8 @@
   };
   window.__optimizeWechatImageUrl = optimizeImageUrl;
   window.__wechatCachedSnapshot = readCached();
-  preloadAll(window.__wechatCachedSnapshot?.content_json);
-  window.__wechatFallbackBootstrap = fetch('content.json', { cache: 'default' }).then(response => response.json()).then(content => { preloadAll(content); return content; }).catch(() => ({}));
+
+  window.__wechatFallbackBootstrap = fetch('content.json', { cache: 'default' }).then(response => response.json()).catch(() => ({}));
   window.__wechatCloudBootstrap = (async () => {
     if (!cfg.url || !cfg.anonKey || !cfg.contentId) return null;
     try {
@@ -80,11 +80,11 @@
       if (!response.ok) throw new Error('cloud bootstrap ' + response.status);
       const rows = await response.json();
       const snapshot = rows?.[0] || null;
-      if (snapshot?.content_json) { saveCached(snapshot); preloadAll(snapshot.content_json); }
+      if (snapshot?.content_json) saveCached(snapshot);
       return snapshot;
     } catch (error) {
       console.warn('云端首屏内容读取失败，稍后使用安全回退', error);
-      return readCached();
+      return null;
     }
   })();
 })();
@@ -210,7 +210,7 @@ button{font:inherit}
 }
 @media(max-width:520px){.campus-decor img{width:98px;max-width:27vw}.campus-west{left:-6px;bottom:14px}.campus-north{right:-6px;top:46px}.campus-decor span{font-size:9px;padding:2px 6px}}@media(max-width:390px){.hero{min-height:880px}.hero h1{font-size:clamp(62px,17vw,68px)}.hero-sub{font-size:14px}.section{padding-left:16px;padding-right:16px}.section-title{font-size:28px}.memory-wall{height:auto}.qrgrid{gap:8px}.qrcard span{font-size:10px}.ticket{padding-left:62px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-spark,.tape,.hero-note,.wall-sticker,.closing-title,.floaty,.campus-decor{animation:none!important}.reveal{opacity:1;transform:none;transition:none}.polaroid,.role-card,.qrcard,.photo-card,.photo-wall-controls button{transition:none}}
-.cloud-pending .page{visibility:hidden}.cloud-ready .page{visibility:visible}.cloud-loading{position:fixed;inset:auto 12px 12px auto;z-index:100;display:grid;place-items:center;padding:8px 12px;background:rgba(255,255,255,.92);border:1px solid var(--ink);border-radius:999px;box-shadow:3px 3px 0 rgba(27,27,27,.18);font:700 11px/1.3 "Microsoft YaHei",sans-serif;color:var(--ink);transition:opacity .2s ease;pointer-events:none}.cloud-loading.is-hidden{opacity:0;pointer-events:none}.cloud-loading-card{padding:16px 20px;background:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);text-align:center}.cloud-loading-dot{display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:var(--coral);animation:cloudPulse 1s ease-in-out infinite alternate}@keyframes cloudPulse{to{transform:scale(1.45);background:var(--blue)}}@media print{body{background:#fff}.page{width:100%;margin:0;border:0;box-shadow:none}.reveal{opacity:1;transform:none}.section{break-inside:avoid}.hero{min-height:640px}}
+.cloud-pending .page{visibility:visible}.cloud-ready .page{visibility:visible}.cloud-loading{position:fixed;inset:auto 12px 12px auto;z-index:100;display:grid;place-items:center;padding:8px 12px;background:rgba(255,255,255,.92);border:1px solid var(--ink);border-radius:999px;box-shadow:3px 3px 0 rgba(27,27,27,.18);font:700 11px/1.3 "Microsoft YaHei",sans-serif;color:var(--ink);transition:opacity .2s ease;pointer-events:none}.cloud-loading.is-hidden{opacity:0;pointer-events:none}.cloud-loading-card{padding:16px 20px;background:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);text-align:center}.cloud-loading-dot{display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:var(--coral);animation:cloudPulse 1s ease-in-out infinite alternate}@keyframes cloudPulse{to{transform:scale(1.45);background:var(--blue)}}@media print{body{background:#fff}.page{width:100%;margin:0;border:0;box-shadow:none}.reveal{opacity:1;transform:none}.section{break-inside:avoid}.hero{min-height:640px}}
 
 /* 2026 招新重构：公开页只读、岗位卡、零基础重点和可视化布局覆盖 */
 .hero-mascot{position:absolute;z-index:7;pointer-events:none;overflow:visible}.hero-mascot img{display:block;width:clamp(72px,13vw,112px)!important;max-width:112px!important;max-height:112px!important;height:auto;object-fit:contain;filter:drop-shadow(4px 5px 0 rgba(27,27,27,.18))}.hero-wolf{left:-10px;bottom:8px;transform:rotate(-9deg)}.hero-owl{right:6px;top:auto;bottom:48px;transform:rotate(8deg)}.hero-owl img{width:clamp(72px,13vw,112px)!important;max-width:112px!important;max-height:112px!important}
@@ -368,7 +368,20 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
 .hero-gallery-card,.photo-card,.intro-photo,.detail-photo .frame,.roles-gallery-card,.memory,.skill-card{overflow:hidden}
 .hero-gallery-card span,.photo-card>span:last-child,.memory span,.intro-photo figcaption,.skill-copy{position:relative;z-index:3}
 .qrcard img{transform:none!important}
-</style>
+/* 修复设备与场地展示版块：恢复左右分布，避免最近覆盖规则把 6 张图强制排成竖列。 */
+.roles-details .roles-gallery-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px}
+.roles-details .roles-gallery-card,.roles-details .roles-gallery-card:nth-child(n){grid-column:auto;min-height:168px;margin:0;padding:6px;transform:none;border:2px solid var(--ink);border-radius:0;background:#fff;box-shadow:4px 4px 0 rgba(38,53,74,.2);overflow:hidden}
+.roles-details .roles-gallery-card:nth-child(1){grid-column:span 7;transform:rotate(-1.2deg)}
+.roles-details .roles-gallery-card:nth-child(2){grid-column:span 5;transform:rotate(1.5deg)}
+.roles-details .roles-gallery-card:nth-child(3){grid-column:span 4;transform:rotate(1deg)}
+.roles-details .roles-gallery-card:nth-child(4){grid-column:span 8;transform:rotate(-.8deg)}
+.roles-details .roles-gallery-card:nth-child(5),.roles-details .roles-gallery-card:nth-child(6){grid-column:span 6;transform:rotate(-1.4deg)}
+.roles-details .roles-gallery-card:nth-child(6){transform:rotate(1.3deg)}
+@media(max-width:640px){
+  .roles-details .roles-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .roles-details .roles-gallery-card,.roles-details .roles-gallery-card:nth-child(n){grid-column:span 1;min-height:0;padding:5px;transform:none!important}
+  .roles-details .roles-gallery-card img{aspect-ratio:4/3;object-fit:contain!important}
+}</style>
 </head>
 <body>
 
@@ -1023,6 +1036,8 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     if (signature === lastAppliedSignature) { lastAppliedUpdatedAt = updatedAt || lastAppliedUpdatedAt; finishLoading(); return false; }
     lastAppliedSignature = signature;
     lastAppliedUpdatedAt = updatedAt || lastAppliedUpdatedAt;
+    // 只在确定采用这一版内容后预加载首屏图片，避免旧快照和新快照同时抢占手机带宽。
+    preloadAll(merged);
     applyContent(merged);
     finishLoading();
     return true;
@@ -1041,12 +1056,16 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
       if (!previewContentReceived) applySnapshot(fallbackContent);
       return;
     }
+    // 云端是唯一优先来源：先等云端最新内容，只有云端失败才回退到本地快照/静态内容，避免旧版先闪现并重复加载图片。
+    const [snapshot, fallback] = await Promise.all([
+      window.__wechatCloudBootstrap || Promise.resolve(null),
+      fallbackPromise
+    ]);
+    fallbackContent = fallback || {};
     const cachedSnapshot = window.__wechatCachedSnapshot;
-    if (cachedSnapshot?.content_json) applySnapshot(cachedSnapshot.content_json, cachedSnapshot.updated_at);
-    fallbackContent = await fallbackPromise || {};
-    if (!cachedSnapshot?.content_json) applySnapshot(fallbackContent);
-    const snapshot = await (window.__wechatCloudBootstrap || Promise.resolve(null));
     if (snapshot?.content_json) applySnapshot(snapshot.content_json, snapshot.updated_at);
+    else if (cachedSnapshot?.content_json) applySnapshot(cachedSnapshot.content_json, cachedSnapshot.updated_at);
+    else applySnapshot(fallbackContent);
     const subscribeRealtime = () => {
       if (subscribeRealtime.unsubscribe) return;
       const sync = window.WechatCloudSync;

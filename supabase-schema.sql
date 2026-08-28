@@ -70,3 +70,10 @@ with check (
   bucket_id = 'wechat-recruitment-assets'
   and split_part(name, '/', 2) = public.wechat_request_share_key()
 );
+drop policy if exists "wechat assets shared delete" on storage.objects;
+create policy "wechat assets shared delete"
+on storage.objects for delete to anon, authenticated
+using (
+  bucket_id = 'wechat-recruitment-assets'
+  and split_part(name, '/', 2) = public.wechat_request_share_key()
+);
