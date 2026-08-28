@@ -97,7 +97,7 @@
     "intro": "在学习中成长，从实践里总结。\n体验各岗位的乐趣，让艺教充实你的大学生活",
     "gallery": {
       "hint": "从调音台、灯光控台到舞台、后台与观众席，熟悉每一件设备、每一处场地，才能让演出有序进行。",
-      "title": "一场精彩演出由许多细节组成",
+      "title": "一场精彩演出有许多细节组成",
       "captions": [
         "设备就位，舞台才有准确亮起的可能",
         "流程确认，让每一次衔接更加顺畅",
@@ -151,9 +151,9 @@
     "skillAudio": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-skillAudio-1787771834953-r3kbr6-27f27e5c4e9a71c929e3b08be9bb56e1.webp",
     "skillLight": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-skillLight-1787771931185-wu1nz7-d9c0f5232e82a0f1ad531df65070745d.webp",
     "qrWestGroup": "assets/qr-west-group-placeholder.png",
-    "qrNorthGroup": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-qrNorthGroup-1787798831455-zmybkc-d6f2a9a528ec29744a8d881ce06226b0.jpg",
-    "qrWestSignup": "assets/qr-west-signup-placeholder.png",
-    "qrNorthSignup": "assets/qr-north-signup-placeholder.png",
+    "qrNorthGroup": "assets/qr-west-group-placeholder.png",
+    "qrWestSignup": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-qrWestSignup-1787910991686-316f15-6f3fe975960fc6dba83ff45387936eec.jpg",
+    "qrNorthSignup": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-qrNorthSignup-1787911052174-zxxy1x-d6f2a9a528ec29744a8d881ce06226b0.jpg",
     "rolesGallery1": "assets/cloud-optimized/rolesGallery1.jpg",
     "rolesGallery2": "assets/cloud-optimized/rolesGallery2.jpg",
     "rolesGallery3": "assets/cloud-optimized/rolesGallery3.jpg",
@@ -178,7 +178,7 @@
   },
   "barrier": {
     "body": "无需任何基础！各类舞台设备知识\n从零开始，和师兄师姐一路同行",
-    "note": "不懂设备、没做过活动都没关系。愿意学、愿意来，就是最好的开场。",
+    "note": "不必为不熟悉设备或缺乏经验而顾虑。我们更期待的是你积极投入的态度与乐于学习的精神。",
     "title": "零基础也能大胆来",
     "eyebrow": "ZERO EXPERIENCE? NO PROBLEM!"
   },
@@ -191,12 +191,12 @@
     "photoCaption": "下一张团队合照，也许就有你"
   },
   "moments": {
-    "titleMark": "",
+    "titleMark": "我们亦有艺彩纷呈",
     "paragraphs": [
       "我们的部门工作，远不止于对讲机与流程表，更有活动后的合影、聚餐与复盘交流。许多伙伴正是在这些轻松时刻相识相知。",
       "在这里，既可潜心提升专业技能，亦可坦然结交真挚友谊。忙碌时我们并肩担当，闲暇时我们共享欢笑，这便是我们部门的日常风貌。"
     ],
-    "titleBefore": "工作之外，我们亦有艺彩纷呈"
+    "titleBefore": "工作之外，"
   },
   "richText": {
     "rich-17": "零基础也能大胆来",
