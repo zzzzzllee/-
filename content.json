@@ -129,18 +129,18 @@
   "images": {
     "hero1": "assets/cloud-optimized/hero1.jpg",
     "hero2": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-hero2-1787770015123-nj2epv-5.webp",
-    "hero3": "assets/cloud-optimized/hero3.jpg",
+    "hero3": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-hero3-1787934160076-8xldgl-caf8124c13f8c5937e012a6173fc0d8c.webp",
     "hero4": "assets/cloud-optimized/hero4.jpg",
-    "hero5": "assets/cloud-optimized/hero5.jpg",
-    "hero6": "assets/cloud-optimized/hero6.jpg",
+    "hero5": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-hero5-1787934208006-d5bwwz-3.webp",
+    "hero6": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-hero6-1787934219375-85li5o-5661ee2be7e1f6d33253bba0c7d098bd.webp",
     "intro": "assets/photo-placeholder.svg",
     "closing": "assets/photo-placeholder.svg",
     "detail1": "assets/photo-placeholder.svg",
     "detail2": "assets/photo-placeholder.svg",
     "moment1": "assets/cloud-optimized/moment1.jpg",
     "moment2": "assets/cloud-optimized/moment2.jpg",
-    "moment3": "assets/cloud-optimized/moment3.jpg",
-    "moment4": "assets/cloud-optimized/moment4.jpg",
+    "moment3": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-moment3-1787934489939-j0y010-9.webp",
+    "moment4": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/image-moment4-1787934499191-be8ua7-3667ff8a1cb2d8b1a1faa1c1018c6eda.webp",
     "skillDJ": "assets/cloud-optimized/skillDJ.jpg",
     "photoWall1": "assets/cloud-optimized/photoWall1.jpg",
     "photoWall2": "assets/cloud-optimized/photoWall2.jpg",
@@ -178,7 +178,7 @@
   },
   "barrier": {
     "body": "无需任何基础！各类舞台设备知识\n从零开始，和师兄师姐一路同行",
-    "note": "不懂设备、没做过活动都没关系。愿意学、愿意来，就是最好的开场。",
+    "note": "不必为不熟悉设备或缺乏经验而顾虑,\n我们更期待的是你积极投入的态度与乐于学习的精神。",
     "title": "零基础也能大胆来",
     "eyebrow": "ZERO EXPERIENCE? NO PROBLEM!"
   },
@@ -187,7 +187,7 @@
     "title": "新生入场，请就位！",
     "emphasis": "一起把舞台点亮！",
     "subLine1": "校团委艺术教育中心",
-    "subLine2": "零基础友好 · 等你来玩真的",
+    "subLine2": "零基础友好 · 等你来加入",
     "photoCaption": "下一张团队合照，也许就有你"
   },
   "moments": {
@@ -201,6 +201,7 @@
   "richText": {
     "rich-17": "零基础也能大胆来",
     "rich-18": "无需任何基础！各类舞台设备知识<div>从零开始，和师兄师姐一路同行</div>",
+    "rich-19": "不必为不熟悉设备或缺乏经验而顾虑,<div>我们更期待的是你积极投入的态度与乐于学习的精神。</div>",
     "rich-22": "在学习中成长，从实践里总结。<div>体验各岗位的乐趣，让艺教充实你的大学生活</div>",
     "rich-24": "负责舞台音频系统调试，完成各节目音量统筹与音频保障，为整场演出提供稳定的音频支持。",
     "rich-27": "根据节目编排与表演节奏完成灯光切换调度，运用灯光烘托舞台演出氛围。岗位需要收悉各类灯位布局，掌握灯光设备与现场实操能力。",
@@ -221,6 +222,8 @@
     "rich-76": "责任心强，能够信守承诺，对分配的任务认真负责、按时保质完成。",
     "rich-77": "善于团队沟通，乐于协作配合，共同保障活动现场的执行效果。",
     "rich-78": "希望通过部门实践，丰富大学生活，提升专业技能，拓展人际交往，积累成长经历。",
+    "rich-90": "校团委艺术教育中心<br>零基础友好 · 等你来加入",
+    "rich-91": "ART EDUCATION CENTER · 2026 RECRUITMENT<br><br>",
     "rich-extra-725hx": "你在台下看到的是灯光、音乐和掌声；我们在幕后做的是把设备、节奏和现场做到最好。校团委艺术教育中心面向 2026 级新生招新，想离舞台更近一点，就来和我们一起玩真的。",
     "rich-extra-r673c": "一起团建，保留每次的欢乐",
     "rich-extra-eev32a": "同伴们同心协作，高效完成舞台现场布置",
@@ -340,5 +343,64 @@
   "deletedRichText": [
     "rich-75"
   ],
-  "imageAdjustments": {}
+  "imageAdjustments": {
+    "hero3": {
+      "x": 0,
+      "y": 0,
+      "scaleX": 1,
+      "scaleY": 1
+    },
+    "skillDJ": {
+      "x": 0,
+      "y": 0,
+      "scaleX": 1.3,
+      "scaleY": 1.3
+    },
+    "skillAudio": {
+      "x": -6,
+      "y": 57,
+      "crop": null,
+      "scaleX": 1.5,
+      "scaleY": 1.5
+    },
+    "skillLight": {
+      "x": 0,
+      "y": 18,
+      "crop": null,
+      "scaleX": 1.3,
+      "scaleY": 1.3
+    },
+    "rolesGallery2": {
+      "x": -35,
+      "y": -76,
+      "crop": null,
+      "scaleX": 1,
+      "scaleY": 1
+    },
+    "skillSpotlight": {
+      "x": 0,
+      "y": 1,
+      "scaleX": 1.2,
+      "scaleY": 1.2
+    },
+    "introPhotoWall1": {
+      "x": 0,
+      "y": 0,
+      "scaleX": 1.1,
+      "scaleY": 1.1
+    },
+    "introPhotoWall5": {
+      "x": -18,
+      "y": -6,
+      "crop": null,
+      "scaleX": 1.2,
+      "scaleY": 1.2
+    },
+    "skillStageControl": {
+      "x": 0,
+      "y": 0,
+      "scaleX": 1.3,
+      "scaleY": 1.3
+    }
+  }
 }

@@ -7,7 +7,7 @@
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://lbaoqsxmpvqxpbogvpyj.supabase.co" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preload" as="fetch" href="content.json" crossorigin="anonymous">
+<link rel="preload" as="fetch" href="content.json?rev=20260828-recovery1" crossorigin="anonymous">
 <link rel="preload" as="image" href="assets/qq-west.webp" fetchpriority="high">
 <link rel="preload" as="image" href="assets/qq-north.webp" fetchpriority="high">
 <script src="cloud-config.js"></script>
@@ -68,13 +68,13 @@
   window.__optimizeWechatImageUrl = optimizeImageUrl;
   window.__wechatCachedSnapshot = readCached();
 
-  window.__wechatFallbackBootstrap = fetch('content.json', { cache: 'default' }).then(response => response.json()).catch(() => ({}));
+  window.__wechatFallbackBootstrap = fetch('content.json?rev=20260828-recovery1', { cache: 'default' }).then(response => response.json()).catch(() => ({}));
   window.__wechatCloudBootstrap = (async () => {
     if (!cfg.url || !cfg.anonKey || !cfg.contentId) return null;
     try {
       const endpoint = cfg.url.replace(/\/$/, '') + '/rest/v1/wechat_contents?content_id=eq.' + encodeURIComponent(cfg.contentId) + '&select=content_json,updated_at';
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 4000);
+      const timeout = setTimeout(() => controller.abort(), 12000);
       const response = await fetch(endpoint, { cache: 'no-store', signal: controller.signal, headers: { apikey: cfg.anonKey, Authorization: 'Bearer ' + cfg.anonKey } });
       clearTimeout(timeout);
       if (!response.ok) throw new Error('cloud bootstrap ' + response.status);
@@ -1050,7 +1050,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     applySnapshot(event.data.content);
   });
   const loadPublishedContent = async () => {
-    const fallbackPromise = window.__wechatFallbackBootstrap || fetch('content.json', { cache: 'default' }).then(response => response.json()).catch(() => ({}));
+    const fallbackPromise = window.__wechatFallbackBootstrap || fetch('content.json?rev=20260828-recovery1', { cache: 'default' }).then(response => response.json()).catch(() => ({}));
     if (isEditorPreview) {
       fallbackContent = await fallbackPromise || {};
       if (!previewContentReceived) applySnapshot(fallbackContent);
@@ -1063,9 +1063,10 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     ]);
     fallbackContent = fallback || {};
     const cachedSnapshot = window.__wechatCachedSnapshot;
+    // 静态 content.json 与云端内容保持同一份最新快照；云端暂时不可用时，优先使用静态最新版本，避免旧本机缓存把最后文案覆盖回去。
     if (snapshot?.content_json) applySnapshot(snapshot.content_json, snapshot.updated_at);
+    else if (fallbackContent && Object.keys(fallbackContent).length) applySnapshot(fallbackContent);
     else if (cachedSnapshot?.content_json) applySnapshot(cachedSnapshot.content_json, cachedSnapshot.updated_at);
-    else applySnapshot(fallbackContent);
     const subscribeRealtime = () => {
       if (subscribeRealtime.unsubscribe) return;
       const sync = window.WechatCloudSync;

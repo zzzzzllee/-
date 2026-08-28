@@ -56,35 +56,9 @@
     if (value && typeof value === 'object') Object.values(value).forEach(item => collectStoragePaths(item, output));
     return output;
   };
+  // 暂停自动删除旧资源：云端资源必须保留，避免误删仍在使用的图片、视频或封面。
   const cleanupObsoleteAssets = async content => {
-    if (!client || !content || !shareKey) return;
-    try {
-      // 只清理当前内容仍在使用的共享目录，绝不碰本地 assets 或其他文章。
-      const current = await readCurrentRow();
-      if (!current || !sameContent(current.content_json, content)) return;
-      const prefix = `${config.contentId}/${shareKey}`;
-      const keep = collectStoragePaths(current.content_json);
-      const stale = [];
-      for (let offset = 0; ; offset += 1000) {
-        const { data, error } = await client.storage.from(config.bucket).list(prefix, { limit: 1000, offset, sortBy: { column: 'name', order: 'asc' } });
-        if (error) throw error;
-        const rows = Array.isArray(data) ? data : [];
-        rows.forEach(row => {
-          const name = String(row?.name || '').trim();
-          if (name && !keep.has(`${prefix}/${name}`)) stale.push(`${prefix}/${name}`);
-        });
-        if (rows.length < 1000) break;
-      }
-      for (let index = 0; index < stale.length; index += 100) {
-        const batch = stale.slice(index, index + 100);
-        const { error } = await client.storage.from(config.bucket).remove(batch);
-        if (error) throw error;
-      }
-      if (stale.length) console.info(`已清理 ${stale.length} 个旧版图片/视频资源`);
-    } catch (error) {
-      // 清理失败不能回滚刚刚保存的最新内容；通常是 Supabase 尚未执行 storage delete policy。
-      console.warn('最新内容已保存，但旧版图片/视频清理失败', error);
-    }
+    return;
   };
   const stableSerialize = value => {
     if (Array.isArray(value)) return '[' + value.map(stableSerialize).join(',') + ']';
