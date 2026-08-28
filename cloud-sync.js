@@ -145,13 +145,18 @@
       const endpoint = `${String(config.url).replace(/\/$/, '')}/storage/v1/upload/resumable`;
       const upload = new window.tus.Upload(file, {
         endpoint,
-        chunkSize: 6 * 1024 * 1024,
+        // 创建上传请求不携带首个分片，避免 Supabase 在 POST 阶段按请求体大小返回 413.
+        chunkSize: 5 * 1024 * 1024,
         retryDelays: [0, 1000, 3000, 5000, 10000],
-        uploadDataDuringCreation: true,
+        uploadDataDuringCreation: false,
         removeFingerprintOnSuccess: true,
         metadata: { bucketName: config.bucket, objectName: path, contentType: file.type || 'application/octet-stream', cacheControl: '31536000' },
         headers: { Authorization: `Bearer ${config.anonKey}`, apikey: config.anonKey, 'x-share-key': shareKey },
-        onError: error => reject(error),
+        onError: error => {
+          const message = String(error?.message || error || '');
+          if (/413|maximum size exceeded/i.test(message)) reject(new Error('云端返回 413：宣传片超过当前 Supabase 存储限制，请压缩视频后再上传（建议 50MB 以内）。'));
+          else reject(error);
+        },
         onSuccess: () => resolve(publicAssetUrl(path))
       });
       upload.start();
