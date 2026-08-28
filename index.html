@@ -65,6 +65,7 @@
       window.__wechatImagePreloads.push(image);
     });
   };
+  window.__preloadWechatContent = preloadAll;
   window.__optimizeWechatImageUrl = optimizeImageUrl;
   window.__wechatCachedSnapshot = readCached();
 
@@ -1037,7 +1038,7 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     lastAppliedSignature = signature;
     lastAppliedUpdatedAt = updatedAt || lastAppliedUpdatedAt;
     // 只在确定采用这一版内容后预加载首屏图片，避免旧快照和新快照同时抢占手机带宽。
-    preloadAll(merged);
+    window.__preloadWechatContent?.(merged);
     applyContent(merged);
     finishLoading();
     return true;
