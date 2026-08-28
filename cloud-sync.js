@@ -137,8 +137,27 @@
   const uploadAsset = async (file, kind = 'image') => {
     if (!client) throw new Error('云端服务尚未配置');
     if (!shareKey) throw new Error('当前编辑器缺少共享编辑密钥');
-    const safeName = String(file?.name || 'upload.bin').toLowerCase().replace(/[^a-z0-9._-]/g, '-') || 'upload.bin';
+    if (!file || !file.size) throw new Error('没有读取到要上传的文件');
+    const safeName = String(file.name || 'upload.bin').toLowerCase().replace(/[^a-z0-9._-]/g, '-') || 'upload.bin';
     const path = `${config.contentId}/${shareKey}/${kind}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${safeName}`;
+    const uploadResumable = () => new Promise((resolve, reject) => {
+      if (!window.tus?.Upload) { reject(new Error('大文件上传组件未加载，请刷新页面后重试')); return; }
+      const endpoint = `${String(config.url).replace(/\/$/, '')}/storage/v1/upload/resumable`;
+      const upload = new window.tus.Upload(file, {
+        endpoint,
+        chunkSize: 6 * 1024 * 1024,
+        retryDelays: [0, 1000, 3000, 5000, 10000],
+        uploadDataDuringCreation: true,
+        removeFingerprintOnSuccess: true,
+        metadata: { bucketName: config.bucket, objectName: path, contentType: file.type || 'application/octet-stream', cacheControl: '31536000' },
+        headers: { Authorization: `Bearer ${config.anonKey}`, apikey: config.anonKey, 'x-share-key': shareKey },
+        onError: error => reject(error),
+        onSuccess: () => resolve(publicAssetUrl(path))
+      });
+      upload.start();
+    });
+    // 宣传片通常超过普通上传的大小/超时边界，使用 Supabase TUS 分片上传；图片仍走原有快速上传。
+    if (kind === 'promo-video' || file.size > 6 * 1024 * 1024) return uploadResumable();
     let lastError = null;
     for (let attempt = 0; attempt < 3; attempt += 1) {
       const { error } = await client.storage.from(config.bucket).upload(path, file, { cacheControl: '31536000', contentType: file.type || undefined, upsert: true });
