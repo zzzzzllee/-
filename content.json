@@ -119,10 +119,10 @@
     "titleBefore": "掌握多元技能，"
   },
   "video": {
-    "url": "",
-    "note": "视频内容可在在线编辑器中上传或替换。",
+    "url": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/promo-video-2026.mp4",
+    "note": "宣传片已就位，点击播放即可观看。",
     "intro": "想先看看我们平时在忙什么？从宣传片几分钟里看懂真实的部门日常。",
-    "poster": "assets/style-sky.jpg",
+    "poster": "https://lbaoqsxmpvqxpbogvpyj.supabase.co/storage/v1/object/public/wechat-recruitment-assets/wechat-recruitment-2026/22199df67f7c0f3c03252723f41962214676/promo-video-poster.jpg",
     "titleMark": "先看见我们",
     "titleBefore": "宣传片，"
   },
