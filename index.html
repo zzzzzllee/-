@@ -31,16 +31,10 @@
     const localAsset = raw.replace(/assets\/qq-west\.png$/i, 'assets/qq-west.webp').replace(/assets\/qq-north\.png$/i, 'assets/qq-north.webp').replace(/assets\/style-sky\.jpg$/i, 'assets/style-sky.webp').replace(/(assets\/cloud-optimized\/[^?#]+)\.jpe?g(?=([?#]|$))/i, '$1.webp');
     if (localAsset !== raw) return localAsset;
     if (!/^https?:/i.test(raw) || !raw.includes('/storage/v1/') || raw.includes('/optimized-v1/')) return raw;
-    let url;
-    try { url = new URL(raw); } catch { return raw; }
-    if (url.pathname.includes('/storage/v1/object/public/')) url.pathname = url.pathname.replace('/storage/v1/object/public/', '/storage/v1/render/image/public/');
-    if (!url.pathname.includes('/storage/v1/render/image/public/')) return raw;
-    const requestedWidth = window.innerWidth <= 640 ? Math.min(Number(width) || 1000, 760) : width;
-    url.searchParams.set('width', String(requestedWidth));
-    // Supabase 只传 width 时可能保留原图高度，导致部分照片比例异常、看起来像被截断。
-    url.searchParams.set('resize', 'contain');
-    url.searchParams.set('quality', '78');
-    return url.toString();
+    // 当前 Supabase 项目未开启 Image Transform，render/image 公共地址会返回 403。
+    // 保留 object/public 原图地址，避免首屏第 6 张及其他云端图片显示失败。
+    if (raw.includes('/storage/v1/object/public/')) return raw;
+    return raw;
   };
   const preloadedImageUrls = new Set();
   const preloadAll = content => {
