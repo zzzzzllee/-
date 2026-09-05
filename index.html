@@ -1061,6 +1061,9 @@ body.qr-viewer-open{overflow:hidden;touch-action:none}
     // 静态 content.json 与云端内容保持同一份最新快照；云端暂时不可用时，优先使用静态最新版本，避免旧本机缓存把最后文案覆盖回去。
     if (snapshot?.content_json) applySnapshot(snapshot.content_json, snapshot.updated_at);
     else if (fallbackContent && Object.keys(fallbackContent).length) applySnapshot(fallbackContent);
+    // 静态 content.json 与云端内容保持同一份最新快照；云端暂时不可用时，优先使用静态最新版本，避免旧本机缓存把最后文案覆盖回去。
+    if (snapshot?.content_json) applySnapshot(snapshot.content_json, snapshot.updated_at);
+    else if (fallbackContent && Object.keys(fallbackContent).length) applySnapshot(fallbackContent);
     else if (cachedSnapshot?.content_json) applySnapshot(cachedSnapshot.content_json, cachedSnapshot.updated_at);
     const subscribeRealtime = () => {
       if (subscribeRealtime.unsubscribe) return;

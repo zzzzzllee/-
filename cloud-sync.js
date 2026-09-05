@@ -60,6 +60,10 @@
   const cleanupObsoleteAssets = async content => {
     return;
   };
+  // 暂停自动删除旧资源：云端资源必须保留，避免误删仍在使用的图片、视频或封面。
+  const cleanupObsoleteAssets = async content => {
+    return;
+  };
   const stableSerialize = value => {
     if (Array.isArray(value)) return '[' + value.map(stableSerialize).join(',') + ']';
     if (value && typeof value === 'object') return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + stableSerialize(value[key])).join(',') + '}';
